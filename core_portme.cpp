@@ -15,14 +15,18 @@ limitations under the License. */
 #include <stdio.h>
 #include <stdlib.h>
 #include <debugio.h>
-//#include "fsl_debug_console.h"
-//#include "fsl_flexcan.h"
 #include "board.h"
 
 #include "pin_mux.h"
 #include "clock_config.h"
 #include "fsl_clock.h"
-#include "fsl_lpuart.h"
+#if defined LPUART_BASE_PTRS
+	#include "fsl_lpuart.h"
+#elif defined USART_BASE_PTRS
+	#include "fsl_usart.h"
+#else
+	#error "unknown serial port driver"
+#endif
 
 extern "C"
 {
@@ -88,7 +92,13 @@ extern "C"
 
 
 
-	static LPUART_Type * const uart [] = LPUART_BASE_PTRS;
+	#if defined LPUART_BASE_PTRS
+		static LPUART_Type * const uart [] = LPUART_BASE_PTRS;
+	#elif defined USART_BASE_PTRS
+		static USART_Type * const uart [] = USART_BASE_PTRS;
+	#else
+		#error "unknown serial port driver"
+	#endif
 
 	void portable_init (core_portable *p, int *argc, char *argv[])
 	{
@@ -98,19 +108,33 @@ extern "C"
 		BOARD_BootClockRUN     ();
 //		BOARD_InitDebugConsole ();
 
-		#if __CORTEX_M == 7
-			// Configure Lpuartx using SysPll2
-			static const clock_root_t RootClocks [] = {(clock_root_t)0x7F, kCLOCK_Root_Lpuart1, kCLOCK_Root_Lpuart2, kCLOCK_Root_Lpuart3, kCLOCK_Root_Lpuart4, kCLOCK_Root_Lpuart5, kCLOCK_Root_Lpuart6, kCLOCK_Root_Lpuart7, kCLOCK_Root_Lpuart8, kCLOCK_Root_Lpuart9, kCLOCK_Root_Lpuart10, kCLOCK_Root_Lpuart11, kCLOCK_Root_Lpuart12};
-			static const _clock_lpcg clocks [] = LPUART_CLOCKS;
+		#if defined LPUART_BASE_PTRS
+			#if ((defined MIMXRT1011_SERIES) || (defined MIMXRT1015_SERIES) || (defined MIMXRT1021_SERIES) || (defined MIMXRT1024_SERIES) || \
+				 (defined MIMXRT1051_SERIES) || (defined MIMXRT1052_SERIES) || (defined MIMXRT1061_SERIES) || (defined MIMXRT1062_SERIES) || \
+				 (defined MIMXRT1064_SERIES))
+				uint32_t ClockFrequency = 0;
+				if (CLOCK_GetMux (kCLOCK_UartMux) == 0) // --> PLL3 div6 80M
+					ClockFrequency = (CLOCK_GetPllFreq (kCLOCK_PllUsb1) / 6U) / (CLOCK_GetDiv(kCLOCK_UartDiv) + 1U);
+				else
+					ClockFrequency = CLOCK_GetOscFreq() / (CLOCK_GetDiv(kCLOCK_UartDiv) + 1U);
+			#elif (defined MIMXRT1165_cm7_SERIES) || (defined MIMXRT1166_cm7_SERIES) || (defined MIMXRT1165_cm4_SERIES) || (defined MIMXRT1166_cm4_SERIES) || \
+				  (defined MIMXRT1171_SERIES)     || (defined MIMXRT1172_SERIES)     || \
+				  (defined MIMXRT1173_cm7_SERIES) || (defined MIMXRT1175_cm7_SERIES) || (defined MIMXRT1176_cm7_SERIES) || \
+				  (defined MIMXRT1173_cm4_SERIES) || (defined MIMXRT1175_cm4_SERIES) || (defined MIMXRT1176_cm4_SERIES)
+				// Configure Lpuartx using SysPll2
+				static const clock_root_t RootClocks [] = {static_cast<clock_root_t>(0x7F), kCLOCK_Root_Lpuart1, kCLOCK_Root_Lpuart2, kCLOCK_Root_Lpuart3, kCLOCK_Root_Lpuart4, kCLOCK_Root_Lpuart5, kCLOCK_Root_Lpuart6, kCLOCK_Root_Lpuart7, kCLOCK_Root_Lpuart8, kCLOCK_Root_Lpuart9, kCLOCK_Root_Lpuart10, kCLOCK_Root_Lpuart11, kCLOCK_Root_Lpuart12};
+				static const _clock_lpcg clocks [] = LPUART_CLOCKS;
 
-			clock_root_config_t rootCfg = {0};
-			rootCfg.mux = 6;
-			rootCfg.div = 21;
-			CLOCK_SetRootClock (RootClocks[BOARD_DEBUG_UART_INSTANCE], &rootCfg);
-	//		CLOCK_ControlGate  (clocks[BOARD_DEBUG_UART_INSTANCE], kCLOCK_On);
+				clock_root_config_t rootCfg {};
+				rootCfg.mux = 6;
+				rootCfg.div = 21;
+				CLOCK_SetRootClock (RootClocks[BOARD_DEBUG_UART_INSTANCE], &rootCfg);
+				CLOCK_ControlGate  (clocks[BOARD_DEBUG_UART_INSTANCE], kCLOCK_On);
 
-			uint32_t ClockFrequency = CLOCK_GetRootClockFreq (RootClocks[BOARD_DEBUG_UART_INSTANCE]);
-
+				uint32_t ClockFrequency = CLOCK_GetRootClockFreq (RootClocks[BOARD_DEBUG_UART_INSTANCE]);
+			#else
+				#error "unknon controller family"
+			#endif
 
 			lpuart_config_t config;
 			LPUART_GetDefaultConfig (&config);
@@ -118,22 +142,47 @@ extern "C"
 			config.enableTx     = true;
 			config.enableRx     = true;
 			status_t status = LPUART_Init (uart[BOARD_DEBUG_UART_INSTANCE], &config, ClockFrequency);
+		#elif defined USART_BASE_PTRS
+			const clock_frg_clk_config_t ClockConfig = 
+			{
+				0, _clock_frg_clk_config::kCLOCK_FrgPllDiv, 255, 0
+			};
+
+			CLOCK_SetFRGClock (&ClockConfig);
+			const clock_attach_id_t Clock[] = {kFRG_to_FLEXCOMM0, kFRG_to_FLEXCOMM1, kFRG_to_FLEXCOMM2, kFRG_to_FLEXCOMM3, kFRG_to_FLEXCOMM4, kFRG_to_FLEXCOMM5, kFRG_to_FLEXCOMM6, kFRG_to_FLEXCOMM7};
+			CLOCK_AttachClk   (Clock[BOARD_DEBUG_UART_INSTANCE]);
+
+
+			usart_config_t config;
+			USART_GetDefaultConfig (&config);
+			config.baudRate_Bps     = 115200U;
+			config.enableTx         = true;
+			config.enableRx         = true;
+			status_t status         = USART_Init (uart[BOARD_DEBUG_UART_INSTANCE], &config, CLOCK_GetFlexCommClkFreq(BOARD_DEBUG_UART_INSTANCE));
+		#else
+			#error "unknown serial port driver"
 		#endif
 
 
 		InitializeSystemTick (1);
 
-		#if __CORTEX_M == 7
+		#if __CORTEX_M == 4
+			MyPrintf ("Hello Coremark on M4 core\r\n");
+		#elif __CORTEX_M == 7
 			MyPrintf ("Hello Coremark on M7 core\r\n");
+		#elif __CORTEX_M == 33
+			MyPrintf ("Hello Coremark on M33 core\r\n");
+		#else
+			#error "unknown core"
+		#endif
 
+		#if defined MIMXRT1173_cm7_SERIES || defined MIMXRT1175_cm7_SERIES || defined MIMXRT1176_cm7_SERIES
 			// start the M4 core
 			extern uint32_t __FlexSPI_segment_end__;
 			uint32_t bootAddress = (uint32_t)&__FlexSPI_segment_end__;
 			IOMUXC_LPSR_GPR->GPR0 = IOMUXC_LPSR_GPR_GPR0_CM4_INIT_VTOR_LOW((uint32_t)bootAddress);
 			IOMUXC_LPSR_GPR->GPR1 = IOMUXC_LPSR_GPR_GPR1_CM4_INIT_VTOR_HIGH((uint32_t)bootAddress >> 16);
 			SRC->SCR |= SRC_SCR_BT_RELEASE_M4_MASK;
-		#else
-			MyPrintf ("Hello Coremark on M4 core\r\n");
 		#endif
 	}
 
@@ -159,7 +208,13 @@ extern "C"
 		va_end(ArgPtr);
 
 		if (Length > 0 && Length <= sizeof(Buffer))
-			LPUART_WriteBlocking (uart[BOARD_DEBUG_UART_INSTANCE], (uint8_t *)Buffer, Length);
+		{
+			#if defined LPUART_BASE_PTRS
+				LPUART_WriteBlocking (uart[BOARD_DEBUG_UART_INSTANCE], reinterpret_cast<const uint8_t *>(Buffer), Length);
+			#elif defined USART_BASE_PTRS
+				USART_WriteBlocking (uart[BOARD_DEBUG_UART_INSTANCE], reinterpret_cast<const uint8_t *>(Buffer), Length);
+			#endif
+		}
 	}
 
 	/* Function : start_time
