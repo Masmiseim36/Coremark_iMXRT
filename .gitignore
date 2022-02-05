@@ -1,5 +1,7 @@
-Coremark_CM7 THUMB Release
-Coremark_CM7 THUMB Debug
-Coremark_CM4 THUMB Release
-Coremark_CM4 THUMB Debug
 *.hzs
+*.o
+*.d
+*.ind
+*.ld
+*.map
+*.elf
