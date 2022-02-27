@@ -917,8 +917,13 @@
       <file file_name="XiP/flexspi_boot.h" />
       <file file_name="XiP/flexspi_flash.h" />
       <file file_name="XiP/flexspi_flash_Hyperflash.c" />
-      <file file_name="XiP/flexspi_flash_OSPI_Adesto.c" />
+      <file file_name="XiP/flexspi_flash_OSPI_Adesto.c">
+        <configuration Name="Common" build_exclude_from_build="No" />
+      </file>
       <file file_name="XiP/flexspi_flash_QSPI.c" />
+      <file file_name="XiP/flexspi_flash_OSPI_Macronix.c">
+        <configuration Name="Common" build_exclude_from_build="Yes" />
+      </file>
     </folder>
     <folder Name="System Files">
       <file file_name="$(StudioDir)/source/thumb_crt0.s" />
