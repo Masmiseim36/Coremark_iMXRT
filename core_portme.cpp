@@ -62,10 +62,10 @@ extern "C"
 
 
 
-    volatile uint32_t TickCounter = 0;
+	volatile uint32_t TickCounter = 0;
 	uint32_t TickLength = 0;
-    uint32_t StartTick = 0;
-    uint32_t StopTick = 0;
+	uint32_t StartTick = 0;
+	uint32_t StopTick = 0;
 
 
 	extern "C" void SysTick_Handler (void)
@@ -73,7 +73,7 @@ extern "C"
 		TickCounter++;
 	}
 
-    bool InitializeSystemTick (uint32_t SysTickInMS)
+	bool InitializeSystemTick (uint32_t SysTickInMS)
 	{
 		if (SysTickInMS == 0)
 			return false;
