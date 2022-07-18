@@ -1129,7 +1129,6 @@
       <file file_name="$(TargetsDir)/iMXRT/$(DeviceName)_features.h" />
       <file file_name="$(TargetsDir)/iMXRT/fsl_device_registers.h" />
     </folder>
-    <configuration Name="Release" gcc_optimization_level="Level 1" />
     <folder Name="component">
       <file file_name="components/generic_list.c" />
       <file file_name="components/generic_list.h" />
