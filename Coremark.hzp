@@ -7,7 +7,7 @@
     arm_library_instruction_set="Thumb"
     build_intermediate_directory="out/$(ProjectName) $(Configuration)"
     build_output_directory="bin/$(ProjectName) $(Configuration)"
-    c_preprocessor_definitions="__THUMB;VECTORS_IN_RAM=1;STARTUP_FROM_RESET=1;PRINTF_FLOAT_ENABLE=1;INITIALIZE_TCM_SECTIONS=1\;"
+    c_preprocessor_definitions="__THUMB;VECTORS_IN_RAM=1;STARTUP_FROM_RESET=1;PRINTF_FLOAT_ENABLE=1;INITIALIZE_TCM_SECTIONS=1;"
     c_user_include_directories="./components"
     gcc_cplusplus_language_standard="c++17"
     gcc_debugging_level="Level 3"
