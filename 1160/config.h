@@ -1,0 +1,12 @@
+#ifndef _CONFIG_H_
+#define _CONFIG_H_
+
+// iMXRT1170 Evaluation Board
+#define DEBUG_CONSOLE_UART_INDEX 1
+#define BOARD_NAME "MIMXRT1160-EVK"
+#define BOARD_USER_LED_GPIO GPIO9
+#define BOARD_USER_LED_GPIO_PIN (3U)
+#define EXAMPLE_CAN_INDEX 3
+
+
+#endif // _CONFIG_H_

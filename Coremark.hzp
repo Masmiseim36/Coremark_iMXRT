@@ -94,7 +94,6 @@
       <file file_name="drivers/fsl_common_arm.h" />
     </folder>
     <folder Name="src">
-      <file file_name="config.h" />
       <file file_name="1010/board.c" />
       <file file_name="1010/board.h" />
       <file file_name="1010/clock_config.c" />
@@ -219,7 +218,6 @@
       <file file_name="drivers/fsl_common_arm.h" />
     </folder>
     <folder Name="src">
-      <file file_name="config.h" />
       <file file_name="1015/board.c" />
       <file file_name="1015/board.h" />
       <file file_name="1015/clock_config.c" />
@@ -344,7 +342,6 @@
       <file file_name="drivers/fsl_common_arm.h" />
     </folder>
     <folder Name="src">
-      <file file_name="config.h" />
       <file file_name="1020/board.c" />
       <file file_name="1020/board.h" />
       <file file_name="1020/clock_config.c" />
@@ -469,7 +466,6 @@
       <file file_name="drivers/fsl_common_arm.h" />
     </folder>
     <folder Name="src">
-      <file file_name="config.h" />
       <file file_name="1024/board.c" />
       <file file_name="1024/board.h" />
       <file file_name="1024/clock_config.c" />
@@ -594,7 +590,6 @@
       <file file_name="drivers/fsl_common_arm.h" />
     </folder>
     <folder Name="src">
-      <file file_name="config.h" />
       <file file_name="1050/board.c" />
       <file file_name="1050/board.h" />
       <file file_name="1050/clock_config.c" />
@@ -719,7 +714,6 @@
       <file file_name="drivers/fsl_common_arm.h" />
     </folder>
     <folder Name="src">
-      <file file_name="config.h" />
       <file file_name="1050/board.c" />
       <file file_name="1060/board.h" />
       <file file_name="1060/clock_config.c" />
@@ -773,6 +767,314 @@
       <file file_name="$(TargetsDir)/iMXRT/fsl_device_registers.h" />
       <file file_name="$(TargetsDir)/iMXRT/iMXRT_Target.js" />
       <file file_name="placement_flexspi.xml" />
+    </folder>
+  </project>
+  <project Name="Coremark_1160CM7">
+    <configuration
+      CMSIS_CORE="Yes"
+      Name="Common"
+      Placement="FlexSPI (QuadSPI)"
+      Target="MIMXRT1176DVMAA_cm7"
+      arm_architecture="v7EM"
+      arm_core_type="Cortex-M7"
+      arm_fp_abi="Hard"
+      arm_fpu_type="FPv5-D16"
+      arm_linker_heap_size="10240"
+      arm_linker_stack_size="10240"
+      arm_simulator_memory_simulation_parameter="RAM;0x00000000;0x00040000;RAM;0x20000000;0x00040000;RAM;0x20240000;0x00100000;RAM;0x80000000;0x02000000;0x30000000;0x04000000"
+      arm_target_loader_applicable_loaders="Flash"
+      arm_target_loader_default_loader="Flash"
+      arm_target_loader_reset_after_download="No"
+      c_preprocessor_definitions="NDEBUG ;USE_SDRAM;CPU_MIMXRT1176DVMAA_cm7;FLEXCAN_WAIT_TIMEOUT=1000;SERIAL_PORT_TYPE_UART=1"
+      c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRT"
+      c_user_include_directories="./drivers/1160cm7;./drivers;./1160"
+      debug_dependent_projects="Coremark_1160CM4"
+      debug_register_definition_file="$(TargetsDir)/iMXRT/XML/$(DeviceName)_registers.xml"
+      debug_startup_completion_point="main"
+      default_data_section=".data_tcm"
+      default_zeroed_section=".bss_tcm"
+      linker_memory_map_file="$(TargetsDir)/iMXRT/MemoryMap_MIMXRT117x_cm7.xml"
+      linker_section_placement_file="$(TargetsDir)/iMXRT/placement_flexspi.xml"
+      linker_section_placement_macros=""
+      macros="DeviceName=MIMXRT1176_cm7;Family=iMXRT1160;Core=CM7"
+      project_dependencies="Coremark_1160CM4"
+      project_directory=""
+      project_type="Executable"
+      property_groups_file_path="$(TargetsDir)/iMXRT/propertyGroups.xml"
+      target_connect_script="Connect()"
+      target_get_partname_script="GetPartName()"
+      target_reset_script="Reset()"
+      target_script_file="$(TargetsDir)/iMXRT/iMXRT_Target.js"
+      target_stop_script="OnTargetStop_11xx()" />
+    <configuration
+      Name="Flash"
+      arm_target_flash_loader_file_path="$(TargetsDir)/iMXRT/Loader2/Loader_$(Family)_$(Core).elf"
+      arm_target_loader_parameter="5" />
+    <folder Name="drivers">
+      <file file_name="drivers/fsl_common.c" />
+      <file file_name="drivers/fsl_common.h" />
+      <file file_name="drivers/fsl_dcdc.c" />
+      <file file_name="drivers/fsl_dcdc.h" />
+      <file file_name="drivers/fsl_dmamux.c" />
+      <file file_name="drivers/fsl_dmamux.h" />
+      <file file_name="drivers/fsl_edma.c" />
+      <file file_name="drivers/fsl_edma.h" />
+      <file file_name="drivers/fsl_flexcan.c" />
+      <file file_name="drivers/fsl_flexcan.h" />
+      <file file_name="drivers/fsl_flexram.c" />
+      <file file_name="drivers/fsl_flexram.h" />
+      <file file_name="drivers/fsl_flexspi.c" />
+      <file file_name="drivers/fsl_flexspi.h" />
+      <file file_name="drivers/fsl_gpc.c" />
+      <file file_name="drivers/fsl_gpc.h" />
+      <file file_name="drivers/fsl_gpio.c" />
+      <file file_name="drivers/fsl_gpio.h" />
+      <file file_name="drivers/fsl_iomuxc.h" />
+      <file file_name="drivers/fsl_lpuart.c" />
+      <file file_name="drivers/fsl_lpuart.h" />
+      <file file_name="drivers/fsl_lpuart_edma.c" />
+      <file file_name="drivers/fsl_lpuart_edma.h" />
+      <file file_name="drivers/fsl_mu.c" />
+      <file file_name="drivers/fsl_mu.h" />
+      <file file_name="drivers/fsl_ocotp.c" />
+      <file file_name="drivers/fsl_ocotp.h" />
+      <file file_name="drivers/fsl_pdm.c" />
+      <file file_name="drivers/fsl_pdm.h" />
+      <file file_name="drivers/fsl_pdm_edma.c" />
+      <file file_name="drivers/fsl_pdm_edma.h" />
+      <file file_name="drivers/fsl_pgmc.c" />
+      <file file_name="drivers/fsl_pgmc.h" />
+      <file file_name="drivers/fsl_pit.c" />
+      <file file_name="drivers/fsl_pit.h" />
+      <file file_name="drivers/fsl_pmu.c" />
+      <file file_name="drivers/fsl_pmu.h" />
+      <file file_name="drivers/fsl_puf.c" />
+      <file file_name="drivers/fsl_puf.h" />
+      <file file_name="drivers/fsl_romapi.c" />
+      <file file_name="drivers/fsl_romapi.h" />
+      <file file_name="drivers/fsl_rtwdog.c" />
+      <file file_name="drivers/fsl_rtwdog.h" />
+      <file file_name="drivers/fsl_sema4.c" />
+      <file file_name="drivers/fsl_sema4.h" />
+      <file file_name="drivers/fsl_semc.c" />
+      <file file_name="drivers/fsl_semc.h" />
+      <file file_name="drivers/fsl_tempsensor.c" />
+      <file file_name="drivers/fsl_tempsensor.h" />
+      <file file_name="drivers/1160cm7/fsl_anatop_ai.c" />
+      <file file_name="drivers/1160cm7/fsl_anatop_ai.h" />
+      <file file_name="drivers/1160cm7/fsl_cache.c" />
+      <file file_name="drivers/1160cm7/fsl_cache.h" />
+      <file file_name="drivers/1160cm7/fsl_clock.c" />
+      <file file_name="drivers/1160cm7/fsl_clock.h" />
+      <file file_name="drivers/fsl_common_arm.c" />
+      <file file_name="drivers/fsl_common_arm.h" />
+    </folder>
+    <folder Name="src">
+      <file file_name="1160/config.h" />
+      <file file_name="1160/board.c" />
+      <file file_name="1160/board.h" />
+      <file file_name="1160/clock_config.c" />
+      <file file_name="1160/clock_config.h" />
+      <file file_name="1160/pin_mux.c" />
+      <file file_name="1160/pin_mux.h" />
+    </folder>
+    <folder Name="component">
+      <file file_name="components/generic_list.c" />
+      <file file_name="components/generic_list.h" />
+      <file file_name="components/serial_manager.c" />
+      <file file_name="components/serial_manager.h" />
+      <file file_name="components/serial_port_internal.h" />
+      <file file_name="components/serial_port_uart.c" />
+      <file file_name="components/serial_port_uart.h" />
+      <file file_name="components/uart.h" />
+      <file file_name="components/fsl_component_serial_manager.h" />
+      <file file_name="components/fsl_component_serial_port_uart.h" />
+      <file file_name="components/fsl_adapter_uart.h" />
+      <file file_name="components/fsl_debug_console.c" />
+      <file file_name="components/fsl_debug_console.h" />
+      <file file_name="components/fsl_str.c" />
+      <file file_name="components/fsl_str.h" />
+      <file file_name="components/lpuart_adapter.c" />
+    </folder>
+    <folder Name="coremark">
+      <file file_name="core_list_join.c" />
+      <file file_name="core_main.c" />
+      <file file_name="core_matrix.c" />
+      <file file_name="core_state.c" />
+      <file file_name="core_util.c" />
+      <file file_name="coremark.h" />
+      <file file_name="core_portme.cpp" />
+      <file file_name="core_portme.h" />
+    </folder>
+    <folder Name="XIP">
+      <file file_name="XiP/flexspi_boot.c" />
+      <file file_name="XiP/flexspi_boot.h" />
+      <file file_name="XiP/flexspi_flash.h" />
+      <file file_name="XiP/flexspi_flash_Hyperflash.c" />
+      <file file_name="XiP/flexspi_flash_OSPI_Adesto.c">
+        <configuration Name="Common" build_exclude_from_build="No" />
+      </file>
+      <file file_name="XiP/flexspi_flash_QSPI.c" />
+      <file file_name="XiP/flexspi_flash_OSPI_Macronix.c">
+        <configuration Name="Common" build_exclude_from_build="Yes" />
+      </file>
+    </folder>
+    <folder Name="System Files">
+      <file file_name="$(StudioDir)/source/thumb_crt0.s" />
+      <file file_name="$(TargetsDir)/iMXRT/startup_$(DeviceName).s" />
+      <file file_name="$(TargetsDir)/iMXRT/system_$(DeviceName).h" />
+      <file file_name="$(TargetsDir)/iMXRT/system_$(DeviceName).c" />
+      <file file_name="$(TargetsDir)/iMXRT/$(DeviceName).h" />
+      <file file_name="$(TargetsDir)/iMXRT/$(DeviceName)_features.h" />
+      <file file_name="$(TargetsDir)/iMXRT/fsl_device_registers.h" />
+      <file file_name="MemoryMap_MIMXRT117x_cm7.xml" />
+      <file file_name="placement_flexspi_M7.xml" />
+      <file file_name="$(TargetsDir)/iMXRT/iMXRT_Target.js" />
+    </folder>
+  </project>
+  <project Name="Coremark_1160CM4">
+    <configuration
+      CMSIS_CORE="Yes"
+      Name="Common"
+      Placement="FlexSPI (QuadSPI)"
+      Target="MIMXRT1176DVMAA_cm4"
+      arm_architecture="v7EM"
+      arm_core_type="Cortex-M4"
+      arm_fp_abi="Hard"
+      arm_fpu_type="FPv4-SP-D16"
+      arm_linker_heap_size="10240"
+      arm_linker_stack_size="10240"
+      arm_simulator_memory_simulation_parameter="RAM;0x1FFE0000;0x00020000;RAM;0x20000000;0x00020000;RAM;0x20240000;0x00100000;RAM;0x80000000;0x02000000;0x08000000;0x04000000"
+      arm_target_loader_applicable_loaders="Flash"
+      arm_target_loader_default_loader="Flash"
+      c_preprocessor_definitions="NDEBUG ;USE_SDRAM;CPU_MIMXRT1176DVMAA_cm4;FLEXCAN_WAIT_TIMEOUT=1000;SERIAL_PORT_TYPE_UART=1;STARTUP_FROM_RESET=1;PRINTF_FLOAT_ENABLE=1;VECTORS_IN_RAM=1"
+      c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRT"
+      c_user_include_directories="./drivers/1160cm4;./drivers;./1160"
+      debug_register_definition_file="$(TargetsDir)/iMXRT/XML/$(DeviceName)_registers.xml"
+      debug_startup_completion_point="main"
+      linker_memory_map_file="$(TargetsDir)/iMXRT/MemoryMap_MIMXRT117x_cm4.xml"
+      linker_section_placement_file="$(TargetsDir)/iMXRT/placement_flexspi.xml"
+      linker_section_placement_macros=""
+      macros="DeviceName=MIMXRT1176_cm4;Family=iMXRT1160;Core=CM4"
+      project_directory=""
+      project_type="Executable"
+      property_groups_file_path="$(TargetsDir)/iMXRT/propertyGroups.xml"
+      target_connect_script="Connect()"
+      target_get_partname_script="GetPartName()"
+      target_reset_script="Reset()"
+      target_script_file="$(TargetsDir)/iMXRT/iMXRT_Target.js"
+      target_stop_script="OnTargetStop_11xx()" />
+    <configuration
+      Name="Flash"
+      arm_target_flash_loader_file_path="$(TargetsDir)/iMXRT/Loader2/Loader_$(Family)_$(Core).elf"
+      arm_target_loader_parameter="5" />
+    <folder Name="System Files">
+      <file file_name="$(StudioDir)/source/thumb_crt0.s" />
+      <file file_name="$(TargetsDir)/iMXRT/startup_$(DeviceName).s" />
+      <file file_name="$(TargetsDir)/iMXRT/system_$(DeviceName).h" />
+      <file file_name="$(TargetsDir)/iMXRT/system_$(DeviceName).c" />
+      <file file_name="$(TargetsDir)/iMXRT/$(DeviceName).h" />
+      <file file_name="$(TargetsDir)/iMXRT/$(DeviceName)_features.h" />
+      <file file_name="$(TargetsDir)/iMXRT/fsl_device_registers.h" />
+      <file file_name="MemoryMap_MIMXRT117x_cm4.xml" />
+      <file file_name="$(TargetsDir)/iMXRT/iMXRT_Target.js" />
+      <file file_name="placement_flexspi_M4.xml" />
+    </folder>
+    <folder Name="component">
+      <file file_name="components/generic_list.c" />
+      <file file_name="components/generic_list.h" />
+      <file file_name="components/serial_manager.c" />
+      <file file_name="components/serial_manager.h" />
+      <file file_name="components/serial_port_internal.h" />
+      <file file_name="components/serial_port_uart.c" />
+      <file file_name="components/serial_port_uart.h" />
+      <file file_name="components/uart.h" />
+      <file file_name="components/fsl_component_serial_manager.h" />
+      <file file_name="components/fsl_component_serial_port_uart.h" />
+      <file file_name="components/fsl_adapter_uart.h" />
+      <file file_name="components/fsl_debug_console.c" />
+      <file file_name="components/fsl_debug_console.h" />
+      <file file_name="components/fsl_str.c" />
+      <file file_name="components/fsl_str.h" />
+      <file file_name="components/lpuart_adapter.c" />
+    </folder>
+    <folder Name="coremark">
+      <file file_name="core_list_join.c" />
+      <file file_name="core_main.c" />
+      <file file_name="core_matrix.c" />
+      <file file_name="core_state.c" />
+      <file file_name="core_util.c" />
+      <file file_name="coremark.h" />
+      <file file_name="core_portme.cpp" />
+      <file file_name="core_portme.h" />
+    </folder>
+    <folder Name="drivers">
+      <file file_name="drivers/fsl_common.c" />
+      <file file_name="drivers/fsl_common.h" />
+      <file file_name="drivers/fsl_dcdc.c" />
+      <file file_name="drivers/fsl_dcdc.h" />
+      <file file_name="drivers/fsl_dmamux.c" />
+      <file file_name="drivers/fsl_dmamux.h" />
+      <file file_name="drivers/fsl_edma.c" />
+      <file file_name="drivers/fsl_edma.h" />
+      <file file_name="drivers/fsl_flexcan.c" />
+      <file file_name="drivers/fsl_flexcan.h" />
+      <file file_name="drivers/fsl_flexram.c" />
+      <file file_name="drivers/fsl_flexram.h" />
+      <file file_name="drivers/fsl_flexspi.c" />
+      <file file_name="drivers/fsl_flexspi.h" />
+      <file file_name="drivers/fsl_gpc.c" />
+      <file file_name="drivers/fsl_gpc.h" />
+      <file file_name="drivers/fsl_gpio.c" />
+      <file file_name="drivers/fsl_gpio.h" />
+      <file file_name="drivers/fsl_iomuxc.h" />
+      <file file_name="drivers/fsl_lpuart.c" />
+      <file file_name="drivers/fsl_lpuart.h" />
+      <file file_name="drivers/fsl_lpuart_edma.c" />
+      <file file_name="drivers/fsl_lpuart_edma.h" />
+      <file file_name="drivers/fsl_mu.c" />
+      <file file_name="drivers/fsl_mu.h" />
+      <file file_name="drivers/fsl_ocotp.c" />
+      <file file_name="drivers/fsl_ocotp.h" />
+      <file file_name="drivers/fsl_pdm.c" />
+      <file file_name="drivers/fsl_pdm.h" />
+      <file file_name="drivers/fsl_pdm_edma.c" />
+      <file file_name="drivers/fsl_pdm_edma.h" />
+      <file file_name="drivers/fsl_pgmc.c" />
+      <file file_name="drivers/fsl_pgmc.h" />
+      <file file_name="drivers/fsl_pit.c" />
+      <file file_name="drivers/fsl_pit.h" />
+      <file file_name="drivers/fsl_pmu.c" />
+      <file file_name="drivers/fsl_pmu.h" />
+      <file file_name="drivers/fsl_puf.c" />
+      <file file_name="drivers/fsl_puf.h" />
+      <file file_name="drivers/fsl_romapi.c" />
+      <file file_name="drivers/fsl_romapi.h" />
+      <file file_name="drivers/fsl_rtwdog.c" />
+      <file file_name="drivers/fsl_rtwdog.h" />
+      <file file_name="drivers/fsl_sema4.c" />
+      <file file_name="drivers/fsl_sema4.h" />
+      <file file_name="drivers/fsl_semc.c" />
+      <file file_name="drivers/fsl_semc.h" />
+      <file file_name="drivers/fsl_tempsensor.c" />
+      <file file_name="drivers/fsl_tempsensor.h" />
+      <file file_name="drivers/1160cm4/fsl_anatop_ai.c" />
+      <file file_name="drivers/1160cm4/fsl_anatop_ai.h" />
+      <file file_name="drivers/1160cm4/fsl_cache.c" />
+      <file file_name="drivers/1160cm4/fsl_cache.h" />
+      <file file_name="drivers/1160cm4/fsl_clock.c" />
+      <file file_name="drivers/1160cm4/fsl_clock.h" />
+      <file file_name="drivers/fsl_common_arm.c" />
+      <file file_name="drivers/fsl_common_arm.h" />
+    </folder>
+    <folder Name="src">
+      <file file_name="1160/config.h" />
+      <file file_name="1160/board.c" />
+      <file file_name="1160/board.h" />
+      <file file_name="1160/clock_config.c" />
+      <file file_name="1160/clock_config.h" />
+      <file file_name="1160/pin_mux.c" />
+      <file file_name="1160/pin_mux.h" />
     </folder>
   </project>
   <project Name="Coremark_1170CM7">
@@ -876,7 +1178,7 @@
       <file file_name="drivers/fsl_common_arm.h" />
     </folder>
     <folder Name="src">
-      <file file_name="config.h" />
+      <file file_name="1170/config.h" />
       <file file_name="1170/board.c" />
       <file file_name="1170/board.h" />
       <file file_name="1170/clock_config.c" />
@@ -1074,7 +1376,7 @@
       <file file_name="drivers/fsl_common_arm.h" />
     </folder>
     <folder Name="src">
-      <file file_name="config.h" />
+      <file file_name="1170/config.h" />
       <file file_name="1170/board.c" />
       <file file_name="1170/board.h" />
       <file file_name="1170/clock_config.c" />
