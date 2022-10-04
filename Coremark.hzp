@@ -521,6 +521,130 @@
       <file file_name="placement_flexspi.xml" />
     </folder>
   </project>
+  <project Name="Coremark_1040">
+    <configuration
+      CMSIS_CORE="Yes"
+      Name="Common"
+      Placement="FlexSPI (QuadSPI)"
+      Target="MIMXRT1042DFP6B"
+      arm_architecture="v7EM"
+      arm_core_type="Cortex-M7"
+      arm_fp_abi="Hard"
+      arm_fpu_type="FPv5-D16"
+      arm_linker_heap_size="256"
+      arm_linker_stack_size="10240"
+      arm_simulator_memory_simulation_parameter="RAM;0x00000000;0x00020000;RAM;0x20000000;0x00020000;RAM;0x20200000;0x00040000;RAM;0x80000000;0x02000000;0x60000000;0x04000000"
+      arm_target_loader_applicable_loaders="Flash"
+      arm_target_loader_default_loader="Flash"
+      arm_target_loader_reset_after_download="No"
+      c_preprocessor_definitions="NDEBUG ;USE_SDRAM;FLEXCAN_WAIT_TIMEOUT=1000;SERIAL_PORT_TYPE_UART=1"
+      c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRT"
+      c_user_include_directories="./drivers/1040;./drivers;./1040"
+      debug_register_definition_file="$(TargetsDir)/iMXRT/XML/$(DeviceName)_registers.xml"
+      debug_startup_completion_point="main"
+      default_data_section=".data_tcm"
+      default_zeroed_section=".bss_tcm"
+      linker_memory_map_file="$(TargetsDir)/iMXRT/MemoryMap_MIMXRT104x.xml"
+      linker_section_placement_file="$(TargetsDir)/iMXRT/placement_flexspi.xml"
+      linker_section_placement_macros="FLASH_NAME=FlexSPI"
+      macros="DeviceName=MIMXRT1042;Family=iMXRT1040;Core=CM7"
+      project_directory=""
+      project_type="Executable"
+      property_groups_file_path="$(TargetsDir)/iMXRT/propertyGroups.xml"
+      target_connect_script="Connect()"
+      target_get_partname_script="GetPartName()"
+      target_reset_script="Reset()"
+      target_script_file="$(TargetsDir)/iMXRT/iMXRT_Target.js"
+      target_stop_script="OnTargetStop_11xx()" />
+    <configuration
+      Name="Flash"
+      arm_target_flash_loader_file_path="$(TargetsDir)/iMXRT/Loader2/Loader_$(Family)_$(Core).elf"
+      arm_target_loader_parameter="5" />
+    <folder Name="drivers">
+      <file file_name="drivers/fsl_common.c" />
+      <file file_name="drivers/fsl_common.h" />
+      <file file_name="drivers/fsl_dmamux.c" />
+      <file file_name="drivers/fsl_dmamux.h" />
+      <file file_name="drivers/fsl_edma.c" />
+      <file file_name="drivers/fsl_edma.h" />
+      <file file_name="drivers/fsl_flexram.c" />
+      <file file_name="drivers/fsl_flexram.h" />
+      <file file_name="drivers/fsl_flexspi.c" />
+      <file file_name="drivers/fsl_flexspi.h" />
+      <file file_name="drivers/fsl_gpio.c" />
+      <file file_name="drivers/fsl_gpio.h" />
+      <file file_name="drivers/fsl_iomuxc.h" />
+      <file file_name="drivers/fsl_lpuart.c" />
+      <file file_name="drivers/fsl_lpuart.h" />
+      <file file_name="drivers/fsl_lpuart_edma.c" />
+      <file file_name="drivers/fsl_lpuart_edma.h" />
+      <file file_name="drivers/fsl_pit.c" />
+      <file file_name="drivers/fsl_pit.h" />
+      <file file_name="drivers/fsl_rtwdog.c" />
+      <file file_name="drivers/fsl_rtwdog.h" />
+      <file file_name="drivers/1040/fsl_cache.c" />
+      <file file_name="drivers/1040/fsl_cache.h" />
+      <file file_name="drivers/1040/fsl_clock.c" />
+      <file file_name="drivers/1040/fsl_clock.h" />
+      <file file_name="drivers/fsl_common_arm.c" />
+      <file file_name="drivers/fsl_common_arm.h" />
+    </folder>
+    <folder Name="src">
+      <file file_name="1040/board.c" />
+      <file file_name="1040/board.h" />
+      <file file_name="1040/clock_config.c" />
+      <file file_name="1040/clock_config.h" />
+      <file file_name="1040/pin_mux.c" />
+      <file file_name="1040/pin_mux.h" />
+    </folder>
+    <folder Name="component">
+      <file file_name="components/generic_list.c" />
+      <file file_name="components/generic_list.h" />
+      <file file_name="components/serial_manager.c" />
+      <file file_name="components/serial_manager.h" />
+      <file file_name="components/serial_port_internal.h" />
+      <file file_name="components/serial_port_uart.c" />
+      <file file_name="components/serial_port_uart.h" />
+      <file file_name="components/uart.h" />
+      <file file_name="components/fsl_component_serial_manager.h" />
+      <file file_name="components/fsl_component_serial_port_uart.h" />
+      <file file_name="components/fsl_adapter_uart.h" />
+      <file file_name="components/fsl_debug_console.c" />
+      <file file_name="components/fsl_debug_console.h" />
+      <file file_name="components/fsl_str.c" />
+      <file file_name="components/fsl_str.h" />
+      <file file_name="components/lpuart_adapter.c" />
+    </folder>
+    <folder Name="coremark">
+      <file file_name="core_list_join.c" />
+      <file file_name="core_main.c" />
+      <file file_name="core_matrix.c" />
+      <file file_name="core_state.c" />
+      <file file_name="core_util.c" />
+      <file file_name="coremark.h" />
+      <file file_name="core_portme.cpp" />
+      <file file_name="core_portme.h" />
+    </folder>
+    <folder Name="XIP">
+      <file file_name="XiP/flexspi_boot.c" />
+      <file file_name="XiP/flexspi_boot.h" />
+      <file file_name="XiP/flexspi_flash.h" />
+      <file file_name="XiP/flexspi_flash_Hyperflash.c" />
+      <file file_name="XiP/flexspi_flash_OSPI_Adesto.c" />
+      <file file_name="XiP/flexspi_flash_QSPI.c" />
+    </folder>
+    <folder Name="System Files">
+      <file file_name="$(StudioDir)/source/thumb_crt0.s" />
+      <file file_name="$(TargetsDir)/iMXRT/startup_$(DeviceName).s" />
+      <file file_name="$(TargetsDir)/iMXRT/system_$(DeviceName).h" />
+      <file file_name="$(TargetsDir)/iMXRT/system_$(DeviceName).c" />
+      <file file_name="$(TargetsDir)/iMXRT/$(DeviceName).h" />
+      <file file_name="$(TargetsDir)/iMXRT/$(DeviceName)_features.h" />
+      <file file_name="$(TargetsDir)/iMXRT/fsl_device_registers.h" />
+      <file file_name="$(TargetsDir)/iMXRT/iMXRT_Target.js" />
+      <file file_name="placement_flexspi.xml" />
+    </folder>
+  </project>
   <project Name="Coremark_1050">
     <configuration
       CMSIS_CORE="Yes"
@@ -774,14 +898,14 @@
       CMSIS_CORE="Yes"
       Name="Common"
       Placement="FlexSPI (QuadSPI)"
-      Target="MIMXRT1176DVMAA_cm7"
+      Target="MIMXRT1166DVM6A_cm7"
       arm_architecture="v7EM"
       arm_core_type="Cortex-M7"
       arm_fp_abi="Hard"
       arm_fpu_type="FPv5-D16"
       arm_linker_heap_size="10240"
       arm_linker_stack_size="10240"
-      arm_simulator_memory_simulation_parameter="RAM;0x00000000;0x00040000;RAM;0x20000000;0x00040000;RAM;0x20240000;0x00100000;RAM;0x80000000;0x02000000;0x30000000;0x04000000"
+      arm_simulator_memory_simulation_parameter="RAM;0x00000000;0x00040000;RAM;0x20000000;0x00040000;RAM;0x202B0000;0x00020000;RAM;0x80000000;0x02000000;0x30000000;0x04000000"
       arm_target_loader_applicable_loaders="Flash"
       arm_target_loader_default_loader="Flash"
       arm_target_loader_reset_after_download="No"
@@ -793,10 +917,10 @@
       debug_startup_completion_point="main"
       default_data_section=".data_tcm"
       default_zeroed_section=".bss_tcm"
-      linker_memory_map_file="$(TargetsDir)/iMXRT/MemoryMap_MIMXRT117x_cm7.xml"
+      linker_memory_map_file="$(TargetsDir)/iMXRT/MemoryMap_MIMXRT116x_cm7.xml"
       linker_section_placement_file="$(TargetsDir)/iMXRT/placement_flexspi.xml"
       linker_section_placement_macros=""
-      macros="DeviceName=MIMXRT1176_cm7;Family=iMXRT1160;Core=CM7"
+      macros="DeviceName=MIMXRT1166_cm7;Family=iMXRT1160;Core=CM7"
       project_dependencies="Coremark_1160CM4"
       project_directory=""
       project_type="Executable"
@@ -937,14 +1061,14 @@
       CMSIS_CORE="Yes"
       Name="Common"
       Placement="FlexSPI (QuadSPI)"
-      Target="MIMXRT1176DVMAA_cm4"
+      Target="MIMXRT1166DVM6A_cm4"
       arm_architecture="v7EM"
       arm_core_type="Cortex-M4"
       arm_fp_abi="Hard"
       arm_fpu_type="FPv4-SP-D16"
       arm_linker_heap_size="10240"
       arm_linker_stack_size="10240"
-      arm_simulator_memory_simulation_parameter="RAM;0x1FFE0000;0x00020000;RAM;0x20000000;0x00020000;RAM;0x20240000;0x00100000;RAM;0x80000000;0x02000000;0x08000000;0x04000000"
+      arm_simulator_memory_simulation_parameter="RAM;0x1FFE0000;0x00020000;RAM;0x20000000;0x00020000;RAM;0x202B0000;0x00020000;RAM;0x80000000;0x02000000;0x08000000;0x04000000"
       arm_target_loader_applicable_loaders="Flash"
       arm_target_loader_default_loader="Flash"
       c_preprocessor_definitions="NDEBUG ;USE_SDRAM;CPU_MIMXRT1176DVMAA_cm4;FLEXCAN_WAIT_TIMEOUT=1000;SERIAL_PORT_TYPE_UART=1;STARTUP_FROM_RESET=1;PRINTF_FLOAT_ENABLE=1;VECTORS_IN_RAM=1"
@@ -952,10 +1076,10 @@
       c_user_include_directories="./drivers/1160cm4;./drivers;./1160"
       debug_register_definition_file="$(TargetsDir)/iMXRT/XML/$(DeviceName)_registers.xml"
       debug_startup_completion_point="main"
-      linker_memory_map_file="$(TargetsDir)/iMXRT/MemoryMap_MIMXRT117x_cm4.xml"
+      linker_memory_map_file="$(TargetsDir)/iMXRT/MemoryMap_MIMXRT116x_cm4.xml"
       linker_section_placement_file="$(TargetsDir)/iMXRT/placement_flexspi.xml"
       linker_section_placement_macros=""
-      macros="DeviceName=MIMXRT1176_cm4;Family=iMXRT1160;Core=CM4"
+      macros="DeviceName=MIMXRT1166_cm4;Family=iMXRT1160;Core=CM4"
       project_directory=""
       project_type="Executable"
       property_groups_file_path="$(TargetsDir)/iMXRT/propertyGroups.xml"
@@ -1403,6 +1527,7 @@
       arm_v8M_has_cmse="Yes"
       arm_v8M_has_dsp="Yes"
       c_preprocessor_definitions="FSL_SDK_DRIVER_QUICK_ACCESS_ENABLE=1;CPU_MIMXRT685SFVKB_cm33;BOOT_HEADER_ENABLE=1;NDEBUG;ARM_MATH_CM33;SERIAL_PORT_TYPE_UART=1"
+      c_preprocessor_undefinitions="INITIALIZE_TCM_SECTIONS"
       c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRT"
       c_user_include_directories="./drivers/600;./drivers;./600"
       debug_register_definition_file="$(TargetsDir)/iMXRT/XML/$(DeviceName)_registers.xml"
