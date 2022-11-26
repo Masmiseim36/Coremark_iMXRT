@@ -9,10 +9,12 @@
     build_output_directory="bin/$(ProjectName) $(Configuration)"
     c_preprocessor_definitions="__THUMB;VECTORS_IN_RAM=1;STARTUP_FROM_RESET=1;PRINTF_FLOAT_ENABLE=1;INITIALIZE_TCM_SECTIONS=1;"
     c_user_include_directories="./components"
+    gcc_c_language_standard="c11"
     gcc_cplusplus_language_standard="c++17"
     gcc_debugging_level="Level 3"
     gcc_dwarf_version="dwarf-3"
-    hidden="Yes" />
+    hidden="Yes"
+    linker_output_format="bin" />
   <configuration
     Name="Debug"
     c_preprocessor_definitions="DEBUG"
@@ -22,7 +24,8 @@
     Name="Release"
     c_preprocessor_definitions="NDEBUG"
     gcc_omit_frame_pointer="Yes"
-    gcc_optimization_level="Level 3" />
+    gcc_optimization_level="Level 3"
+    link_time_optimization="No" />
   <project Name="Coremark_1010">
     <configuration
       CMSIS_CORE="Yes"
@@ -39,11 +42,13 @@
       arm_target_loader_applicable_loaders="Flash"
       arm_target_loader_default_loader="Flash"
       arm_target_loader_reset_after_download="No"
-      c_preprocessor_definitions="NDEBUG ;USE_SDRAM;FLEXCAN_WAIT_TIMEOUT=1000;SERIAL_PORT_TYPE_UART=1"
+      c_preprocessor_definitions="NDEBUG;USE_SDRAM;FLEXCAN_WAIT_TIMEOUT=1000;SERIAL_PORT_TYPE_UART=1"
       c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRT"
       c_user_include_directories="./drivers/1010;./drivers;./1010"
       debug_register_definition_file="$(TargetsDir)/iMXRT/XML/$(DeviceName)_registers.xml"
       debug_startup_completion_point="main"
+      default_code_section=".text_tcm"
+      default_const_section=".rodata_tcm"
       default_data_section=".data_tcm"
       default_zeroed_section=".bss_tcm"
       linker_memory_map_file="$(TargetsDir)/iMXRT/MemoryMap_MIMXRT1011.xml"
@@ -55,9 +60,11 @@
       property_groups_file_path="$(TargetsDir)/iMXRT/propertyGroups.xml"
       target_connect_script="Connect()"
       target_get_partname_script="GetPartName()"
+      target_match_partname_script="MatchPartName(&quot;$(Family)&quot;)"
       target_reset_script="Reset()"
       target_script_file="$(TargetsDir)/iMXRT/iMXRT_Target.js"
-      target_stop_script="OnTargetStop_11xx()" />
+      target_stop_script="OnTargetStop_11xx()"
+      target_trace_initialize_script="EnableTrace(&quot;$(TraceInterfaceType)&quot;)" />
     <configuration
       Name="Flash"
       arm_target_flash_loader_file_path="$(TargetsDir)/iMXRT/Loader2/Loader_$(Family)_$(Core).elf"
@@ -147,6 +154,13 @@
       <file file_name="$(TargetsDir)/iMXRT/fsl_device_registers.h" />
       <file file_name="$(TargetsDir)/iMXRT/iMXRT_Target.js" />
       <file file_name="placement_flexspi.xml" />
+      <configuration
+        Name="Common"
+        default_code_section=".init"
+        default_const_section=".init_rodata"
+        default_data_section=".data"
+        default_zeroed_section=".bss"
+        link_time_optimization="No" />
     </folder>
   </project>
   <project Name="Coremark_1015">
@@ -165,11 +179,13 @@
       arm_target_loader_applicable_loaders="Flash"
       arm_target_loader_default_loader="Flash"
       arm_target_loader_reset_after_download="No"
-      c_preprocessor_definitions="NDEBUG ;USE_SDRAM;FLEXCAN_WAIT_TIMEOUT=1000;SERIAL_PORT_TYPE_UART=1"
+      c_preprocessor_definitions="NDEBUG;USE_SDRAM;FLEXCAN_WAIT_TIMEOUT=1000;SERIAL_PORT_TYPE_UART=1"
       c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRT"
       c_user_include_directories="./drivers/1015;./drivers;./1015"
       debug_register_definition_file="$(TargetsDir)/iMXRT/XML/$(DeviceName)_registers.xml"
       debug_startup_completion_point="main"
+      default_code_section=".text_tcm"
+      default_const_section=".rodata_tcm"
       default_data_section=".data_tcm"
       default_zeroed_section=".bss_tcm"
       linker_memory_map_file="$(TargetsDir)/iMXRT/MemoryMap_MIMXRT1015.xml"
@@ -181,9 +197,11 @@
       property_groups_file_path="$(TargetsDir)/iMXRT/propertyGroups.xml"
       target_connect_script="Connect()"
       target_get_partname_script="GetPartName()"
+      target_match_partname_script="MatchPartName(&quot;$(Family)&quot;)"
       target_reset_script="Reset()"
       target_script_file="$(TargetsDir)/iMXRT/iMXRT_Target.js"
-      target_stop_script="OnTargetStop_11xx()" />
+      target_stop_script="OnTargetStop_11xx()"
+      target_trace_initialize_script="EnableTrace(&quot;$(TraceInterfaceType)&quot;)" />
     <configuration
       Name="Flash"
       arm_target_flash_loader_file_path="$(TargetsDir)/iMXRT/Loader2/Loader_$(Family)_$(Core).elf"
@@ -271,6 +289,13 @@
       <file file_name="$(TargetsDir)/iMXRT/fsl_device_registers.h" />
       <file file_name="$(TargetsDir)/iMXRT/iMXRT_Target.js" />
       <file file_name="placement_flexspi.xml" />
+      <configuration
+        Name="Common"
+        default_code_section=".init"
+        default_const_section=".init_rodata"
+        default_data_section=".data"
+        default_zeroed_section=".bss"
+        link_time_optimization="No" />
     </folder>
   </project>
   <project Name="Coremark_1020">
@@ -289,7 +314,7 @@
       arm_target_loader_applicable_loaders="Flash"
       arm_target_loader_default_loader="Flash"
       arm_target_loader_reset_after_download="No"
-      c_preprocessor_definitions="NDEBUG ;USE_SDRAM;FLEXCAN_WAIT_TIMEOUT=1000;SERIAL_PORT_TYPE_UART=1"
+      c_preprocessor_definitions="NDEBUG;USE_SDRAM;FLEXCAN_WAIT_TIMEOUT=1000;SERIAL_PORT_TYPE_UART=1"
       c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRT"
       c_user_include_directories="./drivers/1020;./drivers;./1020"
       debug_register_definition_file="$(TargetsDir)/iMXRT/XML/$(DeviceName)_registers.xml"
@@ -305,9 +330,11 @@
       property_groups_file_path="$(TargetsDir)/iMXRT/propertyGroups.xml"
       target_connect_script="Connect()"
       target_get_partname_script="GetPartName()"
+      target_match_partname_script="MatchPartName(&quot;$(Family)&quot;)"
       target_reset_script="Reset()"
       target_script_file="$(TargetsDir)/iMXRT/iMXRT_Target.js"
-      target_stop_script="OnTargetStop_11xx()" />
+      target_stop_script="OnTargetStop_11xx()"
+      target_trace_initialize_script="EnableTrace(&quot;$(TraceInterfaceType)&quot;)" />
     <configuration
       Name="Flash"
       arm_target_flash_loader_file_path="$(TargetsDir)/iMXRT/Loader2/Loader_$(Family)_$(Core).elf"
@@ -413,7 +440,7 @@
       arm_target_loader_applicable_loaders="Flash"
       arm_target_loader_default_loader="Flash"
       arm_target_loader_reset_after_download="No"
-      c_preprocessor_definitions="NDEBUG ;USE_SDRAM;FLEXCAN_WAIT_TIMEOUT=1000;SERIAL_PORT_TYPE_UART=1"
+      c_preprocessor_definitions="NDEBUG;USE_SDRAM;FLEXCAN_WAIT_TIMEOUT=1000;SERIAL_PORT_TYPE_UART=1"
       c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRT"
       c_user_include_directories="./drivers/1024;./drivers;./1024"
       debug_register_definition_file="$(TargetsDir)/iMXRT/XML/$(DeviceName)_registers.xml"
@@ -429,9 +456,11 @@
       property_groups_file_path="$(TargetsDir)/iMXRT/propertyGroups.xml"
       target_connect_script="Connect()"
       target_get_partname_script="GetPartName()"
+      target_match_partname_script="MatchPartName(&quot;$(Family)&quot;)"
       target_reset_script="Reset()"
       target_script_file="$(TargetsDir)/iMXRT/iMXRT_Target.js"
-      target_stop_script="OnTargetStop_11xx()" />
+      target_stop_script="OnTargetStop_11xx()"
+      target_trace_initialize_script="EnableTrace(&quot;$(TraceInterfaceType)&quot;)" />
     <configuration
       Name="Flash"
       arm_target_flash_loader_file_path="$(TargetsDir)/iMXRT/Loader2/Loader_$(Family)_$(Core).elf"
@@ -537,7 +566,7 @@
       arm_target_loader_applicable_loaders="Flash"
       arm_target_loader_default_loader="Flash"
       arm_target_loader_reset_after_download="No"
-      c_preprocessor_definitions="NDEBUG ;USE_SDRAM;FLEXCAN_WAIT_TIMEOUT=1000;SERIAL_PORT_TYPE_UART=1"
+      c_preprocessor_definitions="NDEBUG;USE_SDRAM;FLEXCAN_WAIT_TIMEOUT=1000;SERIAL_PORT_TYPE_UART=1"
       c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRT"
       c_user_include_directories="./drivers/1040;./drivers;./1040"
       debug_register_definition_file="$(TargetsDir)/iMXRT/XML/$(DeviceName)_registers.xml"
@@ -553,9 +582,11 @@
       property_groups_file_path="$(TargetsDir)/iMXRT/propertyGroups.xml"
       target_connect_script="Connect()"
       target_get_partname_script="GetPartName()"
+      target_match_partname_script="MatchPartName(&quot;$(Family)&quot;)"
       target_reset_script="Reset()"
       target_script_file="$(TargetsDir)/iMXRT/iMXRT_Target.js"
-      target_stop_script="OnTargetStop_11xx()" />
+      target_stop_script="OnTargetStop_11xx()"
+      target_trace_initialize_script="EnableTrace(&quot;$(TraceInterfaceType)&quot;)" />
     <configuration
       Name="Flash"
       arm_target_flash_loader_file_path="$(TargetsDir)/iMXRT/Loader2/Loader_$(Family)_$(Core).elf"
@@ -661,7 +692,7 @@
       arm_target_loader_applicable_loaders="Flash"
       arm_target_loader_default_loader="Flash"
       arm_target_loader_reset_after_download="No"
-      c_preprocessor_definitions="NDEBUG ;USE_SDRAM;FLEXCAN_WAIT_TIMEOUT=1000;SERIAL_PORT_TYPE_UART=1"
+      c_preprocessor_definitions="NDEBUG;USE_SDRAM;FLEXCAN_WAIT_TIMEOUT=1000;SERIAL_PORT_TYPE_UART=1"
       c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRT"
       c_user_include_directories="./drivers/1050;./drivers;./1050"
       debug_register_definition_file="$(TargetsDir)/iMXRT/XML/$(DeviceName)_registers.xml"
@@ -677,9 +708,11 @@
       property_groups_file_path="$(TargetsDir)/iMXRT/propertyGroups.xml"
       target_connect_script="Connect()"
       target_get_partname_script="GetPartName()"
+      target_match_partname_script="MatchPartName(&quot;$(Family)&quot;)"
       target_reset_script="Reset()"
       target_script_file="$(TargetsDir)/iMXRT/iMXRT_Target.js"
-      target_stop_script="OnTargetStop_11xx()" />
+      target_stop_script="OnTargetStop_11xx()"
+      target_trace_initialize_script="EnableTrace(&quot;$(TraceInterfaceType)&quot;)" />
     <configuration
       Name="Flash"
       arm_target_flash_loader_file_path="$(TargetsDir)/iMXRT/Loader2/Loader_$(Family)_$(Core).elf"
@@ -785,7 +818,7 @@
       arm_target_loader_applicable_loaders="Flash"
       arm_target_loader_default_loader="Flash"
       arm_target_loader_reset_after_download="No"
-      c_preprocessor_definitions="NDEBUG ;USE_SDRAM;FLEXCAN_WAIT_TIMEOUT=1000;SERIAL_PORT_TYPE_UART=1"
+      c_preprocessor_definitions="NDEBUG;USE_SDRAM;FLEXCAN_WAIT_TIMEOUT=1000;SERIAL_PORT_TYPE_UART=1"
       c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRT"
       c_user_include_directories="./drivers/1060;./drivers;./1060"
       debug_register_definition_file="$(TargetsDir)/iMXRT/XML/$(DeviceName)_registers.xml"
@@ -801,9 +834,11 @@
       property_groups_file_path="$(TargetsDir)/iMXRT/propertyGroups.xml"
       target_connect_script="Connect()"
       target_get_partname_script="GetPartName()"
+      target_match_partname_script="MatchPartName(&quot;$(Family)&quot;)"
       target_reset_script="Reset()"
       target_script_file="$(TargetsDir)/iMXRT/iMXRT_Target.js"
-      target_stop_script="OnTargetStop_11xx()" />
+      target_stop_script="OnTargetStop_11xx()"
+      target_trace_initialize_script="EnableTrace(&quot;$(TraceInterfaceType)&quot;)" />
     <configuration
       Name="Flash"
       arm_target_flash_loader_file_path="$(TargetsDir)/iMXRT/Loader2/Loader_$(Family)_$(Core).elf"
@@ -909,12 +944,14 @@
       arm_target_loader_applicable_loaders="Flash"
       arm_target_loader_default_loader="Flash"
       arm_target_loader_reset_after_download="No"
-      c_preprocessor_definitions="NDEBUG ;USE_SDRAM;CPU_MIMXRT1176DVMAA_cm7;FLEXCAN_WAIT_TIMEOUT=1000;SERIAL_PORT_TYPE_UART=1"
+      c_preprocessor_definitions="NDEBUG;USE_SDRAM;FLEXCAN_WAIT_TIMEOUT=1000;SERIAL_PORT_TYPE_UART=1"
       c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRT"
       c_user_include_directories="./drivers/1160cm7;./drivers;./1160"
       debug_dependent_projects="Coremark_1160CM4"
       debug_register_definition_file="$(TargetsDir)/iMXRT/XML/$(DeviceName)_registers.xml"
       debug_startup_completion_point="main"
+      default_code_section=".text_tcm"
+      default_const_section=".rodata_tcm"
       default_data_section=".data_tcm"
       default_zeroed_section=".bss_tcm"
       linker_memory_map_file="$(TargetsDir)/iMXRT/MemoryMap_MIMXRT116x_cm7.xml"
@@ -927,9 +964,11 @@
       property_groups_file_path="$(TargetsDir)/iMXRT/propertyGroups.xml"
       target_connect_script="Connect()"
       target_get_partname_script="GetPartName()"
+      target_match_partname_script="MatchPartName(&quot;$(Family)&quot;)"
       target_reset_script="Reset()"
       target_script_file="$(TargetsDir)/iMXRT/iMXRT_Target.js"
-      target_stop_script="OnTargetStop_11xx()" />
+      target_stop_script="OnTargetStop_11xx()"
+      target_trace_initialize_script="EnableTrace(&quot;$(TraceInterfaceType)&quot;)" />
     <configuration
       Name="Flash"
       arm_target_flash_loader_file_path="$(TargetsDir)/iMXRT/Loader2/Loader_$(Family)_$(Core).elf"
@@ -1054,6 +1093,13 @@
       <file file_name="MemoryMap_MIMXRT117x_cm7.xml" />
       <file file_name="placement_flexspi_M7.xml" />
       <file file_name="$(TargetsDir)/iMXRT/iMXRT_Target.js" />
+      <configuration
+        Name="Common"
+        default_code_section=".init"
+        default_const_section=".init_rodata"
+        default_data_section=".data"
+        default_zeroed_section=".bss"
+        link_time_optimization="No" />
     </folder>
   </project>
   <project Name="Coremark_1160CM4">
@@ -1071,11 +1117,15 @@
       arm_simulator_memory_simulation_parameter="RAM;0x1FFE0000;0x00020000;RAM;0x20000000;0x00020000;RAM;0x202B0000;0x00020000;RAM;0x80000000;0x02000000;0x08000000;0x04000000"
       arm_target_loader_applicable_loaders="Flash"
       arm_target_loader_default_loader="Flash"
-      c_preprocessor_definitions="NDEBUG ;USE_SDRAM;CPU_MIMXRT1176DVMAA_cm4;FLEXCAN_WAIT_TIMEOUT=1000;SERIAL_PORT_TYPE_UART=1;STARTUP_FROM_RESET=1;PRINTF_FLOAT_ENABLE=1;VECTORS_IN_RAM=1"
+      c_preprocessor_definitions="NDEBUG;USE_SDRAM;FLEXCAN_WAIT_TIMEOUT=1000;SERIAL_PORT_TYPE_UART=1;STARTUP_FROM_RESET=1;PRINTF_FLOAT_ENABLE=1;VECTORS_IN_RAM=1"
       c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRT"
       c_user_include_directories="./drivers/1160cm4;./drivers;./1160"
       debug_register_definition_file="$(TargetsDir)/iMXRT/XML/$(DeviceName)_registers.xml"
       debug_startup_completion_point="main"
+      default_code_section=".text_tcm"
+      default_const_section=".rodata_tcm"
+      default_data_section=".data_tcm"
+      default_zeroed_section=".bss_tcm"
       linker_memory_map_file="$(TargetsDir)/iMXRT/MemoryMap_MIMXRT116x_cm4.xml"
       linker_section_placement_file="$(TargetsDir)/iMXRT/placement_flexspi.xml"
       linker_section_placement_macros=""
@@ -1085,9 +1135,11 @@
       property_groups_file_path="$(TargetsDir)/iMXRT/propertyGroups.xml"
       target_connect_script="Connect()"
       target_get_partname_script="GetPartName()"
+      target_match_partname_script="MatchPartName(&quot;$(Family)&quot;)"
       target_reset_script="Reset()"
       target_script_file="$(TargetsDir)/iMXRT/iMXRT_Target.js"
-      target_stop_script="OnTargetStop_11xx()" />
+      target_stop_script="OnTargetStop_11xx()"
+      target_trace_initialize_script="EnableTrace(&quot;$(TraceInterfaceType)&quot;)" />
     <configuration
       Name="Flash"
       arm_target_flash_loader_file_path="$(TargetsDir)/iMXRT/Loader2/Loader_$(Family)_$(Core).elf"
@@ -1103,6 +1155,13 @@
       <file file_name="MemoryMap_MIMXRT117x_cm4.xml" />
       <file file_name="$(TargetsDir)/iMXRT/iMXRT_Target.js" />
       <file file_name="placement_flexspi_M4.xml" />
+      <configuration
+        Name="Common"
+        default_code_section=".init"
+        default_const_section=".init_rodata"
+        default_data_section=".data"
+        default_zeroed_section=".bss"
+        link_time_optimization="No" />
     </folder>
     <folder Name="component">
       <file file_name="components/generic_list.c" />
@@ -1217,17 +1276,19 @@
       arm_target_loader_applicable_loaders="Flash"
       arm_target_loader_default_loader="Flash"
       arm_target_loader_reset_after_download="No"
-      c_preprocessor_definitions="NDEBUG ;USE_SDRAM;CPU_MIMXRT1176DVMAA_cm7;FLEXCAN_WAIT_TIMEOUT=1000;SERIAL_PORT_TYPE_UART=1"
+      c_preprocessor_definitions="NDEBUG;USE_SDRAM;FLEXCAN_WAIT_TIMEOUT=1000;SERIAL_PORT_TYPE_UART=1"
       c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRT"
       c_user_include_directories="./drivers/1170cm7;./drivers;./1170"
       debug_dependent_projects="Coremark_1170CM4"
       debug_register_definition_file="$(TargetsDir)/iMXRT/XML/$(DeviceName)_registers.xml"
       debug_startup_completion_point="main"
+      default_code_section=".text_tcm"
+      default_const_section=".rodata_tcm"
       default_data_section=".data_tcm"
       default_zeroed_section=".bss_tcm"
       linker_memory_map_file="$(TargetsDir)/iMXRT/MemoryMap_MIMXRT117x_cm7.xml"
       linker_section_placement_file="$(TargetsDir)/iMXRT/placement_flexspi.xml"
-      linker_section_placement_macros=""
+      linker_section_placement_macros="FLASH_NAME=FlexSPI"
       macros="DeviceName=MIMXRT1176_cm7;Family=iMXRT1170;Core=CM7"
       project_dependencies="Coremark_1170CM4"
       project_directory=""
@@ -1235,9 +1296,11 @@
       property_groups_file_path="$(TargetsDir)/iMXRT/propertyGroups.xml"
       target_connect_script="Connect()"
       target_get_partname_script="GetPartName()"
+      target_match_partname_script="MatchPartName(&quot;$(Family)&quot;)"
       target_reset_script="Reset()"
       target_script_file="$(TargetsDir)/iMXRT/iMXRT_Target.js"
-      target_stop_script="OnTargetStop_11xx()" />
+      target_stop_script="OnTargetStop_11xx()"
+      target_trace_initialize_script="EnableTrace(&quot;$(TraceInterfaceType)&quot;)" />
     <configuration
       Name="Flash"
       arm_target_flash_loader_file_path="$(TargetsDir)/iMXRT/Loader2/Loader_$(Family)_$(Core).elf"
@@ -1362,6 +1425,13 @@
       <file file_name="MemoryMap_MIMXRT117x_cm7.xml" />
       <file file_name="placement_flexspi_M7.xml" />
       <file file_name="$(TargetsDir)/iMXRT/iMXRT_Target.js" />
+      <configuration
+        Name="Common"
+        default_code_section=".init"
+        default_const_section=".init_rodata"
+        default_data_section=".data"
+        default_zeroed_section=".bss"
+        link_time_optimization="No" />
     </folder>
   </project>
   <project Name="Coremark_1170CM4">
@@ -1379,11 +1449,15 @@
       arm_simulator_memory_simulation_parameter="RAM;0x1FFE0000;0x00020000;RAM;0x20000000;0x00020000;RAM;0x20240000;0x00100000;RAM;0x80000000;0x02000000;0x08000000;0x04000000"
       arm_target_loader_applicable_loaders="Flash"
       arm_target_loader_default_loader="Flash"
-      c_preprocessor_definitions="NDEBUG ;USE_SDRAM;CPU_MIMXRT1176DVMAA_cm4;FLEXCAN_WAIT_TIMEOUT=1000;SERIAL_PORT_TYPE_UART=1;STARTUP_FROM_RESET=1;PRINTF_FLOAT_ENABLE=1;VECTORS_IN_RAM=1"
+      c_preprocessor_definitions="NDEBUG;USE_SDRAM;FLEXCAN_WAIT_TIMEOUT=1000;SERIAL_PORT_TYPE_UART=1;STARTUP_FROM_RESET=1;PRINTF_FLOAT_ENABLE=1;VECTORS_IN_RAM=1"
       c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRT"
       c_user_include_directories="./drivers/1170cm4;./drivers;./1170"
       debug_register_definition_file="$(TargetsDir)/iMXRT/XML/$(DeviceName)_registers.xml"
       debug_startup_completion_point="main"
+      default_code_section=".text_tcm"
+      default_const_section=".rodata_tcm"
+      default_data_section=".data_tcm"
+      default_zeroed_section=".bss_tcm"
       linker_memory_map_file="$(TargetsDir)/iMXRT/MemoryMap_MIMXRT117x_cm4.xml"
       linker_section_placement_file="$(TargetsDir)/iMXRT/placement_flexspi.xml"
       linker_section_placement_macros=""
@@ -1393,9 +1467,11 @@
       property_groups_file_path="$(TargetsDir)/iMXRT/propertyGroups.xml"
       target_connect_script="Connect()"
       target_get_partname_script="GetPartName()"
+      target_match_partname_script="MatchPartName(&quot;$(Family)&quot;)"
       target_reset_script="Reset()"
       target_script_file="$(TargetsDir)/iMXRT/iMXRT_Target.js"
-      target_stop_script="OnTargetStop_11xx()" />
+      target_stop_script="OnTargetStop_11xx()"
+      target_trace_initialize_script="EnableTrace(&quot;$(TraceInterfaceType)&quot;)" />
     <configuration
       Name="Flash"
       arm_target_flash_loader_file_path="$(TargetsDir)/iMXRT/Loader2/Loader_$(Family)_$(Core).elf"
@@ -1411,6 +1487,13 @@
       <file file_name="MemoryMap_MIMXRT117x_cm4.xml" />
       <file file_name="$(TargetsDir)/iMXRT/iMXRT_Target.js" />
       <file file_name="placement_flexspi_M4.xml" />
+      <configuration
+        Name="Common"
+        default_code_section=".init"
+        default_const_section=".init_rodata"
+        default_data_section=".data"
+        default_zeroed_section=".bss"
+        link_time_optimization="No" />
     </folder>
     <folder Name="component">
       <file file_name="components/generic_list.c" />
@@ -1526,7 +1609,7 @@
       arm_target_loader_reset_after_download="No"
       arm_v8M_has_cmse="Yes"
       arm_v8M_has_dsp="Yes"
-      c_preprocessor_definitions="FSL_SDK_DRIVER_QUICK_ACCESS_ENABLE=1;CPU_MIMXRT685SFVKB_cm33;BOOT_HEADER_ENABLE=1;NDEBUG;ARM_MATH_CM33;SERIAL_PORT_TYPE_UART=1"
+      c_preprocessor_definitions="FSL_SDK_DRIVER_QUICK_ACCESS_ENABLE=1;BOOT_HEADER_ENABLE=1;NDEBUG;ARM_MATH_CM33;SERIAL_PORT_TYPE_UART=1"
       c_preprocessor_undefinitions="INITIALIZE_TCM_SECTIONS"
       c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRT"
       c_user_include_directories="./drivers/600;./drivers;./600"

@@ -250,27 +250,35 @@ settings:
 #endif
 
 const clock_arm_pll_config_t armPllConfig_BOARD_BootClockRUN =
-    {
-        .postDivider = kCLOCK_PllPostDiv4,        /* Post divider, 0 - DIV by 2, 1 - DIV by 4, 2 - DIV by 8, 3 - DIV by 1 */
-        .loopDivider = 200,                       /* PLL Loop divider, Fout = Fin * ( loopDivider / ( 2 * postDivider ) ) */
-    };
+{
+	.postDivider = kCLOCK_PllPostDiv4,        /* Post divider, 0 - DIV by 2, 1 - DIV by 4, 2 - DIV by 8, 3 - DIV by 1 */
+	#if defined(CPU_MIMXRT1166DVM6A_cm7) || defined(CPU_MIMXRT1165DVM6A_cm7) || \
+		defined(CPU_MIMXRT1166DVM6A_cm4) || defined(CPU_MIMXRT1165DVM6A_cm4)
+		.loopDivider = 200,                   /* PLL Loop divider, Fout = Fin * ( loopDivider / ( 2 * postDivider ) ) */
+	#elif defined(CPU_MIMXRT1165CVM5A_cm7) || defined(CPU_MIMXRT1165XVM5A_cm7) || defined(CPU_MIMXRT1166XVM5A_cm7) || defined(CPU_MIMXRT1166CVM5A_cm7) || \
+		  defined(CPU_MIMXRT1165CVM5A_cm4) || defined(CPU_MIMXRT1165XVM5A_cm4) || defined(CPU_MIMXRT1166XVM5A_cm4) || defined(CPU_MIMXRT1166CVM5A_cm4)
+		.loopDivider = 166,                   /* PLL Loop divider, Fout = Fin * ( loopDivider / ( 2 * postDivider ) ) */
+	#else
+		#error "Unknown iMXRT1170 device"
+	#endif
+};
 
 const clock_sys_pll2_config_t sysPll2Config_BOARD_BootClockRUN =
-    {
-        .mfd = 268435455,                         /* Denominator of spread spectrum */
-        .ss = NULL,                               /* Spread spectrum parameter */
-        .ssEnable = false,                        /* Enable spread spectrum or not */
-    };
+{
+	.mfd = 268435455,                         /* Denominator of spread spectrum */
+	.ss = NULL,                               /* Spread spectrum parameter */
+	.ssEnable = false,                        /* Enable spread spectrum or not */
+};
 
 const clock_video_pll_config_t videoPllConfig_BOARD_BootClockRUN =
-    {
-        .loopDivider = 41,                        /* PLL Loop divider, valid range for DIV_SELECT divider value: 27 ~ 54. */
-        .postDivider = 0,                         /* Divider after PLL, should only be 1, 2, 4, 8, 16, 32 */
-        .numerator = 1,                           /* 30 bit numerator of fractional loop divider, Fout = Fin * ( loopDivider + numerator / denominator ) */
-        .denominator = 960000,                    /* 30 bit denominator of fractional loop divider, Fout = Fin * ( loopDivider + numerator / denominator ) */
-        .ss = NULL,                               /* Spread spectrum parameter */
-        .ssEnable = false,                        /* Enable spread spectrum or not */
-    };
+{
+	.loopDivider = 41,                        /* PLL Loop divider, valid range for DIV_SELECT divider value: 27 ~ 54. */
+	.postDivider = 0,                         /* Divider after PLL, should only be 1, 2, 4, 8, 16, 32 */
+	.numerator = 1,                           /* 30 bit numerator of fractional loop divider, Fout = Fin * ( loopDivider + numerator / denominator ) */
+	.denominator = 960000,                    /* 30 bit denominator of fractional loop divider, Fout = Fin * ( loopDivider + numerator / denominator ) */
+	.ss = NULL,                               /* Spread spectrum parameter */
+	.ssEnable = false,                        /* Enable spread spectrum or not */
+};
 
 /*******************************************************************************
  * Code for BOARD_BootClockRUN configuration

@@ -1,9 +1,10 @@
 /*
- * Copyright 2018-2020,2021 NXP
+ * Copyright 2022 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
+
 /*
  * How to setup clock using clock driver functions:
  *
@@ -21,11 +22,11 @@
 
 /* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Clocks v8.0
+product: Clocks v10.0
 processor: MIMXRT1015xxxxx
 package_id: MIMXRT1015DAF5A
 mcu_data: ksdk2_0
-processor_version: 10.0.0
+processor_version: 0.12.10
 board: MIMXRT1015-EVK
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
 
@@ -169,12 +170,14 @@ void BOARD_BootClockRUN(void)
     /* Setting PeriphClk2Mux and PeriphMux to provide stable clock before PLLs are initialed */
     CLOCK_SetMux(kCLOCK_PeriphClk2Mux, 1); /* Set PERIPH_CLK2 MUX to OSC */
     CLOCK_SetMux(kCLOCK_PeriphMux, 1);     /* Set PERIPH_CLK MUX to PERIPH_CLK2 */
-    /* Setting the VDD_SOC to 1.25V. It is necessary to config AHB to 500Mhz. */
-    DCDC->REG3 = (DCDC->REG3 & (~DCDC_REG3_TRG_MASK)) | DCDC_REG3_TRG(0x12);
-    /* Waiting for DCDC_STS_DC_OK bit is asserted */
-    while (DCDC_REG0_STS_DC_OK_MASK != (DCDC_REG0_STS_DC_OK_MASK & DCDC->REG0))
-    {
-    }
+    #if defined(CPU_MIMXRT1015DAF5A)
+        /* Setting the VDD_SOC to 1.25V. It is necessary to config AHB to 500Mhz. */
+        DCDC->REG3 = (DCDC->REG3 & (~DCDC_REG3_TRG_MASK)) | DCDC_REG3_TRG(0x12);
+        /* Waiting for DCDC_STS_DC_OK bit is asserted */
+        while (DCDC_REG0_STS_DC_OK_MASK != (DCDC_REG0_STS_DC_OK_MASK & DCDC->REG0))
+        {
+        }
+    #endif
     /* Set AHB_PODF. */
     CLOCK_SetDiv(kCLOCK_AhbDiv, 0);
     /* Disable IPG clock gate. */
@@ -292,7 +295,13 @@ void BOARD_BootClockRUN(void)
     /* Init System pfd2. */
     CLOCK_InitSysPfd(kCLOCK_Pfd2, 18);
     /* Init System pfd3. */
-    CLOCK_InitSysPfd(kCLOCK_Pfd3, 18);
+    #if defined(CPU_MIMXRT1015DAF5A)
+        CLOCK_InitSysPfd(kCLOCK_Pfd3, 18);
+    #elif defined(CPU_MIMXRT1015CAF4A)
+        CLOCK_InitSysPfd(kCLOCK_Pfd3, 24);
+    #else
+        #error "Unknown controller"
+    #endif
     /* In SDK projects, external flash (configured by FLEXSPI) will be initialized by dcd.
      * With this macro XIP_EXTERNAL_FLASH, usb1 pll (selected to be FLEXSPI clock source in SDK projects) will be left unchanged.
      * Note: If another clock source is selected for FLEXSPI, user may want to avoid changing that clock as well.*/
@@ -322,7 +331,13 @@ void BOARD_BootClockRUN(void)
     /* Init Enet PLL. */
     CLOCK_InitEnetPll(&enetPllConfig_BOARD_BootClockRUN);
     /* Set preperiph clock source. */
-    CLOCK_SetMux(kCLOCK_PrePeriphMux, 3);
+    #if defined(CPU_MIMXRT1015DAF5A)
+        CLOCK_SetMux(kCLOCK_PrePeriphMux, 3);
+    #elif defined(CPU_MIMXRT1015CAF4A)
+        CLOCK_SetMux(kCLOCK_PrePeriphMux, 2);
+    #else
+        #error "Unknown controller"
+    #endif
     /* Set periph clock source. */
     CLOCK_SetMux(kCLOCK_PeriphMux, 0);
     /* Set periph clock2 clock source. */
@@ -362,4 +377,3 @@ void BOARD_BootClockRUN(void)
     /* Set SystemCoreClock variable. */
     SystemCoreClock = BOARD_BOOTCLOCKRUN_CORE_CLOCK;
 }
-

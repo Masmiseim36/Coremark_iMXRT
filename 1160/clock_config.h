@@ -43,7 +43,15 @@ void BOARD_InitBootClocks(void);
  * Definitions for BOARD_BootClockRUN configuration
  ******************************************************************************/
 #if __CORTEX_M == 7
-    #define BOARD_BOOTCLOCKRUN_CORE_CLOCK 600000000UL /*!< CM7 Core clock frequency: 600000000Hz */
+	#if defined(CPU_MIMXRT1166DVM6A_cm7) || defined(CPU_MIMXRT1165DVM6A_cm7) || \
+		defined(CPU_MIMXRT1166DVM6A_cm4) || defined(CPU_MIMXRT1165DVM6A_cm4)
+		#define BOARD_BOOTCLOCKRUN_CORE_CLOCK 600000000UL /*!< CM7 Core clock frequency: 600000000Hz */
+	#elif defined(CPU_MIMXRT1165CVM5A_cm7) || defined(CPU_MIMXRT1165XVM5A_cm7) || defined(CPU_MIMXRT1166XVM5A_cm7) || defined(CPU_MIMXRT1166CVM5A_cm7) || \
+		  defined(CPU_MIMXRT1165CVM5A_cm4) || defined(CPU_MIMXRT1165XVM5A_cm4) || defined(CPU_MIMXRT1166XVM5A_cm4) || defined(CPU_MIMXRT1166CVM5A_cm4)
+		#define BOARD_BOOTCLOCKRUN_CORE_CLOCK 500000000UL /*!< CM7 Core clock frequency: 500000000Hz */
+	#else
+		#error "Unknown iMXRT1170 device"
+	#endif
 #else
     #define BOARD_BOOTCLOCKRUN_CORE_CLOCK 240000000UL /*!< CM4 Core clock frequency: 240000000Hz */
 #endif

@@ -307,7 +307,7 @@ status_t BOARD_Codec_I2C_Receive(
 
 #if defined(XIP_EXTERNAL_FLASH) && (XIP_EXTERNAL_FLASH == 1)
 /* SystemInitHook */
-void SystemInitHook(void)
+__attribute__((section(".init"))) void SystemInitHook(void)
 {
     /* When set this bit, FlexSPI will fetch more data than AHB burst required to meet the alignment requirement. */
     FLEXSPI->AHBCR |= FLEXSPI_AHBCR_READADDROPT_MASK;

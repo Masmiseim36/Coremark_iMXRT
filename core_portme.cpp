@@ -68,7 +68,7 @@ extern "C"
 	uint32_t StopTick = 0;
 
 
-	extern "C" void SysTick_Handler (void)
+	void SysTick_Handler (void)
 	{
 		TickCounter++;
 	}
@@ -107,6 +107,7 @@ extern "C"
 		BOARD_InitPins         ();
 		BOARD_BootClockRUN     ();
 //		BOARD_InitDebugConsole ();
+		SystemCoreClockUpdate ();
 
 		#if defined LPUART_BASE_PTRS
 			#if ((defined MIMXRT1011_SERIES) || (defined MIMXRT1015_SERIES) || (defined MIMXRT1021_SERIES) || (defined MIMXRT1024_SERIES) || \
