@@ -1,5 +1,5 @@
 <!DOCTYPE CrossStudio_Project_File>
-<solution Name="Coremark" target="8" version="2">
+<solution Name="Coremark iMXRT" target="8" version="2">
   <configuration
     Name="Common"
     Platform="ARM"
