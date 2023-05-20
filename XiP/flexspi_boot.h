@@ -88,7 +88,7 @@ typedef struct _ivt_
 #define IVT_RSVD            (uint32_t)(0x00000000)
 
 /* Set resume entry */
-#if defined(__CC_ARM)
+#if defined(__CC_ARM) || defined(__ARMCC_VERSION)
 	extern uint32_t __Vectors[];
 	extern uint32_t Image$$RW_m_config_text$$Base[];
 	#define IMAGE_ENTRY_ADDRESS ((uint32_t)__Vectors)
@@ -146,7 +146,8 @@ typedef struct _ivt_
 /************************************* 
  *  Boot Data 
  *************************************/
-typedef struct _boot_data_ {
+typedef struct _boot_data_
+{
   uint32_t start;           /* boot start location */
   uint32_t size;            /* size */
   uint32_t plugin;          /* plugin flag - 1 if downloaded application is plugin */

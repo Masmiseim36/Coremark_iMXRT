@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 NXP
+ * Copyright 2018 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -18,7 +18,7 @@
  ******************************************************************************/
 /*! @brief The board name */
 #ifndef BOARD_NAME
-	#define BOARD_NAME "MIMXRT1060-EVKB"
+	#define BOARD_NAME "MIMXRT1064-EVK"
 #endif
 #ifndef DEBUG_CONSOLE_UART_INDEX
 	#define DEBUG_CONSOLE_UART_INDEX 1
@@ -49,14 +49,14 @@
 #define BOARD_USER_LED_GPIO GPIO1
 #endif
 #ifndef BOARD_USER_LED_GPIO_PIN
-#define BOARD_USER_LED_GPIO_PIN (8U)
+#define BOARD_USER_LED_GPIO_PIN (9U)
 #endif
 
 #define USER_LED_INIT(output)                                            \
     GPIO_PinWrite(BOARD_USER_LED_GPIO, BOARD_USER_LED_GPIO_PIN, output); \
-    BOARD_USER_LED_GPIO->GDIR |= (1U << BOARD_USER_LED_GPIO_PIN)                       /*!< Enable target USER_LED */
-#define USER_LED_ON()     GPIO_PortSet(BOARD_USER_LED_GPIO, 1U << BOARD_USER_LED_GPIO_PIN) /*!<Turn on target USER_LED*/
-#define USER_LED_OFF()    GPIO_PortClear(BOARD_USER_LED_GPIO, 1U << BOARD_USER_LED_GPIO_PIN) /*!< Turn off target USER_LED */
+    BOARD_USER_LED_GPIO->GDIR |= (1U << BOARD_USER_LED_GPIO_PIN) /*!< Enable target USER_LED */
+#define USER_LED_ON() GPIO_PortClear(BOARD_USER_LED_GPIO, 1U << BOARD_USER_LED_GPIO_PIN)                  /*!< Turn off target USER_LED */
+#define USER_LED_OFF() GPIO_PortSet(BOARD_USER_LED_GPIO, 1U << BOARD_USER_LED_GPIO_PIN) /*!<Turn on target USER_LED*/
 #define USER_LED_TOGGLE() GPIO_PinWrite(BOARD_USER_LED_GPIO, BOARD_USER_LED_GPIO_PIN, 0x1 ^ GPIO_PinRead(BOARD_USER_LED_GPIO, BOARD_USER_LED_GPIO_PIN)) /*!< Toggle target USER_LED */
 
 /*! @brief Define the port interrupt number for the board switches */
@@ -68,10 +68,10 @@
 #endif
 #define BOARD_USER_BUTTON_IRQ         GPIO5_Combined_0_15_IRQn
 #define BOARD_USER_BUTTON_IRQ_HANDLER GPIO5_Combined_0_15_IRQHandler
-#define BOARD_USER_BUTTON_NAME        "SW5"
+#define BOARD_USER_BUTTON_NAME        "SW8"
 
 /*! @brief The board flash size */
-#define BOARD_FLASH_SIZE (0x800000U)
+#define BOARD_FLASH_SIZE (0x400000U)
 
 /*! @brief The ENET PHY address. */
 #define BOARD_ENET0_PHY_ADDRESS (0x02U) /* Phy address of enet port 0. */
@@ -113,10 +113,15 @@
 #define BOARD_CAMERA_PWDN_GPIO    GPIO1
 #define BOARD_CAMERA_PWDN_PIN     18
 
+/* @Brief Board touch panel configuration */
+#define BOARD_TOUCH_I2C_BASEADDR LPI2C1
+#define BOARD_TOUCH_RST_GPIO     GPIO1
+#define BOARD_TOUCH_RST_PIN      2
+#define BOARD_TOUCH_INT_GPIO     GPIO1
+#define BOARD_TOUCH_INT_PIN      11
+
 /* @Brief Board Bluetooth HCI UART configuration */
 #define BOARD_BT_UART_BASEADDR    LPUART3
-#define BOARD_BT_UART_INSTANCE    3
-#define BOARD_BT_UART_BAUDRATE    3000000
 #define BOARD_BT_UART_CLK_FREQ    BOARD_DebugConsoleSrcFreq()
 #define BOARD_BT_UART_IRQ         LPUART3_IRQn
 #define BOARD_BT_UART_IRQ_HANDLER LPUART3_IRQHandler
@@ -180,6 +185,10 @@ status_t BOARD_Camera_I2C_Receive(
 status_t BOARD_Camera_I2C_SendSCCB(
     uint8_t deviceAddress, uint32_t subAddress, uint8_t subAddressSize, const uint8_t *txBuff, uint8_t txBuffSize);
 status_t BOARD_Camera_I2C_ReceiveSCCB(
+    uint8_t deviceAddress, uint32_t subAddress, uint8_t subAddressSize, uint8_t *rxBuff, uint8_t rxBuffSize);
+status_t BOARD_Touch_I2C_Send(
+    uint8_t deviceAddress, uint32_t subAddress, uint8_t subAddressSize, const uint8_t *txBuff, uint8_t txBuffSize);
+status_t BOARD_Touch_I2C_Receive(
     uint8_t deviceAddress, uint32_t subAddress, uint8_t subAddressSize, uint8_t *rxBuff, uint8_t rxBuffSize);
 #endif /* SDK_I2C_BASED_COMPONENT_USED */
 

@@ -50,28 +50,88 @@
 //
 // QSPI boot header
 //
-#if IS_IMX_RT_1024
+#if defined MIMXRT1024_SERIES
 	const flexspi_nor_config_t FlashBootHeader =
 	{
 		.memConfig =
 		{
-			.tag              = FLEXSPI_CFG_BLK_TAG,
-			.version          = FLEXSPI_CFG_BLK_VERSION,
-			.readSampleClkSrc = kFlexSPIReadSampleClk_LoopbackInternally,
-			.csHoldTime       = 3U,
-			.csSetupTime      = 3U,
-			.sflashPadType    = kSerialFlash_4Pads,
-			.serialClkFreq    = kFlexSpiSerialClk_60MHz,
-			.sflashA1Size     = 4U * 1024U * 1024U,
+			.tag                  = FLEXSPI_CFG_BLK_TAG,
+			.version              = FLEXSPI_CFG_BLK_VERSION,
+			.readSampleClkSrc     = kFlexSPIReadSampleClk_LoopbackInternally,
+			.csHoldTime           = 3U,
+			.csSetupTime          = 3U,
+			.controllerMiscOption = (1u << kFlexSpiMiscOffset_SafeConfigFreqEnable),
+			.deviceType           = kFlexSpiDeviceType_SerialNOR,
+			.sflashPadType        = kSerialFlash_4Pads,
+			.serialClkFreq        = kFlexSpiSerialClk_60MHz,
+			.sflashA1Size         = 4U * 1024U * 1024U,
 			.lookupTable =
 			{
-				// Read LUTs
+				// [0] Read LUTs
 				FLEXSPI_LUT_SEQ (CMD_SDR,   FLEXSPI_1PAD, 0xEB, RADDR_SDR, FLEXSPI_4PAD, 0x18),
 				FLEXSPI_LUT_SEQ (DUMMY_SDR, FLEXSPI_4PAD, 0x06, READ_SDR,  FLEXSPI_4PAD, 0x04),
+				0,
+				0,
+				// [1] Read Status LUTs
+				FLEXSPI_LUT_SEQ (CMD_SDR,   FLEXSPI_1PAD, 0x05, READ_SDR,  FLEXSPI_1PAD, 0x04),
+				0,
+				0,
+				0,
+				// [2] free
+				0,
+				0,
+				0,
+				0,
+				// {3] Write Enable LUTs
+				FLEXSPI_LUT_SEQ (CMD_SDR,   FLEXSPI_1PAD, 0x06, STOP,      FLEXSPI_1PAD, 0x0),
+				0,
+				0,
+				0,
+				// [4] free
+				0,
+				0,
+				0,
+				0,
+				// [5] Erase Sector LUTs
+				FLEXSPI_LUT_SEQ (CMD_SDR,   FLEXSPI_1PAD, 0x20, RADDR_SDR, FLEXSPI_1PAD, 0x18),
+				0,
+				0,
+				0,
+				// [6] free
+				0,
+				0,
+				0,
+				0,
+				// [7] free
+				0,
+				0,
+				0,
+				0,
+				// [8] Erase Block LUTs
+				FLEXSPI_LUT_SEQ (CMD_SDR,   FLEXSPI_1PAD, 0xD8, RADDR_SDR, FLEXSPI_1PAD, 0x18),
+				0,
+				0,
+				0,
+				// [9] Pape Program LUTs
+				FLEXSPI_LUT_SEQ (CMD_SDR,   FLEXSPI_1PAD, 0x02, RADDR_SDR, FLEXSPI_1PAD, 0x18),
+				FLEXSPI_LUT_SEQ (WRITE_SDR, FLEXSPI_1PAD, 0x04, STOP,      FLEXSPI_1PAD, 0x0),
+				0,
+				0,
+				// [10] free
+				0,
+				0,
+				0,
+				0,
+				// [11] Erase Chip LUTs
+				FLEXSPI_LUT_SEQ (CMD_SDR,   FLEXSPI_1PAD, 0x60, STOP, FLEXSPI_1PAD, 0x0),
+				0,
+				0,
+				0,
 			},
 		},
 		.pageSize           = 256U,
 		.sectorSize         = 4U * 1024U,
+		.ipcmdSerialClkFreq = 1u,
 		.blockSize          = 64U * 1024U,
 		.isUniformBlockSize = false,
 	};

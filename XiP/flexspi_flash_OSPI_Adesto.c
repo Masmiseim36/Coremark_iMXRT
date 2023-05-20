@@ -107,7 +107,7 @@ const flexspi_nor_config_t FlashBootHeader =
 			// (6) Write Status Register Byte 2
 			[24] = FLEXSPI_LUT_SEQ(CMD_SDR,   FLEXSPI_1PAD, 0x31, WRITE_SDR, FLEXSPI_1PAD, 1),
 
-			// (14) Write Status/Control Registers (this specifc sequence will writes 2 bytes to status/control regs 2-3)
+			// (14) Write Status/Control Registers (this specific sequence will writes 2 bytes to status/control regs 2-3)
 			[56] = FLEXSPI_LUT_SEQ (CMD_SDR,   FLEXSPI_1PAD, 0x71, CMD_SDR,   FLEXSPI_1PAD, 0x02),
 			[57] = FLEXSPI_LUT_SEQ (WRITE_SDR, FLEXSPI_1PAD, 0x02, STOP,      FLEXSPI_1PAD, 0x0),
 		},

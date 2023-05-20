@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 NXP
+ * Copyright 2022 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -22,12 +22,12 @@
 
 /* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Clocks v8.0
-processor: MIMXRT1062xxxxA
-package_id: MIMXRT1062DVL6A
+product: Clocks v10.0
+processor: MIMXRT1064xxxxA
+package_id: MIMXRT1064DVL6A
 mcu_data: ksdk2_0
-processor_version: 10.0.0
-board: MIMXRT1060-EVKB
+processor_version: 0.12.10
+board: MIMXRT1064-EVK
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
 
 #include "clock_config.h"
@@ -127,6 +127,8 @@ settings:
 - {id: CCM_ANALOG.PLL3_PFD0_DIV.scale, value: '33', locked: true}
 - {id: CCM_ANALOG.PLL3_PFD0_MUL.scale, value: '18', locked: true}
 - {id: CCM_ANALOG.PLL3_PFD1_BYPASS.sel, value: CCM_ANALOG.PLL3_PFD1}
+- {id: CCM_ANALOG.PLL3_PFD1_DIV.scale, value: '16', locked: true}
+- {id: CCM_ANALOG.PLL3_PFD1_MUL.scale, value: '18', locked: true}
 - {id: CCM_ANALOG.PLL3_PFD2_BYPASS.sel, value: CCM_ANALOG.PLL3_PFD2}
 - {id: CCM_ANALOG.PLL3_PFD3_BYPASS.sel, value: CCM_ANALOG.PLL3_PFD3}
 - {id: CCM_ANALOG.PLL4.denom, value: '50'}
@@ -149,14 +151,10 @@ sources:
  ******************************************************************************/
 const clock_arm_pll_config_t armPllConfig_BOARD_BootClockRUN =
 {
-	#if (defined(CPU_MIMXRT1061DVJ6A) || defined(CPU_MIMXRT1061DVL6A) || defined(CPU_MIMXRT1061DVJ6B) || defined(CPU_MIMXRT1061DVL6B) || \	
-		 defined(CPU_MIMXRT1062DVJ6A) || defined(CPU_MIMXRT1062DVL6A) || defined(CPU_MIMXRT1062DVJ6B) || defined(CPU_MIMXRT1062DVL6B) || \
-		 defined(CPU_MIMXRT1062DVN6B))
+	#if (defined(CPU_MIMXRT1064DVJ6A) || defined(CPU_MIMXRT1064DVL6A))
 	   .loopDivider = 100,                    /* PLL loop divider, Fout = Fin * 50  --> 600 MHz */
-	#elif (defined(CPU_MIMXRT1061CVJ5A) || defined(CPU_MIMXRT1061CVL5A) || defined(CPU_MIMXRT1061CVJ5B) || defined(CPU_MIMXRT1061CVL5B) || \
-		   defined(CPU_MIMXRT1061XVN5B) || defined(CPU_MIMXRT1062CVJ5A) || defined(CPU_MIMXRT1062CVL5A) || defined(CPU_MIMXRT1062CVJ5B) || \
-		   defined(CPU_MIMXRT1062CVL5B) || defined(CPU_MIMXRT1062XVN5B))
-		.loopDivider = 88,                     /* PLL loop divider, Fout = Fin * 44  --> 528 MHz */
+	#elif (defined(CPU_MIMXRT1064CVJ5A) || defined(CPU_MIMXRT1064CVL5A))
+	   .loopDivider = 88,                     /* PLL loop divider, Fout = Fin * 44  --> 528 MHz */
 	#else
 		#error "Unknown iMXRT1060 device"
 	#endif
@@ -259,23 +257,23 @@ void BOARD_BootClockRUN(void)
     /* Set Semc clock source. */
     CLOCK_SetMux(kCLOCK_SemcMux, 0);
 #endif
-    /* In SDK projects, external flash (configured by FLEXSPI) will be initialized by dcd.
-     * With this macro XIP_EXTERNAL_FLASH, usb1 pll (selected to be FLEXSPI clock source in SDK projects) will be left unchanged.
-     * Note: If another clock source is selected for FLEXSPI, user may want to avoid changing that clock as well.*/
-#if !(defined(XIP_EXTERNAL_FLASH) && (XIP_EXTERNAL_FLASH == 1))
     /* Disable Flexspi clock gate. */
     CLOCK_DisableClock(kCLOCK_FlexSpi);
     /* Set FLEXSPI_PODF. */
     CLOCK_SetDiv(kCLOCK_FlexspiDiv, 1);
     /* Set Flexspi clock source. */
     CLOCK_SetMux(kCLOCK_FlexspiMux, 3);
-#endif
+    /* In SDK projects, external flash (configured by FLEXSPI2) will be initialized by dcd.
+     * With this macro XIP_EXTERNAL_FLASH, usb1 pll (selected to be FLEXSPI2 clock source in SDK projects) will be left unchanged.
+     * Note: If another clock source is selected for FLEXSPI2, user may want to avoid changing that clock as well.*/
+#if !(defined(XIP_EXTERNAL_FLASH) && (XIP_EXTERNAL_FLASH == 1))
     /* Disable Flexspi2 clock gate. */
     CLOCK_DisableClock(kCLOCK_FlexSpi2);
     /* Set FLEXSPI2_PODF. */
     CLOCK_SetDiv(kCLOCK_Flexspi2Div, 1);
     /* Set Flexspi2 clock source. */
     CLOCK_SetMux(kCLOCK_Flexspi2Mux, 1);
+#endif
     /* Disable CSI clock gate. */
     CLOCK_DisableClock(kCLOCK_Csi);
     /* Set CSI_PODF. */
@@ -407,9 +405,9 @@ void BOARD_BootClockRUN(void)
     /* Init System pfd3. */
     CLOCK_InitSysPfd(kCLOCK_Pfd3, 16);
 #endif
-    /* In SDK projects, external flash (configured by FLEXSPI) will be initialized by dcd.
-     * With this macro XIP_EXTERNAL_FLASH, usb1 pll (selected to be FLEXSPI clock source in SDK projects) will be left unchanged.
-     * Note: If another clock source is selected for FLEXSPI, user may want to avoid changing that clock as well.*/
+    /* In SDK projects, external flash (configured by FLEXSPI2) will be initialized by dcd.
+     * With this macro XIP_EXTERNAL_FLASH, usb1 pll (selected to be FLEXSPI2 clock source in SDK projects) will be left unchanged.
+     * Note: If another clock source is selected for FLEXSPI2, user may want to avoid changing that clock as well.*/
 #if !(defined(XIP_EXTERNAL_FLASH) && (XIP_EXTERNAL_FLASH == 1))
     /* Init Usb1 PLL. */
     CLOCK_InitUsb1Pll(&usb1PllConfig_BOARD_BootClockRUN);
@@ -519,4 +517,3 @@ void BOARD_BootClockRUN(void)
     /* Set SystemCoreClock variable. */
     SystemCoreClock = BOARD_BOOTCLOCKRUN_CORE_CLOCK;
 }
-

@@ -36,8 +36,8 @@
 #if defined XIP_EXTERNAL_FLASH && XIP_EXTERNAL_FLASH
 
 
-#if defined(__CC_ARM) || defined(__GNUC__) || defined __SES_ARM || defined __CROSSWORKS_ARM
-	__attribute__((section(".boot_hdr.ivt")))
+#if defined(__CC_ARM) || defined(__ARMCC_VERSION) || defined(__GNUC__) || defined __SES_ARM || defined __CROSSWORKS_ARM
+	__attribute__((section(".boot_hdr.ivt"), used))
 #elif defined(__ICCARM__)
 	extern void __iar_program_start (void);
 	#define Reset_Handler __iar_program_start
@@ -63,7 +63,7 @@ const ivt image_vector_table =
 	IVT_RSVD                            /* Reserved = 0 */
 };
 
-#if defined(__CC_ARM) || defined(__GNUC__) || defined __SES_ARM || defined __CROSSWORKS_ARM
+#if defined(__CC_ARM) || defined(__ARMCC_VERSION) || defined(__GNUC__) || defined __SES_ARM || defined __CROSSWORKS_ARM
 	__attribute__((section(".boot_hdr.boot_data")))
 #elif defined(__ICCARM__)
 	#pragma location=".boot_hdr.boot_data"
@@ -80,7 +80,7 @@ const BOOT_DATA_T boot_data =
 	FLASH_BASE,                 /* boot start location */
 	FLASH_SIZE,                 /* size */
 	PLUGIN_FLAG,                /* Plugin flag*/
-	0xFFFFFFFF  	            /* empty - extra data word */
+	0xFFFFFFFFU                 /* empty - extra data word */
 };
 
 #endif	// #if defined XIP_EXTERNAL_FLASH && XIP_EXTERNAL_FLASH
