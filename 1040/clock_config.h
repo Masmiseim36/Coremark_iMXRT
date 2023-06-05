@@ -40,7 +40,13 @@ void BOARD_InitBootClocks(void);
 /*******************************************************************************
  * Definitions for BOARD_BootClockRUN configuration
  ******************************************************************************/
-#define BOARD_BOOTCLOCKRUN_CORE_CLOCK             600000000U  /*!< Core clock frequency: 600000000Hz */
+#if (defined(CPU_MIMXRT1041DFP6B) || defined(CPU_MIMXRT1042DFP6B))
+	#define BOARD_BOOTCLOCKRUN_CORE_CLOCK             600000000U  /*!< Core clock frequency: 600000000Hz */
+#elif (defined(CPU_MIMXRT1041XFP5B) || defined(CPU_MIMXRT1041XJM5B) || defined(CPU_MIMXRT1042XFP5B) || defined(CPU_MIMXRT1042XJM5B))
+	#define BOARD_BOOTCLOCKRUN_CORE_CLOCK             528000000U  /*!< Core clock frequency: 528000000Hz */
+#else
+	#error "Unknown CPU"
+#endif
 
 /* Clock outputs (values are in Hz): */
 #define BOARD_BOOTCLOCKRUN_AHB_CLK_ROOT               600000000UL

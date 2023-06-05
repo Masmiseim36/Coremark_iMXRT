@@ -40,7 +40,7 @@ void BOARD_InitBootClocks(void);
 /*******************************************************************************
  * Definitions for BOARD_BootClockRUN configuration
  ******************************************************************************/
-#if (defined(CPU_MIMXRT1061DVJ6A) || defined(CPU_MIMXRT1061DVL6A) || defined(CPU_MIMXRT1061DVJ6B) || defined(CPU_MIMXRT1061DVL6B) || \	
+#if (defined(CPU_MIMXRT1061DVJ6A) || defined(CPU_MIMXRT1061DVL6A) || defined(CPU_MIMXRT1061DVJ6B) || defined(CPU_MIMXRT1061DVL6B) || \
 	 defined(CPU_MIMXRT1062DVJ6A) || defined(CPU_MIMXRT1062DVL6A) || defined(CPU_MIMXRT1062DVJ6B) || defined(CPU_MIMXRT1062DVL6B) || \
 	 defined(CPU_MIMXRT1062DVN6B))
    #define BOARD_BOOTCLOCKRUN_CORE_CLOCK             600000000U  /*!< Core clock frequency: 600000000Hz */

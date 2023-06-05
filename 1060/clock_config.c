@@ -149,14 +149,14 @@ sources:
  ******************************************************************************/
 const clock_arm_pll_config_t armPllConfig_BOARD_BootClockRUN =
 {
-	#if (defined(CPU_MIMXRT1061DVJ6A) || defined(CPU_MIMXRT1061DVL6A) || defined(CPU_MIMXRT1061DVJ6B) || defined(CPU_MIMXRT1061DVL6B) || \	
+	#if (defined(CPU_MIMXRT1061DVJ6A) || defined(CPU_MIMXRT1061DVL6A) || defined(CPU_MIMXRT1061DVJ6B) || defined(CPU_MIMXRT1061DVL6B) || \
 		 defined(CPU_MIMXRT1062DVJ6A) || defined(CPU_MIMXRT1062DVL6A) || defined(CPU_MIMXRT1062DVJ6B) || defined(CPU_MIMXRT1062DVL6B) || \
 		 defined(CPU_MIMXRT1062DVN6B))
 	   .loopDivider = 100,                    /* PLL loop divider, Fout = Fin * 50  --> 600 MHz */
 	#elif (defined(CPU_MIMXRT1061CVJ5A) || defined(CPU_MIMXRT1061CVL5A) || defined(CPU_MIMXRT1061CVJ5B) || defined(CPU_MIMXRT1061CVL5B) || \
 		   defined(CPU_MIMXRT1061XVN5B) || defined(CPU_MIMXRT1062CVJ5A) || defined(CPU_MIMXRT1062CVL5A) || defined(CPU_MIMXRT1062CVJ5B) || \
 		   defined(CPU_MIMXRT1062CVL5B) || defined(CPU_MIMXRT1062XVN5B))
-		.loopDivider = 88,                     /* PLL loop divider, Fout = Fin * 44  --> 528 MHz */
+		.loopDivider = 88,                    /* PLL loop divider, Fout = Fin * 44  --> 528 MHz */
 	#else
 		#error "Unknown iMXRT1060 device"
 	#endif

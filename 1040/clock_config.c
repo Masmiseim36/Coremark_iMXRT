@@ -141,30 +141,34 @@ sources:
  * Variables for BOARD_BootClockRUN configuration
  ******************************************************************************/
 const clock_arm_pll_config_t armPllConfig_BOARD_BootClockRUN =
-    {
-        .loopDivider = 100,                       /* PLL loop divider, Fout = Fin * 50 */
-        .src = 0,                                 /* Bypass clock source, 0 - OSC 24M, 1 - CLK1_P and CLK1_N */
-    };
+{
+	#if (defined(CPU_MIMXRT1041DFP6B) || defined(CPU_MIMXRT1042DFP6B))	
+		.loopDivider = 100,                   /* PLL loop divider, Fout = Fin * 50 --> 600 MHz */
+	#elif (defined(CPU_MIMXRT1041XFP5B) || defined(CPU_MIMXRT1041XJM5B) || defined(CPU_MIMXRT1042XFP5B) || defined(CPU_MIMXRT1042XJM5B))
+		.loopDivider = 88,                    /* PLL loop divider, Fout = Fin * 44  --> 528 MHz */
+	#endif
+	.src = 0,                                 /* Bypass clock source, 0 - OSC 24M, 1 - CLK1_P and CLK1_N */
+};
 const clock_sys_pll_config_t sysPllConfig_BOARD_BootClockRUN =
-    {
-        .loopDivider = 1,                         /* PLL loop divider, Fout = Fin * ( 20 + loopDivider*2 + numerator / denominator ) */
-        .numerator = 0,                           /* 30 bit numerator of fractional loop divider */
-        .denominator = 1,                         /* 30 bit denominator of fractional loop divider */
-        .src = 0,                                 /* Bypass clock source, 0 - OSC 24M, 1 - CLK1_P and CLK1_N */
-    };
+{
+	.loopDivider = 1,                         /* PLL loop divider, Fout = Fin * ( 20 + loopDivider*2 + numerator / denominator ) */
+	.numerator = 0,                           /* 30 bit numerator of fractional loop divider */
+	.denominator = 1,                         /* 30 bit denominator of fractional loop divider */
+	.src = 0,                                 /* Bypass clock source, 0 - OSC 24M, 1 - CLK1_P and CLK1_N */
+};
 const clock_usb_pll_config_t usb1PllConfig_BOARD_BootClockRUN =
-    {
-        .loopDivider = 0,                         /* PLL loop divider, Fout = Fin * 20 */
-        .src = 0,                                 /* Bypass clock source, 0 - OSC 24M, 1 - CLK1_P and CLK1_N */
-    };
+{
+	.loopDivider = 0,                         /* PLL loop divider, Fout = Fin * 20 */
+	.src = 0,                                 /* Bypass clock source, 0 - OSC 24M, 1 - CLK1_P and CLK1_N */
+};
 const clock_video_pll_config_t videoPllConfig_BOARD_BootClockRUN =
-    {
-        .loopDivider = 31,                        /* PLL loop divider, Fout = Fin * ( loopDivider + numerator / denominator ) */
-        .postDivider = 8,                         /* Divider after PLL */
-        .numerator = 0,                           /* 30 bit numerator of fractional loop divider, Fout = Fin * ( loopDivider + numerator / denominator ) */
-        .denominator = 1,                         /* 30 bit denominator of fractional loop divider, Fout = Fin * ( loopDivider + numerator / denominator ) */
-        .src = 0,                                 /* Bypass clock source, 0 - OSC 24M, 1 - CLK1_P and CLK1_N */
-    };
+{
+	.loopDivider = 31,                        /* PLL loop divider, Fout = Fin * ( loopDivider + numerator / denominator ) */
+	.postDivider = 8,                         /* Divider after PLL */
+	.numerator = 0,                           /* 30 bit numerator of fractional loop divider, Fout = Fin * ( loopDivider + numerator / denominator ) */
+	.denominator = 1,                         /* 30 bit denominator of fractional loop divider, Fout = Fin * ( loopDivider + numerator / denominator ) */
+	.src = 0,                                 /* Bypass clock source, 0 - OSC 24M, 1 - CLK1_P and CLK1_N */
+};
 /*******************************************************************************
  * Code for BOARD_BootClockRUN configuration
  ******************************************************************************/
@@ -308,8 +312,10 @@ void BOARD_BootClockRUN(void)
     /* Disable CAN clock gate. */
     CLOCK_DisableClock(kCLOCK_Can1);
     CLOCK_DisableClock(kCLOCK_Can2);
+    CLOCK_DisableClock(kCLOCK_Can3);
     CLOCK_DisableClock(kCLOCK_Can1S);
     CLOCK_DisableClock(kCLOCK_Can2S);
+    CLOCK_DisableClock(kCLOCK_Can3S);
     /* Set CAN_CLK_PODF. */
     CLOCK_SetDiv(kCLOCK_CanDiv, 1);
     /* Set Can clock source. */
