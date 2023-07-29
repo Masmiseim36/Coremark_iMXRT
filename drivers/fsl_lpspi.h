@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2015, Freescale Semiconductor, Inc.
- * Copyright 2016-2020,2021 NXP
+ * Copyright 2016-2022 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -22,7 +22,7 @@
 /*! @name Driver version */
 /*@{*/
 /*! @brief LPSPI driver version. */
-#define FSL_LPSPI_DRIVER_VERSION (MAKE_VERSION(2, 2, 1))
+#define FSL_LPSPI_DRIVER_VERSION (MAKE_VERSION(2, 4, 5))
 /*@}*/
 
 #ifndef LPSPI_DUMMY_DATA
@@ -281,6 +281,8 @@ typedef struct _lpspi_master_config
 
     lpspi_data_out_config_t dataOutConfig; /*!< Configures if the output data is tristated
                                             * between accesses (LPSPI_PCS is negated). */
+    bool enableInputDelay; /*!< Enable master to sample the input data on a delayed SCK. This can help improve slave
+                              setup time. Refer to device data sheet for specific time length. */
 } lpspi_master_config_t;
 
 /*! @brief LPSPI slave configuration structure.*/
@@ -511,6 +513,13 @@ static inline void LPSPI_Enable(LPSPI_Type *base, bool enable)
     else
     {
         base->CR &= ~LPSPI_CR_MEN_MASK;
+    }
+    /* ERRATA051472: The SR[REF] would assert if software disables the LPSPI module 
+       after receiving some data and then enabled the LPSPI again without performing a software reset.
+       Clear SR[REF] flag after LPSPI module enabled*/
+    if ((base->SR & (uint32_t)kLPSPI_ReceiveErrorFlag) != 0U)
+    {
+        base->SR = (uint32_t)kLPSPI_ReceiveErrorFlag;
     }
 }
 

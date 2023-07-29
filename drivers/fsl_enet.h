@@ -1,7 +1,6 @@
 /*
  * Copyright (c) 2015 - 2016, Freescale Semiconductor, Inc.
- * Copyright 2016-2021 NXP
- * All rights reserved.
+ * Copyright 2016-2023 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -24,7 +23,7 @@
 /*! @name Driver version */
 /*@{*/
 /*! @brief Defines the driver version. */
-#define FSL_ENET_DRIVER_VERSION (MAKE_VERSION(2, 5, 4))
+#define FSL_ENET_DRIVER_VERSION (MAKE_VERSION(2, 7, 0))
 /*@}*/
 
 /*! @name ENET DESCRIPTOR QUEUE */
@@ -386,7 +385,7 @@ typedef struct _enet_rx_bd_struct
 {
     uint16_t length;  /*!< Buffer descriptor data length. */
     uint16_t control; /*!< Buffer descriptor control and status. */
-    uint8_t *buffer;  /*!< Data buffer pointer. */
+    uint32_t buffer;  /*!< Data buffer pointer. */
 #ifdef ENET_ENHANCEDBUFFERDESCRIPTOR_MODE
     uint16_t controlExtend0;  /*!< Extend buffer descriptor control0. */
     uint16_t controlExtend1;  /*!< Extend buffer descriptor control1. */
@@ -408,7 +407,7 @@ typedef struct _enet_tx_bd_struct
 {
     uint16_t length;  /*!< Buffer descriptor data length. */
     uint16_t control; /*!< Buffer descriptor control and status. */
-    uint8_t *buffer;  /*!< Data buffer pointer. */
+    uint32_t buffer;  /*!< Data buffer pointer. */
 #ifdef ENET_ENHANCEDBUFFERDESCRIPTOR_MODE
     uint16_t controlExtend0; /*!< Extend buffer descriptor control0. */
     uint16_t controlExtend1; /*!< Extend buffer descriptor control1. */
@@ -976,96 +975,146 @@ static inline uint32_t ENET_ReadSMIData(ENET_Type *base)
 }
 
 /*!
- * @brief Starts an SMI (Serial Management Interface) read command.
+ * @brief Sends the MDIO IEEE802.3 Clause 22 format write command.
  *
- * Used for standard IEEE802.3 MDIO Clause 22 format.
- *
- * @param base  ENET peripheral base address.
- * @param phyAddr The PHY address.
- * @param phyReg The PHY register. Range from 0 ~ 31.
- * @param operation The read operation.
- */
-void ENET_StartSMIRead(ENET_Type *base, uint32_t phyAddr, uint32_t phyReg, enet_mii_read_t operation);
-
-/*!
- * @brief Starts an SMI write command.
- *
- * Used for standard IEEE802.3 MDIO Clause 22 format.
+ * After calling this function, need to check whether the transmission is over then do next MDIO operation.
+ * For ease of use, encapsulated ENET_MDIOWrite() can be called. For customized requirements, implement
+ * with combining separated APIs.
  *
  * @param base  ENET peripheral base address.
- * @param phyAddr The PHY address.
- * @param phyReg The PHY register. Range from 0 ~ 31.
+ * @param phyAddr The PHY address. Range from 0 ~ 31.
+ * @param regAddr The PHY register address. Range from 0 ~ 31.
  * @param operation The write operation.
  * @param data The data written to PHY.
  */
-void ENET_StartSMIWrite(ENET_Type *base, uint32_t phyAddr, uint32_t phyReg, enet_mii_write_t operation, uint32_t data);
+static inline void ENET_StartSMIWrite(
+    ENET_Type *base, uint8_t phyAddr, uint8_t regAddr, enet_mii_write_t operation, uint16_t data)
+{
+    base->MMFR = ENET_MMFR_ST(1U) | ENET_MMFR_OP(operation) | ENET_MMFR_PA(phyAddr) | ENET_MMFR_RA(regAddr) |
+                 ENET_MMFR_TA(2U) | data;
+}
+
+/*!
+ * @brief Sends the MDIO IEEE802.3 Clause 22 format read command.
+ *
+ * After calling this function, need to check whether the transmission is over then do next MDIO operation.
+ * For ease of use, encapsulated ENET_MDIORead() can be called. For customized requirements, implement
+ * with combining separated APIs.
+ *
+ * @param base  ENET peripheral base address.
+ * @param phyAddr The PHY address. Range from 0 ~ 31.
+ * @param regAddr The PHY register address. Range from 0 ~ 31.
+ * @param operation The read operation.
+ */
+static inline void ENET_StartSMIRead(ENET_Type *base, uint8_t phyAddr, uint8_t regAddr, enet_mii_read_t operation)
+{
+    base->MMFR =
+        ENET_MMFR_ST(1U) | ENET_MMFR_OP(operation) | ENET_MMFR_PA(phyAddr) | ENET_MMFR_RA(regAddr) | ENET_MMFR_TA(2U);
+}
+
+/*!
+ * @brief MDIO write with IEEE802.3 Clause 22 format.
+ *
+ * @param base  ENET peripheral base address.
+ * @param phyAddr  The PHY address. Range from 0 ~ 31.
+ * @param regAddr  The PHY register. Range from 0 ~ 31.
+ * @param data  The data written to PHY.
+ * @return kStatus_Success  MDIO access succeeds.
+ * @return kStatus_Timeout  MDIO access timeout.
+ */
+status_t ENET_MDIOWrite(ENET_Type *base, uint8_t phyAddr, uint8_t regAddr, uint16_t data);
+
+/*!
+ * @brief MDIO read with IEEE802.3 Clause 22 format.
+ *
+ * @param base  ENET peripheral base address.
+ * @param phyAddr  The PHY address. Range from 0 ~ 31.
+ * @param regAddr  The PHY register. Range from 0 ~ 31.
+ * @param pData  The data read from PHY.
+ * @return kStatus_Success  MDIO access succeeds.
+ * @return kStatus_Timeout  MDIO access timeout.
+ */
+status_t ENET_MDIORead(ENET_Type *base, uint8_t phyAddr, uint8_t regAddr, uint16_t *pData);
 
 #if defined(FSL_FEATURE_ENET_HAS_EXTEND_MDIO) && FSL_FEATURE_ENET_HAS_EXTEND_MDIO
 /*!
- * @brief Starts the extended IEEE802.3 Clause 45 MDIO format SMI write register command.
+ * @brief Sends the MDIO IEEE802.3 Clause 45 format write register command.
+ *
+ * After calling this function, need to check whether the transmission is over then do next MDIO operation.
+ * For ease of use, encapsulated ENET_MDIOC45Write()/ENET_MDIOC45Read() can be called. For customized
+ * requirements, implement with combining separated APIs.
  *
  * @param base  ENET peripheral base address.
- * @param phyAddr The PHY address.
- * @param phyReg The PHY register. For MDIO IEEE802.3 Clause 45,
- *        the phyReg is a 21-bits combination of the devaddr (5 bits device address)
- *        and the regAddr (16 bits phy register): phyReg = (devaddr << 16) | regAddr.
+ * @param portAddr  The MDIO port address(PHY address).
+ * @param devAddr  The device address.
+ * @param regAddr  The PHY register address.
  */
-void ENET_StartExtC45SMIWriteReg(ENET_Type *base, uint32_t phyAddr, uint32_t phyReg);
+static inline void ENET_StartExtC45SMIWriteReg(ENET_Type *base, uint8_t portAddr, uint8_t devAddr, uint16_t regAddr)
+{
+    base->MMFR = ENET_MMFR_ST(0) | ENET_MMFR_OP(kENET_MiiAddrWrite_C45) | ENET_MMFR_PA(portAddr) |
+                 ENET_MMFR_RA(devAddr) | ENET_MMFR_TA(2) | ENET_MMFR_DATA(regAddr);
+}
 
 /*!
- * @brief Starts the extended IEEE802.3 Clause 45 MDIO format SMI write data command.
+ * @brief Sends the MDIO IEEE802.3 Clause 45 format write data command.
  *
- * After writing MMFR register, we need to check whether the transmission is over.
- * This is an example for whole precedure of clause 45 MDIO write.
- * @code
- *       ENET_ClearInterruptStatus(base, ENET_EIR_MII_MASK);
- *       ENET_StartExtC45SMIWriteReg(base, phyAddr, phyReg);
- *       while ((ENET_GetInterruptStatus(base) & ENET_EIR_MII_MASK) == 0U)
- *       {
- *       }
- *       ENET_ClearInterruptStatus(base, ENET_EIR_MII_MASK);
- *       ENET_StartExtC45SMIWriteData(base, phyAddr, phyReg, data);
- *       while ((ENET_GetInterruptStatus(base) & ENET_EIR_MII_MASK) == 0U)
- *       {
- *       }
- *       ENET_ClearInterruptStatus(base, ENET_EIR_MII_MASK);
- * @endcode
+ * After calling this function, need to check whether the transmission is over then do next MDIO operation.
+ * For ease of use, encapsulated ENET_MDIOC45Write() can be called. For customized requirements, implement
+ * with combining separated APIs.
+ *
  * @param base  ENET peripheral base address.
- * @param phyAddr The PHY address.
- * @param phyReg The PHY register. For MDIO IEEE802.3 Clause 45,
- *        the phyReg is a 21-bits combination of the devaddr (5 bits device address)
- *        and the regAddr (16 bits phy register): phyReg = (devaddr << 16) | regAddr.
- * @param data The data written to PHY.
+ * @param portAddr  The MDIO port address(PHY address).
+ * @param devAddr  The device address.
+ * @param data  The data written to PHY.
  */
-void ENET_StartExtC45SMIWriteData(ENET_Type *base, uint32_t phyAddr, uint32_t phyReg, uint32_t data);
+static inline void ENET_StartExtC45SMIWriteData(ENET_Type *base, uint8_t portAddr, uint8_t devAddr, uint16_t data)
+{
+    base->MMFR = ENET_MMFR_ST(0) | ENET_MMFR_OP(kENET_MiiWriteFrame_C45) | ENET_MMFR_PA(portAddr) |
+                 ENET_MMFR_RA(devAddr) | ENET_MMFR_TA(2) | ENET_MMFR_DATA(data);
+}
 
 /*!
- * @brief Starts the extended IEEE802.3 Clause 45 MDIO format SMI read data command.
+ * @brief Sends the MDIO IEEE802.3 Clause 45 format read data command.
  *
- * After writing MMFR register, we need to check whether the transmission is over.
- * This is an example for whole precedure of clause 45 MDIO read.
- * @code
- *       uint32_t data;
- *       ENET_ClearInterruptStatus(base, ENET_EIR_MII_MASK);
- *       ENET_StartExtC45SMIWriteReg(base, phyAddr, phyReg);
- *       while ((ENET_GetInterruptStatus(base) & ENET_EIR_MII_MASK) == 0U)
- *       {
- *       }
- *       ENET_ClearInterruptStatus(base, ENET_EIR_MII_MASK);
- *       ENET_StartExtC45SMIReadData(base, phyAddr, phyReg);
- *       while ((ENET_GetInterruptStatus(base) & ENET_EIR_MII_MASK) == 0U)
- *       {
- *       }
- *       ENET_ClearInterruptStatus(base, ENET_EIR_MII_MASK);
- *       data = ENET_ReadSMIData(base);
- * @endcode
+ * After calling this function, need to check whether the transmission is over then do next MDIO operation.
+ * For ease of use, encapsulated ENET_MDIOC45Read() can be called. For customized requirements, implement
+ * with combining separated APIs.
+ *
  * @param base  ENET peripheral base address.
- * @param phyAddr The PHY address.
- * @param phyReg The PHY register. For MDIO IEEE802.3 Clause 45,
- *        the phyReg is a 21-bits combination of the devaddr (5 bits device address)
- *        and the regAddr (16 bits phy register): phyReg = (devaddr << 16) | regAddr.
+ * @param portAddr  The MDIO port address(PHY address).
+ * @param devAddr  The device address.
  */
-void ENET_StartExtC45SMIReadData(ENET_Type *base, uint32_t phyAddr, uint32_t phyReg);
+static inline void ENET_StartExtC45SMIReadData(ENET_Type *base, uint8_t portAddr, uint8_t devAddr)
+{
+    base->MMFR = ENET_MMFR_ST(0) | ENET_MMFR_OP(kENET_MiiReadFrame_C45) | ENET_MMFR_PA(portAddr) |
+                 ENET_MMFR_RA(devAddr) | ENET_MMFR_TA(2);
+}
+
+/*!
+ * @brief MDIO write with IEEE802.3 Clause 45 format.
+ *
+ * @param base  ENET peripheral base address.
+ * @param portAddr  The MDIO port address(PHY address).
+ * @param devAddr  The device address.
+ * @param regAddr  The PHY register address.
+ * @param data  The data written to PHY.
+ * @return kStatus_Success  MDIO access succeeds.
+ * @return kStatus_Timeout  MDIO access timeout.
+ */
+status_t ENET_MDIOC45Write(ENET_Type *base, uint8_t portAddr, uint8_t devAddr, uint16_t regAddr, uint16_t data);
+
+/*!
+ * @brief MDIO read with IEEE802.3 Clause 45 format.
+ *
+ * @param base  ENET peripheral base address.
+ * @param portAddr  The MDIO port address(PHY address).
+ * @param devAddr  The device address.
+ * @param regAddr  The PHY register address.
+ * @param pData  The data read from PHY.
+ * @return kStatus_Success  MDIO access succeeds.
+ * @return kStatus_Timeout  MDIO access timeout.
+ */
+status_t ENET_MDIOC45Read(ENET_Type *base, uint8_t portAddr, uint8_t devAddr, uint16_t regAddr, uint16_t *pData);
 #endif /* FSL_FEATURE_ENET_HAS_EXTEND_MDIO */
 
 #if ((defined(FSL_FEATURE_ENET_HAS_RGMII_TXC_DELAY) && FSL_FEATURE_ENET_HAS_RGMII_TXC_DELAY) || \
@@ -1382,18 +1431,6 @@ void ENET_Set1588TimerISRHandler(ENET_Type *base, enet_isr_t ISRHandler);
  */
 
 /*!
- * @brief Sets the callback function.
- * @deprecated Do not use this function. It has been superceded by the config param in @ref ENET_Init.
- * This API is provided for the application callback required case when ENET
- * interrupt is enabled. This API should be called after calling ENET_Init.
- *
- * @param handle ENET handler pointer. Should be provided by application.
- * @param callback The ENET callback function.
- * @param userData The callback function parameter.
- */
-void ENET_SetCallback(enet_handle_t *handle, enet_callback_t callback, void *userData);
-
-/*!
  * @brief Gets the error statistics of a received frame for ENET specified ring.
  *
  * This API must be called after the ENET_GetRxFrameSize and before the ENET_ReadFrame().
@@ -1564,76 +1601,16 @@ status_t ENET_SetTxReclaim(enet_handle_t *handle, bool isEnable, uint8_t ringId)
 void ENET_ReclaimTxDescriptor(ENET_Type *base, enet_handle_t *handle, uint8_t ringId);
 
 /*!
- * @brief Get a receive buffer pointer of the ENET device for specified ring.
- * @deprecated Do not use this function. It has been superseded by @ref ENET_GetRxFrame.
- *
- * This function can get the data address which stores frame. Then can analyze these data directly without doing any
- * memory copy. When the frame locates in multiple BD buffer, need to repeat calling this function until isLastBuff=true
- * (need to store the temp buf pointer everytime call this function). After finishing the analysis of this frame,
- * call ENET_ReleaseRxBuffer to release rxbuff memory to DMA.
- * This is an example:
- * @code
- *       uint32_t length;
- *       uint8_t *buf = NULL;
- *       uint32_t data_len = 0;
- *       bool isLastBuff = false;
- *       enet_handle_t g_handle;
- *       status_t status;
- *       status = ENET_GetRxFrameSize(&g_handle, &length, 0);
- *       if (length != 0)
- *       {
- *           ENET_GetRxBuffer(EXAMPLE_ENET, &g_handle, &buf, &data_len, 0, &isLastBuff, NULL);
- *           ENET_ReleaseRxBuffer(EXAMPLE_ENET, &g_handle, buf, 0);
- *       }
- * @endcode
- * @param base  ENET peripheral base address.
- * @param handle The ENET handler structure. This is the same handler pointer used in the ENET_Init.
- * @param buffer The data buffer pointer to store the frame.
- * @param length The size of the data buffer. If isLastBuff=false, it represents data length of this buffer. If
- * isLastBuff=true, it represents data length of total frame.
- * @param ringId The ring index, range from 0 ~ (FSL_FEATURE_ENET_INSTANCE_QUEUEn(x) - 1).
- * @param isLastBuff The flag represents whether this buffer is the last buffer to store frame.
- * @param ts The 1588 timestamp value, vaild in last buffer.
- * @retval kStatus_Success  Get receive buffer succeed.
- * @retval kStatus_ENET_RxFrameFail Get receive buffer fails, it's owned by application, should wait app to release this
- *         buffer.
- */
-status_t ENET_GetRxBuffer(ENET_Type *base,
-                          enet_handle_t *handle,
-                          void **buffer,
-                          uint32_t *length,
-                          uint8_t ringId,
-                          bool *isLastBuff,
-                          uint32_t *ts);
-
-/*!
- * @brief Release receive buffer descriptor to DMA.
- * @deprecated Do not use this function. It has been superseded by @ref ENET_GetRxFrame.
- *
- * This function can release specified BD owned by application, meanwhile it may rearrange the BD to let the no-owned
- * BDs always in back of the index of DMA transfer. So for the situation that releasing order is not same as the getting
- * order, the rearrangement makes all ready BDs can be used by DMA.
- * @note This function can't be interrupted by ENET_GetRxBuffer, so in application must make sure ENET_GetRxBuffer is
- * called before or after this function. And this function itself isn't thread safe due to BD content exchanging.
- *
- * @param base  ENET peripheral base address.
- * @param handle The ENET handler structure. This is the same handler pointer used in the ENET_Init.
- * @param buffer The buffer address to store frame, using it to find the correspond BD and release it.
- * @param ringId The ring index, range from 0 ~ (FSL_FEATURE_ENET_INSTANCE_QUEUEn(x) - 1).
- */
-void ENET_ReleaseRxBuffer(ENET_Type *base, enet_handle_t *handle, void *buffer, uint8_t ringId);
-
-/*!
  * @brief Receives one frame in specified BD ring with zero copy.
  *
- * This function will use the user-defined allocate and free callback. Every time application gets one frame through
- * this function, driver will allocate new buffers for the BDs whose buffers have been taken by application.
- * @note This function will drop current frame and update related BDs as available for DMA if new buffers allocating
- * fails. Application must provide a memory pool including at least BD number + 1 buffers to make this function work
- * normally. If user calls this function in Rx interrupt handler, be careful that this function makes Rx BD ready with
- * allocating new buffer(normal) or updating current BD(out of memory). If there's always new Rx frame input, Rx
- * interrupt will be triggered forever. Application need to disable Rx interrupt according to specific design in this
- * case.
+ * This function uses the user-defined allocation and free callbacks. Every time application gets one frame through
+ * this function, driver stores the buffer address(es) in enet_buffer_struct_t and allocate new buffer(s) for the BD(s).
+ * If there's no memory buffer in the pool, this function drops current one frame to keep the Rx frame in BD ring is as
+ * fresh as possible.
+ * @note Application must provide a memory pool including at least BD number + n buffers in order for this function to work
+ * properly, because each BD must always take one buffer while driver is running, then other extra n buffer(s) can be taken
+ * by application. Here n is the ceil(max_frame_length(set by RCR) / bd_rx_size(set by MRBR)). Application must also provide
+ * an array structure in rxFrame->rxBuffArray with n index to receive one complete frame in any case.
  *
  * @param base   ENET peripheral base address.
  * @param handle The ENET handler pointer. This is the same handler pointer used in the ENET_Init.
@@ -1662,36 +1639,6 @@ status_t ENET_GetRxFrame(ENET_Type *base, enet_handle_t *handle, enet_rx_frame_s
  * @retval kStatus_ENET_TxFrameOverLen  The Tx frame length is over max ethernet frame length.
  */
 status_t ENET_StartTxFrame(ENET_Type *base, enet_handle_t *handle, enet_tx_frame_struct_t *txFrame, uint8_t ringId);
-
-/*!
- * @brief Transmits an ENET frame for specified ring with zero-copy.
- * @deprecated Do not use this function. It has been superseded by @ref ENET_StartTxFrame.
- * @note The CRC is automatically appended to the data. Input the data
- * to send without the CRC. The frame must store in continuous memory
- * and need to check the buffer start address alignment based on your
- * device, otherwise it has issue or can't get highest DMA transmit speed.
- *
- *
- * @param base  ENET peripheral base address.
- * @param handle The ENET handler pointer. This is the same handler pointer used in the ENET_Init.
- * @param data The data buffer provided by user to send.
- * @param length The length of the data to send.
- * @param ringId The ring index or ring number.
- * @param tsFlag Timestamp enable flag.
- * @param context Used by user to handle some events after transmit over.
- * @retval kStatus_Success  Send frame succeed.
- * @retval kStatus_ENET_TxFrameBusy  Transmit buffer descriptor is busy under transmission.
- *         The transmit busy happens when the data send rate is over the MAC capacity.
- *         The waiting mechanism is recommended to be added after each call return with
- *         kStatus_ENET_TxFrameBusy.
- */
-status_t ENET_SendFrameZeroCopy(ENET_Type *base,
-                                enet_handle_t *handle,
-                                const uint8_t *data,
-                                uint32_t length,
-                                uint8_t ringId,
-                                bool tsFlag,
-                                void *context);
 
 #if FSL_FEATURE_ENET_QUEUE > 1
 /*!

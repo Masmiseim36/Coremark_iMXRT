@@ -23,7 +23,7 @@
 
 /*! @name Driver version */
 /*@{*/
-#define FSL_SAI_EDMA_DRIVER_VERSION (MAKE_VERSION(2, 5, 0)) /*!< Version 2.5.0 */
+#define FSL_SAI_EDMA_DRIVER_VERSION (MAKE_VERSION(2, 5, 1)) /*!< Version 2.5.1 */
 /*@}*/
 
 typedef struct sai_edma_handle sai_edma_handle_t;
@@ -238,6 +238,7 @@ status_t SAI_TransferReceiveEDMA(I2S_Type *base, sai_edma_handle_t *handle, sai_
  * @note This function support loop transfer only,such as A->B->...->A, application must be aware of
  * that the more counts of the loop transfer, then more tcd memory required, as the function use the tcd pool in
  * sai_edma_handle_t, so application could redefine the SAI_XFER_QUEUE_SIZE to determine the proper TCD pool size.
+ * This function support one sai channel only.
  *
  * Once the loop transfer start, application can use function SAI_TransferAbortSendEDMA to stop the loop transfer.
  *
@@ -259,6 +260,7 @@ status_t SAI_TransferSendLoopEDMA(I2S_Type *base,
  * @note This function support loop transfer only,such as A->B->...->A, application must be aware of
  * that the more counts of the loop transfer, then more tcd memory required, as the function use the tcd pool in
  * sai_edma_handle_t, so application could redefine the SAI_XFER_QUEUE_SIZE to determine the proper TCD pool size.
+ * This function support one sai channel only.
  *
  * Once the loop transfer start, application can use function SAI_TransferAbortReceiveEDMA to stop the loop transfer.
  *

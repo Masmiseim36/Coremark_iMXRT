@@ -174,8 +174,8 @@
 			},
 		},
 		.pageSize           = 256U,
-		.sectorSize         = 4U * 1024U,
-		.blockSize          = 256U * 1024U,
+		.sectorSize         =  4U * 1024U,
+		.blockSize          = 64U * 1024U,
 		.isUniformBlockSize = false,
 	};
 #endif

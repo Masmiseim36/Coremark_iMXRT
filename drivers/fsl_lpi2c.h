@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2015, Freescale Semiconductor, Inc.
- * Copyright 2016-2021 NXP
+ * Copyright 2016-2022 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -24,7 +24,7 @@
 /*! @name Driver version */
 /*@{*/
 /*! @brief LPI2C driver version. */
-#define FSL_LPI2C_DRIVER_VERSION (MAKE_VERSION(2, 3, 1))
+#define FSL_LPI2C_DRIVER_VERSION (MAKE_VERSION(2, 5, 0))
 /*@}*/
 
 /*! @brief Retry times for waiting flag. */
@@ -1184,6 +1184,27 @@ static inline bool LPI2C_SlaveGetBusIdleState(LPI2C_Type *base)
 static inline void LPI2C_SlaveTransmitAck(LPI2C_Type *base, bool ackOrNack)
 {
     base->STAR = LPI2C_STAR_TXNACK(!ackOrNack);
+}
+
+/*!
+ * @brief Enables or disables ACKSTALL.
+ *
+ * When enables ACKSTALL, software can transmit either an ACK or NAK on the I2C bus in response to
+ * a byte from the master.
+ *
+ * @param base The LPI2C peripheral base address.
+ * @param enable True will enable ACKSTALL,false will disable ACKSTALL.
+ */
+static inline void LPI2C_SlaveEnableAckStall(LPI2C_Type *base, bool enable)
+{
+    if (enable)
+    {
+        base->SCFGR1 |= LPI2C_SCFGR1_ACKSTALL_MASK;
+    }
+    else
+    {
+        base->SCFGR1 &= ~LPI2C_SCFGR1_ACKSTALL_MASK;
+    }
 }
 
 /*!
