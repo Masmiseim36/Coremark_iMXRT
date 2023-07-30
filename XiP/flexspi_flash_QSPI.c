@@ -145,9 +145,11 @@
 			.readSampleClkSrc = kFlexSPIReadSampleClk_LoopbackFromDqsPad,
 			.csHoldTime       = 3U,
 			.csSetupTime      = 3U,
+			.controllerMiscOption = (1u << kFlexSpiMiscOffset_SafeConfigFreqEnable),
 			// Enable DDR mode, Word-addressable, Safe configuration, Differential clock
+			.deviceType       = kFlexSpiDeviceType_SerialNOR,
 			.sflashPadType    = kSerialFlash_4Pads,
-			.serialClkFreq    = kFlexSpiSerialClk_100MHz,
+			.serialClkFreq    = kFlexSpiSerialClk_133MHz,
 			.sflashA1Size     = 16U * 1024U * 1024U,
 			.lookupTable =
 			{
@@ -157,17 +159,57 @@
 				0,
 				0,
 				// (1) Read Status
-				FLEXSPI_LUT_SEQ (CMD_SDR,   FLEXSPI_1PAD, 0x05, RADDR_SDR, FLEXSPI_1PAD, 0x04),
+				FLEXSPI_LUT_SEQ (CMD_SDR,   FLEXSPI_1PAD, 0x05, READ_SDR,  FLEXSPI_1PAD, 0x04),
 				0,
 				0,
 				0,
-				// (2) Write Enable  
+				// (2) empty
+				0,
+				0,
+				0,
+				0,
+				// (3) Write Enable  
 				FLEXSPI_LUT_SEQ (CMD_SDR,   FLEXSPI_1PAD, 0x06, STOP,      FLEXSPI_1PAD, 0),
 				0,
 				0,
 				0,
-				// (3) Write Status/Control Registers
-				FLEXSPI_LUT_SEQ (CMD_SDR,   FLEXSPI_1PAD, 0x01, WRITE_SDR, FLEXSPI_1PAD, 0x04),
+				// (4) empty
+				0,
+				0,
+				0,
+				0,
+				// (5) 
+				FLEXSPI_LUT_SEQ (CMD_SDR,   FLEXSPI_1PAD, 0x20, RADDR_SDR, FLEXSPI_1PAD, 0x18),
+				0,
+				0,
+				0,
+				// (6) empty
+				0,
+				0,
+				0,
+				0,
+				// (7) empty
+				0,
+				0,
+				0,
+				0,
+				// (8) 
+				FLEXSPI_LUT_SEQ (CMD_SDR,   FLEXSPI_1PAD, 0xD8, RADDR_SDR, FLEXSPI_1PAD, 0x18),
+				0,
+				0,
+				0,
+				// (9) 
+				FLEXSPI_LUT_SEQ (CMD_SDR,   FLEXSPI_1PAD, 0x02, RADDR_SDR, FLEXSPI_1PAD, 0x18),
+				FLEXSPI_LUT_SEQ (WRITE_SDR, FLEXSPI_1PAD, 0x04, STOP,      FLEXSPI_1PAD, 0),
+				0,
+				0,
+				// (10) empty
+				0,
+				0,
+				0,
+				0,
+				// (8) 
+				FLEXSPI_LUT_SEQ (CMD_SDR,   FLEXSPI_1PAD, 0x60, STOP,      FLEXSPI_1PAD, 0),
 				0,
 				0,
 				0,
