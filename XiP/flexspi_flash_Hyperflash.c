@@ -67,7 +67,7 @@ const flexspi_nor_config_t FlashBootHeader =
 		.sflashA1Size			= 64 * 1024 * 1024,
 		.dataValidTime			= {16, 16},
 //		.busyOffset				= 15,            //busy bit offset, valid range : 0-31
-//		.busyBitPolarity		= 1,        //1 – busy bit is 0 if device is busy
+//		.busyBitPolarity		= 1,        //1 - busy bit is 0 if device is busy
 		.lookupTable =
 		{
 			// (0) Configure LUT for read
