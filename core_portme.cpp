@@ -142,7 +142,7 @@ extern "C"
 			config.baudRate_Bps = 115200U;
 			config.enableTx     = true;
 			config.enableRx     = true;
-			status_t status = LPUART_Init (uart[BOARD_DEBUG_UART_INSTANCE], &config, ClockFrequency);
+			[[maybe_unused]] status_t status = LPUART_Init (uart[BOARD_DEBUG_UART_INSTANCE], &config, ClockFrequency);
 		#elif defined USART_BASE_PTRS
 			const clock_frg_clk_config_t ClockConfig = 
 			{
@@ -159,7 +159,7 @@ extern "C"
 			config.baudRate_Bps     = 115200U;
 			config.enableTx         = true;
 			config.enableRx         = true;
-			status_t status         = USART_Init (uart[BOARD_DEBUG_UART_INSTANCE], &config, CLOCK_GetFlexCommClkFreq(BOARD_DEBUG_UART_INSTANCE));
+			[[maybe_unused]] status_t status         = USART_Init (uart[BOARD_DEBUG_UART_INSTANCE], &config, CLOCK_GetFlexCommClkFreq(BOARD_DEBUG_UART_INSTANCE));
 		#else
 			#error "unknown serial port driver"
 		#endif
