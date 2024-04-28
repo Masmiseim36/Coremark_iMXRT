@@ -384,6 +384,13 @@
       <file file_name="$(TargetsDir)/iMXRT/fsl_device_registers.h" />
       <file file_name="$(TargetsDir)/iMXRT/iMXRT_Target.js" />
       <file file_name="placement_flexspi.xml" />
+      <configuration
+        Name="Common"
+        default_code_section=".init"
+        default_const_section=".init_rodata"
+        default_data_section=".data"
+        default_zeroed_section=".bss"
+        link_time_optimization="No" />
     </folder>
   </project>
   <project Name="Coremark_1024">
@@ -501,6 +508,13 @@
       <file file_name="$(TargetsDir)/iMXRT/iMXRT_Target.js" />
       <file file_name="placement_flexspi.xml" />
       <file file_name="1024/system_MIMXRT1024.c" />
+      <configuration
+        Name="Common"
+        default_code_section=".init"
+        default_const_section=".init_rodata"
+        default_data_section=".data"
+        default_zeroed_section=".bss"
+        link_time_optimization="No" />
     </folder>
   </project>
   <project Name="Coremark_1040">
@@ -614,6 +628,13 @@
       <file file_name="$(TargetsDir)/iMXRT/fsl_device_registers.h" />
       <file file_name="$(TargetsDir)/iMXRT/iMXRT_Target.js" />
       <file file_name="placement_flexspi.xml" />
+      <configuration
+        Name="Common"
+        default_code_section=".init"
+        default_const_section=".init_rodata"
+        default_data_section=".data"
+        default_zeroed_section=".bss"
+        link_time_optimization="No" />
     </folder>
   </project>
   <project Name="Coremark_1050">
@@ -727,6 +748,13 @@
       <file file_name="$(TargetsDir)/iMXRT/fsl_device_registers.h" />
       <file file_name="$(TargetsDir)/iMXRT/iMXRT_Target.js" />
       <file file_name="placement_flexspi.xml" />
+      <configuration
+        Name="Common"
+        default_code_section=".init"
+        default_const_section=".init_rodata"
+        default_data_section=".data"
+        default_zeroed_section=".bss"
+        link_time_optimization="No" />
     </folder>
   </project>
   <project Name="Coremark_1060">
@@ -840,6 +868,13 @@
       <file file_name="$(TargetsDir)/iMXRT/fsl_device_registers.h" />
       <file file_name="$(TargetsDir)/iMXRT/iMXRT_Target.js" />
       <file file_name="placement_flexspi.xml" />
+      <configuration
+        Name="Common"
+        default_code_section=".init"
+        default_const_section=".init_rodata"
+        default_data_section=".data"
+        default_zeroed_section=".bss"
+        link_time_optimization="No" />
     </folder>
   </project>
   <project Name="Coremark_1064">
@@ -959,6 +994,13 @@
       <file file_name="$(TargetsDir)/iMXRT/fsl_device_registers.h" />
       <file file_name="$(TargetsDir)/iMXRT/iMXRT_Target.js" />
       <file file_name="placement_flexspi.xml" />
+      <configuration
+        Name="Common"
+        default_code_section=".init"
+        default_const_section=".init_rodata"
+        default_data_section=".data"
+        default_zeroed_section=".bss"
+        link_time_optimization="No" />
     </folder>
   </project>
   <project Name="Coremark_1160CM7">
@@ -1668,6 +1710,13 @@
       <file file_name="$(TargetsDir)/iMXRT/$(DeviceName).h" />
       <file file_name="$(TargetsDir)/iMXRT/$(DeviceName)_features.h" />
       <file file_name="$(TargetsDir)/iMXRT/fsl_device_registers.h" />
+      <configuration
+        Name="Common"
+        default_code_section=".init"
+        default_const_section=".init_rodata"
+        default_data_section=".data"
+        default_zeroed_section=".bss"
+        link_time_optimization="No" />
     </folder>
     <folder Name="component">
       <file file_name="components/generic_list.c" />
@@ -1783,6 +1832,13 @@
       <file file_name="$(TargetsDir)/iMXRT/$(DeviceName).h" />
       <file file_name="$(TargetsDir)/iMXRT/$(DeviceName)_features.h" />
       <file file_name="$(TargetsDir)/iMXRT/fsl_device_registers.h" />
+      <configuration
+        Name="Common"
+        default_code_section=".init"
+        default_const_section=".init_rodata"
+        default_data_section=".data"
+        default_zeroed_section=".bss"
+        link_time_optimization="No" />
     </folder>
     <folder Name="component">
       <file file_name="components/generic_list.c" />

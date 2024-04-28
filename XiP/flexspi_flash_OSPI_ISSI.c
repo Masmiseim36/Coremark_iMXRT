@@ -48,24 +48,28 @@ const flexspi_nor_config_t FlashBootHeader =
 		.csHoldTime           = 3U,
 		.csSetupTime          = 3U,
 		.columnAddressWidth   = 0U,
-		.deviceModeCfgEnable  = 1U,
+		.deviceModeCfgEnable  = 0U, // Disabled, all configuration is done in configCmdSeqs
 		.deviceModeType       = kDeviceConfigCmdType_Spi2Xpi,
 		.waitTimeCfgCommands  = 1U,
-		.deviceModeSeq        =
+		.deviceModeSeq        = // Seems to be done after configCmdSeqs
 		{
 			.seqNum   = 1U,
 			.seqId    = 15U, // This will switch to Octal-DDR mode
 			.reserved = 0U,
 		},
 		.deviceModeArg = 0xE7,
+		// Sequence for changing device mode.
+		// This will switch to Octal-DDR mode and modify the number of dummy cycles used by it.
+		.configCmdEnable      = 1U,
 		.configCmdSeqs        =   // Sequences for configuration command, allow 3 separate configuration command sequences
-		{
-			{.seqId=13, .seqNum=1}, // This will modify the number of dummy cycles used
+		{ // Index/size of the sequences:
+			{.seqId=14, .seqNum=1}, // This will modify the number of dummy cycles used
+			{.seqId=15, .seqNum=1}, // This will switch to Octal-DDR mode
 		},
 		.configCmdArgs        =
 		{
 			DUMMY_CYCLES,
-//			0xE7,
+			0xE7,
 		},
 		// Enable DDR mode, Safe configuration
 		.controllerMiscOption = (1u << kFlexSpiMiscOffset_SafeConfigFreqEnable) | (1u << kFlexSpiMiscOffset_DdrModeEnable),
@@ -76,7 +80,7 @@ const flexspi_nor_config_t FlashBootHeader =
 		.sflashA2Size         = 0U,
 		.sflashB1Size         = 0U, // for iMXRT500/600
 		.sflashB2Size         = 0U,
-		.dataValidTime =
+		.dataValidTime        =
 		{
 //			[0] = {.time_100ps = 16},
 			[0] = 16,
@@ -95,13 +99,26 @@ const flexspi_nor_config_t FlashBootHeader =
 			// (0) Read
 			[ 0] = FLEXSPI_LUT_SEQ (CMD_SDR,        FLEXSPI_8PAD, 0xFD, RADDR_DDR, FLEXSPI_8PAD, 32),
 			[ 1] = FLEXSPI_LUT_SEQ (DUMMY_RWDS_DDR, FLEXSPI_8PAD, DUMMY_CYCLES, READ_DDR,    FLEXSPI_8PAD, 128),
+			[ 2] = 0,
+			[ 3] = 0,
 
 			// (1) Read Status (byte 1)
 			[ 4] = FLEXSPI_LUT_SEQ (CMD_SDR,   FLEXSPI_8PAD, 0x05, DUMMY_DDR, FLEXSPI_8PAD, DUMMY_CYCLES),
 			[ 5] = FLEXSPI_LUT_SEQ (READ_DDR,  FLEXSPI_8PAD, 0x01, STOP,      FLEXSPI_1PAD, 0x0),
+			[ 6] = 0,
+			[ 7] = 0,
+
+			// (2)
+			[8]  = 0,
+			[9]  = 0,
+			[10] = 0,
+			[11] = 0,
 
 			// (3) Write Enable
 			[12] = FLEXSPI_LUT_SEQ (CMD_SDR,   FLEXSPI_1PAD, 0x06, STOP,      FLEXSPI_1PAD, 0x0),
+			[13] = 0,
+			[14] = 0,
+			[15] = 0,
 
 			// (4) Page Program
 			[16] = FLEXSPI_LUT_SEQ (CMD_SDR,   FLEXSPI_8PAD, 0x8E, RADDR_DDR, FLEXSPI_8PAD, 32),
@@ -114,10 +131,11 @@ const flexspi_nor_config_t FlashBootHeader =
 			[55] = 0,
 
 			// (14) Write to non volatile control register at address 1 to set the dummy cycles - SPI
-			[56] = FLEXSPI_LUT_SEQ (CMD_SDR,   FLEXSPI_8PAD, 0x81, CMD_SDR,   FLEXSPI_1PAD, 0x00), // Command + Address [24-16]
-			[57] = FLEXSPI_LUT_SEQ (CMD_SDR,   FLEXSPI_8PAD, 0x00, CMD_SDR,   FLEXSPI_1PAD, 0x01), // Address [15-8] + Address [7-0]
-			[58] = FLEXSPI_LUT_SEQ (WRITE_SDR, FLEXSPI_8PAD, 0x01, STOP,      FLEXSPI_1PAD, 0x00), // Data --> Dummy Cycles
+			[56] = FLEXSPI_LUT_SEQ (CMD_SDR,   FLEXSPI_1PAD, 0x81, CMD_SDR,   FLEXSPI_1PAD, 0x00), // Command + Address [24-16]
+			[57] = FLEXSPI_LUT_SEQ (CMD_SDR,   FLEXSPI_1PAD, 0x00, CMD_SDR,   FLEXSPI_1PAD, 0x01), // Address [15-8] + Address [7-0]
+			[58] = FLEXSPI_LUT_SEQ (WRITE_SDR, FLEXSPI_1PAD, 0x01, STOP,      FLEXSPI_1PAD, 0x00), // Data --> Dummy Cycles			
 			[59] = 0,
+
 			// (15) Write to non volatile control register at address 0 to switch to chosen interface-Type - SPI
 			[60] = FLEXSPI_LUT_SEQ (CMD_SDR,   FLEXSPI_1PAD, 0x81, CMD_SDR,   FLEXSPI_1PAD, 0x00), // Command + Address [24-16]
 			[61] = FLEXSPI_LUT_SEQ (CMD_SDR,   FLEXSPI_1PAD, 0x00, CMD_SDR,   FLEXSPI_1PAD, 0x00), // Address [15-8] + Address [7-0]

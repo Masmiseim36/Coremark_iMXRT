@@ -93,12 +93,12 @@ typedef enum _FlexSpiSerialClockFreq
 	 defined(CPU_MIMXRT1175AVM8A_cm4) || defined(CPU_MIMXRT1175CVM8A_cm4) || defined(CPU_MIMXRT1175DVMAA_cm4) || \
 	 defined(CPU_MIMXRT1176AVM8A_cm7) || defined(CPU_MIMXRT1176CVM8A_cm7) || defined(CPU_MIMXRT1176DVMAA_cm7) || \
 	 defined(CPU_MIMXRT1176AVM8A_cm4) || defined(CPU_MIMXRT1176CVM8A_cm4) || defined(CPU_MIMXRT1176DVMAA_cm4))
-	kFlexSpiSerialClk_80MHz = 4,
+	kFlexSpiSerialClk_80MHz  = 4,
 	kFlexSpiSerialClk_100MHz = 5,
 	kFlexSpiSerialClk_120MHz = 6,
 #else
-	kFlexSpiSerialClk_75MHz = 4,
-	kFlexSpiSerialClk_80MHz = 5,
+	kFlexSpiSerialClk_75MHz  = 4,
+	kFlexSpiSerialClk_80MHz  = 5,
 	kFlexSpiSerialClk_100MHz = 6,
 #endif
 	kFlexSpiSerialClk_133MHz = 7,
@@ -109,8 +109,8 @@ typedef enum _FlexSpiSerialClockFreq
 //!@brief FlexSPI clock configuration type
 enum FlexSpiClk
 {
-    kFlexSpiClk_SDR, //!< Clock configured for SDR mode
-    kFlexSpiClk_DDR, //!< Clock configured for DDR mode
+	kFlexSpiClk_SDR, //!< Clock configured for SDR mode
+	kFlexSpiClk_DDR, //!< Clock configured for DDR mode
 };
 
 //!@brief FlexSPI Read Sample Clock Source definition
