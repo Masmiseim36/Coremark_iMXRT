@@ -46,7 +46,7 @@
 /*******************************************************************************
  * Code
  ******************************************************************************/
-#if defined(__CC_ARM) || defined(__GNUC__) || defined __SES_ARM || defined __CROSSWORKS_ARM
+#if defined(__CC_ARM) || defined(__ARMCC_VERSION) || defined(__GNUC__) || defined __SES_ARM || defined __CROSSWORKS_ARM
 	__attribute__((section(".boot_hdr.conf")))
 #elif defined(__ICCARM__)
 	#pragma section="app_image"
