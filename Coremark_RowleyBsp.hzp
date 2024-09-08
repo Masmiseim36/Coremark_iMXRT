@@ -34,7 +34,6 @@
       arm_core_type="Cortex-M7"
       arm_fp_abi="Hard"
       arm_fpu_type="FPv5-SP-D16"
-      arm_linker_heap_size="256"
       arm_linker_stack_size="10240"
       arm_target_device_name="MIMXRT1011xxx5A"
       arm_target_loader_applicable_loaders="Flash"
@@ -129,7 +128,7 @@
       <file file_name="$(DeviceStartFile)" />
       <file file_name="$(DeviceSystemFile)" />
       <file file_name="$(TargetsDir)/iMXRT/iMXRT_Target.js" />
-      <file file_name="placement_flexspi.xml" />
+      <file file_name="placement_flexspi_RowleyBsp.xml" />
       <file file_name="$(StudioDir)/source/thumb_crt0.s" />
     </folder>
     <folder Name="XIP">
@@ -151,7 +150,6 @@
       arm_core_type="Cortex-M7"
       arm_fp_abi="Hard"
       arm_fpu_type="FPv5-D16"
-      arm_linker_heap_size="256"
       arm_linker_stack_size="10240"
       arm_target_device_name="MIMXRT1015xxx5A"
       arm_target_loader_applicable_loaders="Flash"
@@ -244,7 +242,7 @@
       <file file_name="$(DeviceStartFile)" />
       <file file_name="$(DeviceSystemFile)" />
       <file file_name="$(TargetsDir)/iMXRT/iMXRT_Target.js" />
-      <file file_name="placement_flexspi.xml" />
+      <file file_name="placement_flexspi_RowleyBsp.xml" />
       <file file_name="$(StudioDir)/source/thumb_crt0.s" />
     </folder>
     <folder Name="XIP">
@@ -266,7 +264,6 @@
       arm_core_type="Cortex-M7"
       arm_fp_abi="Hard"
       arm_fpu_type="FPv5-D16"
-      arm_linker_heap_size="256"
       arm_linker_stack_size="10240"
       arm_target_device_name="MIMXRT1021xxx5A"
       arm_target_loader_applicable_loaders="Flash"
@@ -359,7 +356,7 @@
       <file file_name="$(DeviceStartFile)" />
       <file file_name="$(DeviceSystemFile)" />
       <file file_name="$(TargetsDir)/iMXRT/iMXRT_Target.js" />
-      <file file_name="placement_flexspi.xml" />
+      <file file_name="placement_flexspi_RowleyBsp.xml" />
       <file file_name="$(StudioDir)/source/thumb_crt0.s" />
     </folder>
     <folder Name="XIP">
@@ -381,7 +378,6 @@
       arm_core_type="Cortex-M7"
       arm_fp_abi="Hard"
       arm_fpu_type="FPv5-D16"
-      arm_linker_heap_size="256"
       arm_linker_stack_size="10240"
       arm_target_device_name="MIMXRT1024xxx5B"
       arm_target_loader_applicable_loaders="Flash"
@@ -474,7 +470,7 @@
       <file file_name="$(DeviceStartFile)" />
       <file file_name="$(DeviceSystemFile)" />
       <file file_name="$(TargetsDir)/iMXRT/iMXRT_Target.js" />
-      <file file_name="placement_flexspi.xml" />
+      <file file_name="placement_flexspi_RowleyBsp.xml" />
       <file file_name="$(StudioDir)/source/thumb_crt0.s" />
     </folder>
     <folder Name="XIP">
@@ -496,7 +492,6 @@
       arm_core_type="Cortex-M7"
       arm_fp_abi="Hard"
       arm_fpu_type="FPv5-D16"
-      arm_linker_heap_size="256"
       arm_linker_stack_size="10240"
       arm_target_device_name="MIMXRT1052xxx6B"
       arm_target_loader_applicable_loaders="Flash"
@@ -589,7 +584,7 @@
       <file file_name="$(DeviceStartFile)" />
       <file file_name="$(DeviceSystemFile)" />
       <file file_name="$(TargetsDir)/iMXRT/iMXRT_Target.js" />
-      <file file_name="placement_flexspi.xml" />
+      <file file_name="placement_flexspi_RowleyBsp.xml" />
       <file file_name="$(StudioDir)/source/thumb_crt0.s" />
     </folder>
     <folder Name="XIP">
@@ -611,7 +606,6 @@
       arm_core_type="Cortex-M7"
       arm_fp_abi="Hard"
       arm_fpu_type="FPv5-D16"
-      arm_linker_heap_size="256"
       arm_linker_stack_size="10240"
       arm_target_device_name="MIMXRT1062xxx6B"
       arm_target_loader_applicable_loaders="Flash"
@@ -704,7 +698,7 @@
       <file file_name="$(DeviceStartFile)" />
       <file file_name="$(DeviceSystemFile)" />
       <file file_name="$(TargetsDir)/iMXRT/iMXRT_Target.js" />
-      <file file_name="placement_flexspi.xml" />
+      <file file_name="placement_flexspi_RowleyBsp.xml" />
       <file file_name="$(StudioDir)/source/thumb_crt0.s" />
     </folder>
     <folder Name="XIP">
@@ -726,7 +720,6 @@
       arm_core_type="Cortex-M7"
       arm_fp_abi="Hard"
       arm_fpu_type="FPv5-D16"
-      arm_linker_heap_size="256"
       arm_linker_stack_size="10240"
       arm_target_device_name="MIMXRT1064xxx6A"
       arm_target_loader_applicable_loaders="Flash"
@@ -821,7 +814,7 @@
       <file file_name="$(DeviceStartFile)" />
       <file file_name="$(DeviceSystemFile)" />
       <file file_name="$(TargetsDir)/iMXRT/iMXRT_Target.js" />
-      <file file_name="placement_flexspi.xml" />
+      <file file_name="placement_flexspi_RowleyBsp.xml" />
       <file file_name="$(StudioDir)/source/thumb_crt0.s" />
     </folder>
     <folder Name="XIP">
@@ -847,7 +840,6 @@
       arm_core_type="Cortex-M4"
       arm_fp_abi="Hard"
       arm_fpu_type="FPv4-SP-D16"
-      arm_linker_heap_size="10240"
       arm_linker_stack_size="10240"
       arm_target_device_name="MIMXRT1176xxxA_M4"
       arm_target_loader_applicable_loaders="Flash"
@@ -855,14 +847,14 @@
       c_preprocessor_definitions="SERIAL_PORT_TYPE_UART=1;XIP_BOOT_FLEXSPI1"
       c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRT;$(TargetsDir)/iMXRT/devices/$(DeviceFamily)"
       c_user_include_directories="./drivers/1170cm4;./drivers;./1170"
-      debug_register_definition_file="$(TargetsDir)/iMXRT/XML/MIMXRT1176_cm4_registers.xml"
+      debug_register_definition_file="$(TargetsDir)/iMXRT/XML/MIMXRT11_cm4_Registers.xml"
       debug_startup_completion_point="main"
       default_code_section=".text_tcm"
       default_const_section=".rodata_tcm"
       default_data_section=".data_tcm"
       default_zeroed_section=".bss_tcm"
       linker_memory_map_file="$(TargetsDir)/iMXRT/iMXRT11_cm4_MemoryMap.xml"
-      linker_memory_map_macros="OCRAMSTART=0x20200000;OCRAMSIZE=0x40000;ITCMSTART=0x1FFE0000;FlexSPISTART=0x08000000;FlexSPI2START=0x60000000"
+      linker_memory_map_macros="OCRAMSTART=0x202C0000;OCRAMSIZE=0x00080000;ITCMSTART=0x1FFE0000;FlexSPISTART=0x08010000;FlexSPI2START=0x60000000;FlexSPISIZE=0x00010000;FlexSPILoadOffset=0"
       linker_section_placement_file="$(TargetsDir)/iMXRT/flexspi_placement.xml"
       linker_section_placement_macros="FILLSIZE=0x400"
       macros="DeviceStartFile=$(TargetsDir)/iMXRT/startup_MIMXRT1176_cm4.s;DeviceSystemFile=$(TargetsDir)/iMXRT/devices/MIMXRT1176/system_MIMXRT1176_cm4.c;HYPER=MIMXRT117x_HYPER_256KB_SEC;QSPI=MIMXRT117x_QuadSPI_4KB_SEC_Alias;DeviceFamily=MIMXRT1176"
@@ -874,6 +866,8 @@
       target_script_file="$(TargetsDir)/iMXRT/iMXRT_Target.js" />
     <configuration
       Name="Flash"
+      target_reset_script=""
+      target_loader_reset_script=""
       arm_target_flash_loader_file_path="$(TargetsDir)/iMXRT/Loader/$(QSPI)_Loader.elf"
       arm_target_loader_parameter="24000000" />
     <folder Name="component">
@@ -949,9 +943,8 @@
       <file file_name="$(DeviceStartFile)" />
       <file file_name="$(DeviceSystemFile)" />
       <file file_name="$(TargetsDir)/iMXRT/iMXRT_Target.js" />
-      <file file_name="MemoryMap_MIMXRT117x_cm4.xml" />
-      <file file_name="placement_flexspi_M4.xml" />
       <file file_name="$(StudioDir)/source/thumb_crt0.s" />
+      <file file_name="placement_flexspi_RowleyBsp.xml" />
     </folder>
   </project>
   <project Name="Coremark_1170CM7">
@@ -964,7 +957,6 @@
       arm_core_type="Cortex-M7"
       arm_fp_abi="Hard"
       arm_fpu_type="FPv5-D16"
-      arm_linker_heap_size="10240"
       arm_linker_stack_size="10240"
       arm_target_device_name="MIMXRT1176xxxA_M7"
       arm_target_loader_applicable_loaders="Flash"
@@ -980,7 +972,7 @@
       default_data_section=".data_tcm"
       default_zeroed_section=".bss_tcm"
       linker_memory_map_file="$(TargetsDir)/iMXRT/iMXRT11_cm7_MemoryMap.xml"
-      linker_memory_map_macros="OCRAMSTART=0x20240000;OCRAMSIZE=0x40000;DTCMSIZE=0x40000;ITCMSIZE=0x40000;FlexSPISTART=0x30000000;FlexSPI2START=0x60000000"
+      linker_memory_map_macros="OCRAMSTART=0x20240000;OCRAMSIZE=0x00080000;DTCMSIZE=0x40000;ITCMSIZE=0x40000;FlexSPISTART=0x30000000;FlexSPI2START=0x60000000;FlexSPISIZE=0x00010000"
       linker_section_placement_file="$(TargetsDir)/iMXRT/flexspi_placement.xml"
       linker_section_placement_macros="FILLSIZE=0x400"
       macros="DeviceStartFile=$(TargetsDir)/iMXRT/startup_MIMXRT1176_cm7.s;DeviceSystemFile=$(TargetsDir)/iMXRT/devices/MIMXRT1176/system_MIMXRT1176_cm7.c;HYPER=MIMXRT117x_HYPER_256KB_SEC;QSPI=MIMXRT117x_QuadSPI_4KB_SEC;DeviceFamily=MIMXRT1176"
@@ -993,6 +985,8 @@
       target_script_file="$(TargetsDir)/iMXRT/iMXRT_Target.js" />
     <configuration
       Name="Flash"
+      target_reset_script="Reset2()"
+      target_loader_reset_script=""
       arm_target_flash_loader_file_path="$(TargetsDir)/iMXRT/Loader/$(QSPI)_Loader.elf"
       arm_target_loader_parameter="24000000" />
     <folder Name="component">
@@ -1066,9 +1060,8 @@
       <file file_name="$(DeviceStartFile)" />
       <file file_name="$(DeviceSystemFile)" />
       <file file_name="$(TargetsDir)/iMXRT/iMXRT_Target.js" />
-      <file file_name="MemoryMap_MIMXRT117x_cm7.xml" />
-      <file file_name="placement_flexspi_M7.xml" />
       <file file_name="$(StudioDir)/source/thumb_crt0.s" />
+      <file file_name="placement_flexspi_RowleyBsp.xml" />
     </folder>
     <folder Name="XIP">
       <file file_name="XiP/flexspi_boot.c" />

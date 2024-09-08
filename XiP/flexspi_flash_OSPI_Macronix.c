@@ -63,7 +63,7 @@ const flexspi_nor_config_t FlashBootHeader =
 		.sflashB2Size         = 0U,
 		.dataValidTime =
 		{
-//			[0] = {.time_100ps = 16},
+	//			[0] = {.time_100ps = 16},
 			[0] = 16,
 		},
 		.busyOffset           = 0U,
