@@ -2,7 +2,12 @@
 
 [CoreMark](https://www.eembc.org/coremark/scores.php) is a benchmark that measures the performance of central processing units (CPU) used in embedded systems. It was developed in 2009 by Shay Gal-On at [EEMBC](https://www.eembc.org/) and is intended to become an industry standard, replacing the Dhrystone benchmark. The code is written in C and contains implementations of the following algorithms: list processing (find and sort), matrix manipulation (common matrix operations), state machine (determine if an input stream contains valid numbers), and CRC. The code is under the [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0) and is free of cost to use, but ownership is retained by the Consortium and publication of modified versions under the CoreMark name prohibited. ([Wikipedia](https://en.wikipedia.org/wiki/Coremark))
 
-This projects implements the Coremark benchmark for the [iMXRT Family](https://www.nxp.com/products/processors-and-microcontrollers/arm-microcontrollers/i-mx-rt-crossover-mcus:IMX-RT-SERIES) controller using [Rowley Crossworks](https://www.rowley.co.uk/). For this project the CPU-Support Package from [here](https://github.com/Masmiseim36/iMXRT) is used.
+This projects implements the Coremark benchmark for the [iMXRT Family](https://www.nxp.com/products/processors-and-microcontrollers/arm-microcontrollers/i-mx-rt-crossover-mcus:IMX-RT-SERIES) controller using [Rowley Crossworks](https://www.rowley.co.uk/). This project contains two solution files.
+
+- [Coremark_RowleyBsp.hzp](Coremark_RowleyBsp.hzp) uses the original CPU support package from Rowley
+- [Coremark.hzp](Coremark.hzp) uses a customized and extended [version](https://github.com/Masmiseim36/iMXRT) of the CPU support package which makes in incompatible to the original one.
+
+Both solution files contain separate projects for the various derivatives of the iMXRT family which can be run on the respective evaluation boards. For iMXRT1160/1170, the projects for the M7 core must be active so that the projects for both cores can be loaded onto the CPU and debugged there. Unfortunately, the multicore functionality does not yet work for the iMXRT1180.
 
 ## Results with GCC 10.3
 
