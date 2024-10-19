@@ -106,6 +106,14 @@ typedef enum _FlexSpiSerialClockFreq
 	kFlexSpiSerialClk_200MHz = 9,
 } flexspi_serial_clk_freq_t;
 
+/* !@brief FLEXSPI clock configuration - In Normal boot SDR mode */
+enum
+{
+    kFlexSpiSerialClk_SDR_24MHz = 1,
+    kFlexSpiSerialClk_SDR_48MHz = 2,
+};
+
+
 //!@brief FlexSPI clock configuration type
 enum FlexSpiClk
 {
@@ -172,6 +180,14 @@ enum FlashCommandType
 	kDeviceConfigCmdType_Reset,      //!< Reset device command
 };
 
+enum SerialNorType
+{
+	SerialNorType_StandardSPI,
+	SerialNorType_HyperBus,
+	SerialNorType_XPI,
+	SerialNorType_NoCmd
+};
+
 #if defined XIP_EXTERNAL_FLASH
 
 //!@brief FlexSPI Dll Time Block
@@ -184,7 +200,7 @@ typedef struct
 //!@brief FlexSPI Memory Configuration Block
 typedef struct _FlexSPIConfig
 {
-	uint32_t tag;                    //!< [0x000-0x003] Tag, fixed value 0x42464346UL
+	uint32_t tag;                    //!< [0x000-0x003] Tag, fixed value 0x42464346UL - ascii: 'FCFB'
 	uint32_t version;                //!< [0x004-0x007] Version,[31:24] -'V', [23:16] - Major, [15:8] - Minor, [7:0] - bugfix
 	uint32_t reserved0;              //!< [0x008-0x00b] Reserved for future use
 	uint8_t readSampleClkSrc;        //!< [0x00c-0x00c] Read Sample Clock Source, valid value: 0/1/3
@@ -260,13 +276,15 @@ typedef struct _flexspi_nor_config
 	uint32_t sectorSize;            //!< Sector size of Serial NOR
 	uint8_t ipcmdSerialClkFreq;     //!< Clock frequency for IP command
 	uint8_t isUniformBlockSize;     //!< Sector/Block size is the same
-	uint8_t reserved0[2];           //!< Reserved for future use
+	uint8_t isDataOrderSwapped;     //!< Data order (D0, D1, D2, D3) is swapped (D1,D0, D3, D2)
+	uint8_t reserved0[1];           //!< Reserved for future use
 	uint8_t serialNorType;          //!< Serial NOR Flash type: 0/1/2/3
 	uint8_t needExitNoCmdMode;      //!< Need to exit NoCmd mode before other IP command
 	uint8_t halfClkForNonReadCmd;   //!< Half the Serial Clock for non-read command: true/false
 	uint8_t needRestoreNoCmdMode;   //!< Need to Restore NoCmd mode after IP command execution
 	uint32_t blockSize;             //!< Block size
-	uint32_t reserve2[11];          //!< Reserved for future use
+	uint32_t flashStateCtx;         //!< Flash State Context
+	uint32_t reserve2[10];          //!< Reserved for future use
 } flexspi_nor_config_t;
 
 

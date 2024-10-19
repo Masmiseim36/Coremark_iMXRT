@@ -1815,7 +1815,7 @@
       linker_memory_map_file="$(TargetsDir)/iMXRText/MemoryMap_MIMXRT600.xml"
       linker_memory_map_macros="SRAMCODESIZE=0x00100000;SRAMDATASIZE=0x00100000;SRAMDATASTART=0x30100000"
       linker_section_placement_file="$(TargetsDir)/iMXRText/placement_flexspi.xml"
-      linker_section_placement_macros="FLASH_NAME=FlexSPI;ITCM_NAME=SRAM_code;DTCM_NAME=SRAM_data;RAM_NAME=SRAM_data"
+      linker_section_placement_macros="FLASH_NAME=FlexSPI;ITCM_NAME=SRAM_code;DTCM_NAME=SRAM_data;RAM_NAME=SRAM_data;VECTOR_OFFSET=0x1000"
       macros="DeviceName=MIMXRT685S_cm33;Family=iMXRT600"
       project_directory=""
       project_type="Executable"
@@ -1917,8 +1917,6 @@
       <file file_name="XiP/flexspi_boot.h">
         <configuration Name="Common" build_exclude_from_build="Yes" />
       </file>
-      <file file_name="XiP/flexspi_container_config.c" />
-      <file file_name="XiP/flexspi_container_config.h" />
       <file file_name="XiP/flexspi_flash.h" />
       <file file_name="XiP/flexspi_flash_Hyperflash.c">
         <configuration Name="Common" build_exclude_from_build="Yes" />

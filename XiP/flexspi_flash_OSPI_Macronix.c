@@ -59,7 +59,7 @@ const flexspi_nor_config_t FlashBootHeader =
 		.serialClkFreq        = kFlexSpiSerialClk_166MHz,
 		.sflashA1Size         = 64UL * 1024U * 1024U, // for iMXRT10xx / 11xx
 		.sflashA2Size         = 0U,
-		.sflashB1Size         = 0U, // for iMXRT500/600
+		.sflashB1Size         = 0U,
 		.sflashB2Size         = 0U,
 		.dataValidTime =
 		{

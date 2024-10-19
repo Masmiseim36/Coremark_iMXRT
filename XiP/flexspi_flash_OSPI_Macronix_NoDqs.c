@@ -34,6 +34,7 @@ OF SUCH DAMAGE. */
 #else
 	#error "Unknown Compiler"
 #endif
+#define DUMMY_CYCLES 12U
 const flexspi_nor_config_t FlashBootHeader =
 {
 	.memConfig =
@@ -44,51 +45,46 @@ const flexspi_nor_config_t FlashBootHeader =
 		.csHoldTime           = 3U,
 		.csSetupTime          = 3U,
 		.deviceModeCfgEnable  = 1U,
-		.deviceModeType       = kDeviceConfigCmdType_Spi2Xpi,
+		.deviceModeType       = kDeviceConfigCmdType_Generic,
 		.waitTimeCfgCommands  = 1U,
 		.deviceModeSeq =
 		{
-			.seqNum   = 1U,
-			.seqId    = 6U, // See Lookup table for more details
-			.reserved = 0U,
+			.seqNum           = 1U,
+			.seqId            = 6, // See Lookup table for more details
+			.reserved         = 0U,
 		},
-		.deviceModeArg = 2,
+		.deviceModeArg        = DUMMY_CYCLES,
 		.configCmdEnable      = 1,
 		.configModeType       = {kDeviceConfigCmdType_Generic, kDeviceConfigCmdType_Spi2Xpi,kDeviceConfigCmdType_Generic},
 		.configCmdSeqs        = 
 		{
 			{
-				.seqNum   = 1,
-				.seqId    = 7,
-				.reserved = 0,
+				.seqNum       = 1,
+				.seqId        = 7,
+				.reserved     = 0,
 			},
 			{
-				.seqNum   = 1,
-				.seqId    = 10,
-				.reserved = 0,
+				.seqNum       = 1,
+				.seqId        = 10,
+				.reserved     = 0,
 			}
 		},
-		.configCmdArgs        = {0x2, 0x1},
+		.configCmdArgs        = {0x2, 0x2},
 		.controllerMiscOption = (1u << kFlexSpiMiscOffset_SafeConfigFreqEnable) | (1u << kFlexSpiMiscOffset_DdrModeEnable),
 		.deviceType           = kFlexSpiDeviceType_SerialNOR,
 		.sflashPadType        = kSerialFlash_8Pads,
-		.serialClkFreq        = kFlexSpiSerialClk_60MHz,
+		.serialClkFreq        = kFlexSpiSerialClk_50MHz,
 		.sflashA1Size         = 0U,
 		.sflashA2Size         = 0U,
 		.sflashB1Size         = 64UL * 1024U * 1024U,
 		.sflashB2Size         = 0U,
-		.dataValidTime =
-		{
-	//			[0] = {.time_100ps = 16},
-			[0] = 16,
-		},
 		.busyOffset           = 0U,
 		.busyBitPolarity      = 0U,
 		.lookupTable =
 		{
 			// (0) Read
 			[ 0] = FLEXSPI_LUT_SEQ (CMD_DDR,   FLEXSPI_8PAD, 0xEE, CMD_DDR,   FLEXSPI_8PAD, 0x11),
-			[ 1] = FLEXSPI_LUT_SEQ (RADDR_DDR, FLEXSPI_8PAD, 0x20, DUMMY_DDR, FLEXSPI_8PAD, 13), // (6 Dummy Cycles * 2) + 1
+			[ 1] = FLEXSPI_LUT_SEQ (RADDR_DDR, FLEXSPI_8PAD, 0x20, DUMMY_DDR, FLEXSPI_8PAD, (DUMMY_CYCLES * 2) +1),
 			[ 2] = FLEXSPI_LUT_SEQ (READ_DDR,  FLEXSPI_8PAD, 0x04, STOP,      FLEXSPI_1PAD, 0x00),
 			[ 3] = 0,
 
@@ -97,7 +93,7 @@ const flexspi_nor_config_t FlashBootHeader =
 
 			// (2) Read Status - OPI
 			[ 8] = FLEXSPI_LUT_SEQ (CMD_DDR,   FLEXSPI_8PAD, 0x05, CMD_DDR,   FLEXSPI_8PAD, 0xFA),
-			[ 9] = FLEXSPI_LUT_SEQ (RADDR_DDR, FLEXSPI_8PAD, 0x20, DUMMY_DDR, FLEXSPI_8PAD, 0x14),
+			[ 9] = FLEXSPI_LUT_SEQ (RADDR_DDR, FLEXSPI_8PAD, 0x20, DUMMY_DDR, FLEXSPI_8PAD, (DUMMY_CYCLES * 2) +1),
 			[10] = FLEXSPI_LUT_SEQ (READ_DDR,  FLEXSPI_8PAD, 0x04, STOP,      FLEXSPI_1PAD, 0x00),
 
 			// (3) Write Enable - SPI
@@ -113,7 +109,7 @@ const flexspi_nor_config_t FlashBootHeader =
 			// (6) Configure Register - Set dummy cycles - SPI
 			[24] = FLEXSPI_LUT_SEQ (CMD_SDR,   FLEXSPI_1PAD, 0x72, CMD_SDR,   FLEXSPI_1PAD, 0x00),
 			[25] = FLEXSPI_LUT_SEQ (CMD_SDR,   FLEXSPI_1PAD, 0x00, CMD_SDR,   FLEXSPI_1PAD, 0x03),
-			[26] = FLEXSPI_LUT_SEQ (CMD_SDR,   FLEXSPI_1PAD, 0x00, WRITE_SDR, FLEXSPI_1PAD, 0x07), // --> 6 Dummy Cycles
+			[26] = FLEXSPI_LUT_SEQ (CMD_SDR,   FLEXSPI_1PAD, 0x00, WRITE_SDR, FLEXSPI_1PAD, 0x01), // --> 6 Dummy Cycles
 
 			// (7) Configure Register - Disable DQS on STR mode - SPI
 			[28] = FLEXSPI_LUT_SEQ (CMD_SDR,   FLEXSPI_1PAD, 0x72, CMD_SDR,   FLEXSPI_1PAD, 0x00),
@@ -131,15 +127,18 @@ const flexspi_nor_config_t FlashBootHeader =
 			// (10) Configure Register - Enable OPI DDR mode - SPI
 			[40] = FLEXSPI_LUT_SEQ (CMD_SDR,   FLEXSPI_1PAD, 0x72, CMD_SDR,   FLEXSPI_1PAD, 0x00),
 			[41] = FLEXSPI_LUT_SEQ (CMD_SDR,   FLEXSPI_1PAD, 0x00, CMD_SDR,   FLEXSPI_1PAD, 0x00),
-			[42] = FLEXSPI_LUT_SEQ (CMD_SDR,   FLEXSPI_1PAD, 0x00, WRITE_SDR, FLEXSPI_1PAD, 0x02), // --> 2 = OPI + DDR - 1 = OPI + SDR
+			[42] = FLEXSPI_LUT_SEQ (CMD_SDR,   FLEXSPI_1PAD, 0x00, WRITE_SDR, FLEXSPI_1PAD, 0x01), // --> 2 = OPI + DDR - 1 = OPI + SDR
 
 			// (11) Erase Chip - OPI
 			[44] = FLEXSPI_LUT_SEQ (CMD_DDR,   FLEXSPI_8PAD, 0x60, CMD_DDR,   FLEXSPI_8PAD, 0x9F),
 		},
 	},
-	.pageSize    = 256U,
-	.sectorSize  =  4U * 1024U,
-	.blockSize   = 64U * 1024U,
+	.pageSize           = 256U,
+	.sectorSize         = 4U * 1024U,
+	.ipcmdSerialClkFreq = 1U,
+	.serialNorType      = SerialNorType_XPI,
+	.blockSize          = 64U * 1024U,
+	.flashStateCtx      = 0x07008200U
 };
 
 #endif // defined XIP_BOOT_OCTASPI
