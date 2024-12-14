@@ -203,8 +203,29 @@ extern "C"
 			IOMUXC_LPSR_GPR->GPR0 = IOMUXC_LPSR_GPR_GPR0_CM4_INIT_VTOR_LOW ((uint32_t)bootAddress >> 3);
 			IOMUXC_LPSR_GPR->GPR1 = IOMUXC_LPSR_GPR_GPR1_CM4_INIT_VTOR_HIGH((uint32_t)bootAddress >> 16);
 			SRC->SCR |= SRC_SCR_BT_RELEASE_M4_MASK;
-		#elif defined MIMXRT1189_cm33_SERIES || MIMXRT1187_cm33_SERIES
+		#elif defined MIMXRT1189_cm33_SERIES || defined MIMXRT1187_cm33_SERIES
 			// Start the M7 core
+			extern uint32_t __ITCM_M7_segment_start__ [];
+			extern uint32_t __FlexSPI_segment_end__[];
+			// Copy the vector table of the M7 core from the flash to the ITCM of the M7:
+/*			memcpy (__ITCM_M7_segment_start__, __FlexSPI_segment_end__, 1020);
+
+			// Trigger S401
+			while ((MU_RT_S3MUA->TSR & MU_TSR_TE0_MASK) == 0)
+				; // Wait TR empty
+			MU_RT_S3MUA->TR[0] = 0x17d20106;
+			while ((MU_RT_S3MUA->RSR & MU_RSR_RF0_MASK) == 0)
+				; // Wait RR Full
+			while ((MU_RT_S3MUA->RSR & MU_RSR_RF1_MASK) == 0)
+				; // Wait RR Full
+
+			// Response from ELE must be always read 
+			[[maybe_unused]]volatile uint32_t result1 = MU_RT_S3MUA->RR[0];
+			[[maybe_unused]]volatile uint32_t result2 = MU_RT_S3MUA->RR[1];
+
+			// Deassert Wait
+			BLK_CTRL_S_AONMIX->M7_CFG = (BLK_CTRL_S_AONMIX->M7_CFG & (~BLK_CTRL_S_AONMIX_M7_CFG_WAIT_MASK)) | BLK_CTRL_S_AONMIX_M7_CFG_WAIT(0);
+			*/
 		#endif
 	}
 

@@ -40,7 +40,7 @@
       arm_target_loader_default_loader="Flash"
       c_preprocessor_definitions="SERIAL_PORT_TYPE_UART=1;XIP_BOOT_FLEXSPI1"
       c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRT;$(TargetsDir)/iMXRT/devices/$(DeviceFamily)"
-      c_user_include_directories="./drivers/1010;./drivers;./1010"
+      c_user_include_directories="./drivers/1010;./drivers;./boards/1010"
       debug_register_definition_file="$(TargetsDir)/iMXRT/XML/MIMXRT1011_registers.xml"
       debug_startup_completion_point="main"
       default_code_section=".text_tcm"
@@ -110,12 +110,12 @@
       <file file_name="drivers/fsl_romapi.h" />
     </folder>
     <folder Name="src">
-      <file file_name="1010/board.c" />
-      <file file_name="1010/board.h" />
-      <file file_name="1010/clock_config.c" />
-      <file file_name="1010/clock_config.h" />
-      <file file_name="1010/pin_mux.c" />
-      <file file_name="1010/pin_mux.h" />
+      <file file_name="boards/1010/board.c" />
+      <file file_name="boards/1010/board.h" />
+      <file file_name="boards/1010/clock_config.c" />
+      <file file_name="boards/1010/clock_config.h" />
+      <file file_name="boards/1010/pin_mux.c" />
+      <file file_name="boards/1010/pin_mux.h" />
     </folder>
     <folder Name="System Files">
       <configuration
@@ -156,7 +156,7 @@
       arm_target_loader_default_loader="Flash"
       c_preprocessor_definitions="SERIAL_PORT_TYPE_UART=1;XIP_BOOT_FLEXSPI1"
       c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRT;$(TargetsDir)/iMXRT/devices/$(DeviceFamily)"
-      c_user_include_directories="./drivers/1015;./drivers;./1015"
+      c_user_include_directories="./drivers/1015;./drivers;./boards/1015"
       debug_register_definition_file="$(TargetsDir)/iMXRT/XML/MIMXRT1015_registers.xml"
       debug_startup_completion_point="main"
       default_code_section=".text_tcm"
@@ -224,12 +224,12 @@
       <file file_name="drivers/fsl_lpuart.h" />
     </folder>
     <folder Name="src">
-      <file file_name="1015/board.c" />
-      <file file_name="1015/board.h" />
-      <file file_name="1015/clock_config.c" />
-      <file file_name="1015/clock_config.h" />
-      <file file_name="1015/pin_mux.c" />
-      <file file_name="1015/pin_mux.h" />
+      <file file_name="boards/1015/board.c" />
+      <file file_name="boards/1015/board.h" />
+      <file file_name="boards/1015/clock_config.c" />
+      <file file_name="boards/1015/clock_config.h" />
+      <file file_name="boards/1015/pin_mux.c" />
+      <file file_name="boards/1015/pin_mux.h" />
     </folder>
     <folder Name="System Files">
       <configuration
@@ -270,7 +270,7 @@
       arm_target_loader_default_loader="Flash"
       c_preprocessor_definitions="SERIAL_PORT_TYPE_UART=1;XIP_BOOT_FLEXSPI1"
       c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRT;$(TargetsDir)/iMXRT/devices/$(DeviceFamily)"
-      c_user_include_directories="./drivers/1020;./drivers;./1020"
+      c_user_include_directories="./drivers/1020;./drivers;./boards/1020"
       debug_register_definition_file="$(TargetsDir)/iMXRT/XML/MIMXRT1021_registers.xml"
       debug_startup_completion_point="main"
       default_code_section=".text_tcm"
@@ -338,12 +338,12 @@
       <file file_name="drivers/fsl_lpuart.h" />
     </folder>
     <folder Name="src">
-      <file file_name="1020/board.c" />
-      <file file_name="1020/board.h" />
-      <file file_name="1020/clock_config.c" />
-      <file file_name="1020/clock_config.h" />
-      <file file_name="1020/pin_mux.c" />
-      <file file_name="1020/pin_mux.h" />
+      <file file_name="boards/1020/board.c" />
+      <file file_name="boards/1020/board.h" />
+      <file file_name="boards/1020/clock_config.c" />
+      <file file_name="boards/1020/clock_config.h" />
+      <file file_name="boards/1020/pin_mux.c" />
+      <file file_name="boards/1020/pin_mux.h" />
     </folder>
     <folder Name="System Files">
       <configuration
@@ -384,7 +384,7 @@
       arm_target_loader_default_loader="Flash"
       c_preprocessor_definitions="SERIAL_PORT_TYPE_UART=1;XIP_BOOT_FLEXSPI1"
       c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRT;$(TargetsDir)/iMXRT/devices/$(DeviceFamily)"
-      c_user_include_directories="./drivers/1024;./drivers;./1024"
+      c_user_include_directories="./drivers/1024;./drivers;./boards/1024"
       debug_register_definition_file="$(TargetsDir)/iMXRT/XML/MIMXRT1024_registers.xml"
       debug_startup_completion_point="main"
       default_code_section=".text_tcm"
@@ -452,12 +452,12 @@
       <file file_name="drivers/fsl_lpuart.h" />
     </folder>
     <folder Name="src">
-      <file file_name="1024/board.c" />
-      <file file_name="1024/board.h" />
-      <file file_name="1024/clock_config.c" />
-      <file file_name="1024/clock_config.h" />
-      <file file_name="1024/pin_mux.c" />
-      <file file_name="1024/pin_mux.h" />
+      <file file_name="boards/1024/board.c" />
+      <file file_name="boards/1024/board.h" />
+      <file file_name="boards/1024/clock_config.c" />
+      <file file_name="boards/1024/clock_config.h" />
+      <file file_name="boards/1024/pin_mux.c" />
+      <file file_name="boards/1024/pin_mux.h" />
     </folder>
     <folder Name="System Files">
       <configuration
@@ -498,7 +498,7 @@
       arm_target_loader_default_loader="Flash"
       c_preprocessor_definitions="SERIAL_PORT_TYPE_UART=1;XIP_BOOT_FLEXSPI1"
       c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRT;$(TargetsDir)/iMXRT/devices/$(DeviceFamily)"
-      c_user_include_directories="./drivers/1040;./drivers;./1040"
+      c_user_include_directories="./drivers/1040;./drivers;./boards/1040"
       debug_register_definition_file="$(TargetsDir)/iMXRT/XML/MIMXRT1042_registers.xml"
       debug_startup_completion_point="main"
       default_code_section=".text_tcm"
@@ -566,12 +566,12 @@
       <file file_name="drivers/fsl_lpuart.h" />
     </folder>
     <folder Name="src">
-      <file file_name="1040/board.c" />
-      <file file_name="1040/board.h" />
-      <file file_name="1040/clock_config.c" />
-      <file file_name="1040/clock_config.h" />
-      <file file_name="1040/pin_mux.c" />
-      <file file_name="1040/pin_mux.h" />
+      <file file_name="boards/1040/board.c" />
+      <file file_name="boards/1040/board.h" />
+      <file file_name="boards/1040/clock_config.c" />
+      <file file_name="boards/1040/clock_config.h" />
+      <file file_name="boards/1040/pin_mux.c" />
+      <file file_name="boards/1040/pin_mux.h" />
     </folder>
     <folder Name="System Files">
       <configuration
@@ -612,7 +612,7 @@
       arm_target_loader_default_loader="Flash"
       c_preprocessor_definitions="SERIAL_PORT_TYPE_UART=1;XIP_BOOT_FLEXSPI1"
       c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRT;$(TargetsDir)/iMXRT/devices/$(DeviceFamily)"
-      c_user_include_directories="./drivers/1050;./drivers;./1050"
+      c_user_include_directories="./drivers/1050;./drivers;./boards/1050"
       debug_register_definition_file="$(TargetsDir)/iMXRT/XML/MIMXRT1052_registers.xml"
       debug_startup_completion_point="main"
       default_code_section=".text_tcm"
@@ -680,12 +680,12 @@
       <file file_name="drivers/fsl_lpuart.h" />
     </folder>
     <folder Name="src">
-      <file file_name="1050/board.c" />
-      <file file_name="1050/board.h" />
-      <file file_name="1050/clock_config.c" />
-      <file file_name="1050/clock_config.h" />
-      <file file_name="1050/pin_mux.c" />
-      <file file_name="1050/pin_mux.h" />
+      <file file_name="boards/1050/board.c" />
+      <file file_name="boards/1050/board.h" />
+      <file file_name="boards/1050/clock_config.c" />
+      <file file_name="boards/1050/clock_config.h" />
+      <file file_name="boards/1050/pin_mux.c" />
+      <file file_name="boards/1050/pin_mux.h" />
     </folder>
     <folder Name="System Files">
       <configuration
@@ -726,7 +726,7 @@
       arm_target_loader_default_loader="Flash"
       c_preprocessor_definitions="SERIAL_PORT_TYPE_UART=1;XIP_BOOT_FLEXSPI1"
       c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRT;$(TargetsDir)/iMXRT/devices/$(DeviceFamily)"
-      c_user_include_directories="./drivers/1060;./drivers;./1060"
+      c_user_include_directories="./drivers/1060;./drivers;./boards/1060"
       debug_register_definition_file="$(TargetsDir)/iMXRT/XML/MIMXRT1062_registers.xml"
       debug_startup_completion_point="main"
       default_code_section=".text_tcm"
@@ -738,7 +738,7 @@
       linker_memory_map_macros="OCRAMSIZE=0x10000;DTCMSIZE=0x8000;ITCMSIZE=0x8000"
       linker_section_placement_file="$(TargetsDir)/iMXRT/flexspi_placement.xml"
       linker_section_placement_macros=""
-      macros="DeviceStartFile=$(TargetsDir)/iMXRT/startup_MIMXRT1062.s;DeviceSystemFile=$(TargetsDir)/iMXRT/devices/MIMXRT1062/system_MIMXRT1062.c;HYPER=MIMXRT106x_HYPER_256KB_SEC;QSPI=MIMXRT106x_QSPI_4KB_SEC;DeviceFamily=MIMXRT1062"
+      macros="DeviceStartFile=$(TargetsDir)/iMXRT/startup_MIMXRT1062.s;DeviceSystemFile=$(TargetsDir)/iMXRT/devices/MIMXRT1062/system_MIMXRT1062.c;;QSPI=MIMXRT106x_FlexSPI_NOR_API;DeviceFamily=MIMXRT1062"
       project_directory=""
       project_type="Executable"
       property_groups_file_path="$(TargetsDir)/iMXRT/propertyGroups.xml"
@@ -794,12 +794,12 @@
       <file file_name="drivers/fsl_lpuart.h" />
     </folder>
     <folder Name="src">
-      <file file_name="1060/board.c" />
-      <file file_name="1060/board.h" />
-      <file file_name="1060/clock_config.c" />
-      <file file_name="1060/clock_config.h" />
-      <file file_name="1060/pin_mux.c" />
-      <file file_name="1060/pin_mux.h" />
+      <file file_name="boards/1060/board.c" />
+      <file file_name="boards/1060/board.h" />
+      <file file_name="boards/1060/clock_config.c" />
+      <file file_name="boards/1060/clock_config.h" />
+      <file file_name="boards/1060/pin_mux.c" />
+      <file file_name="boards/1060/pin_mux.h" />
     </folder>
     <folder Name="System Files">
       <configuration
@@ -840,7 +840,7 @@
       arm_target_loader_default_loader="Flash"
       c_preprocessor_definitions="SERIAL_PORT_TYPE_UART=1;XIP_BOOT_FLEXSPI1"
       c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRT;$(TargetsDir)/iMXRT/devices/$(DeviceFamily)"
-      c_user_include_directories="./drivers/1060;./drivers;./1064"
+      c_user_include_directories="./drivers/1060;./drivers;./boards/1064"
       debug_register_definition_file="$(TargetsDir)/iMXRT/XML/MIMXRT1064_registers.xml"
       debug_startup_completion_point="main"
       default_code_section=".text_tcm"
@@ -852,7 +852,7 @@
       linker_memory_map_macros="OCRAMSIZE=0x10000;DTCMSIZE=0x8000;ITCMSIZE=0x8000"
       linker_section_placement_file="$(TargetsDir)/iMXRT/flexspi_placement.xml"
       linker_section_placement_macros="FLASH_NAME=FlexSPI2"
-      macros="DeviceStartFile=$(TargetsDir)/iMXRT/startup_MIMXRT1064.s;DeviceSystemFile=$(TargetsDir)/iMXRT/devices/MIMXRT1064/system_MIMXRT1064.c;HYPER=MIMXRT106x_HYPER_256KB_SEC;QSPI=MIMXRT1064_QSPI_4KB_SEC;DeviceFamily=MIMXRT1064"
+      macros="DeviceStartFile=$(TargetsDir)/iMXRT/startup_MIMXRT1064.s;DeviceSystemFile=$(TargetsDir)/iMXRT/devices/MIMXRT1064/system_MIMXRT1064.c;;QSPI=MIMXRT1064_FlexSPI_NOR_API;DeviceFamily=MIMXRT1064"
       project_directory=""
       project_type="Executable"
       property_groups_file_path="$(TargetsDir)/iMXRT/propertyGroups.xml"
@@ -908,14 +908,14 @@
       <file file_name="drivers/fsl_lpuart.h" />
     </folder>
     <folder Name="src">
-      <file file_name="1064/board.c" />
-      <file file_name="1064/board.h" />
-      <file file_name="1064/clock_config.c" />
-      <file file_name="1064/clock_config.h" />
-      <file file_name="1064/dcd.c" />
-      <file file_name="1064/dcd.h" />
-      <file file_name="1064/pin_mux.c" />
-      <file file_name="1064/pin_mux.h" />
+      <file file_name="boards/1064/board.c" />
+      <file file_name="boards/1064/board.h" />
+      <file file_name="boards/1064/clock_config.c" />
+      <file file_name="boards/1064/clock_config.h" />
+      <file file_name="boards/1064/dcd.c" />
+      <file file_name="boards/1064/dcd.h" />
+      <file file_name="boards/1064/pin_mux.c" />
+      <file file_name="boards/1064/pin_mux.h" />
     </folder>
     <folder Name="System Files">
       <configuration
@@ -960,7 +960,7 @@
       arm_target_loader_default_loader="Flash"
       c_preprocessor_definitions="SERIAL_PORT_TYPE_UART=1;XIP_BOOT_FLEXSPI1"
       c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRT;$(TargetsDir)/iMXRT/devices/$(DeviceFamily)"
-      c_user_include_directories="./drivers/1170cm4;./drivers;./1170"
+      c_user_include_directories="./drivers/1170cm4;./drivers;./boards/1170"
       debug_register_definition_file="$(TargetsDir)/iMXRT/XML/MIMXRT11_cm4_Registers.xml"
       debug_startup_completion_point="main"
       default_code_section=".text_tcm"
@@ -971,7 +971,7 @@
       linker_memory_map_macros="OCRAMSTART=0x202C0000;OCRAMSIZE=0x00080000;ITCMSTART=0x1FFE0000;FlexSPISTART=0x08010000;FlexSPI2START=0x60000000;FlexSPISIZE=0x00010000;FlexSPILoadOffset=0"
       linker_section_placement_file="$(TargetsDir)/iMXRT/flexspi_placement.xml"
       linker_section_placement_macros="FILLSIZE=0x400"
-      macros="DeviceStartFile=$(TargetsDir)/iMXRT/startup_MIMXRT1176_cm4.s;DeviceSystemFile=$(TargetsDir)/iMXRT/devices/MIMXRT1176/system_MIMXRT1176_cm4.c;HYPER=MIMXRT117x_HYPER_256KB_SEC;QSPI=MIMXRT117x_QuadSPI_4KB_SEC_Alias;DeviceFamily=MIMXRT1176"
+      macros="DeviceStartFile=$(TargetsDir)/iMXRT/startup_MIMXRT1176_cm4.s;DeviceSystemFile=$(TargetsDir)/iMXRT/devices/MIMXRT1176/system_MIMXRT1176_cm4.c;HYPER=MIMXRT117x_FlexSPI_NOR_API_M4;QSPI=MIMXRT117x_FlexSPI_NOR_API_M4;DeviceFamily=MIMXRT1176"
       project_directory=""
       project_type="Executable"
       property_groups_file_path="$(TargetsDir)/iMXRT/propertyGroups.xml"
@@ -1038,13 +1038,13 @@
       <file file_name="drivers/fsl_pmu.h" />
     </folder>
     <folder Name="src">
-      <file file_name="1170/board.c" />
-      <file file_name="1170/board.h" />
-      <file file_name="1170/clock_config.c" />
-      <file file_name="1170/clock_config.h" />
-      <file file_name="1170/config.h" />
-      <file file_name="1170/pin_mux.c" />
-      <file file_name="1170/pin_mux.h" />
+      <file file_name="boards/1170/board.c" />
+      <file file_name="boards/1170/board.h" />
+      <file file_name="boards/1170/clock_config.c" />
+      <file file_name="boards/1170/clock_config.h" />
+      <file file_name="boards/1170/config.h" />
+      <file file_name="boards/1170/pin_mux.c" />
+      <file file_name="boards/1170/pin_mux.h" />
     </folder>
     <folder Name="System Files">
       <configuration
@@ -1077,7 +1077,7 @@
       arm_target_loader_default_loader="Flash"
       c_preprocessor_definitions="SERIAL_PORT_TYPE_UART=1;XIP_BOOT_FLEXSPI1"
       c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRT;$(TargetsDir)/iMXRT/devices/$(DeviceFamily)"
-      c_user_include_directories="./drivers/1170cm7;./drivers;./1170"
+      c_user_include_directories="./drivers/1170cm7;./drivers;./boards/1170"
       debug_dependent_projects="Coremark_1170CM4"
       debug_register_definition_file="$(TargetsDir)/iMXRT/XML/MIMXRT11_cm7_registers.xml"
       debug_startup_completion_point="main"
@@ -1089,7 +1089,7 @@
       linker_memory_map_macros="OCRAMSTART=0x20240000;OCRAMSIZE=0x00080000;DTCMSIZE=0x40000;ITCMSIZE=0x40000;FlexSPISTART=0x30000000;FlexSPI2START=0x60000000;FlexSPISIZE=0x00010000"
       linker_section_placement_file="$(TargetsDir)/iMXRT/flexspi_placement.xml"
       linker_section_placement_macros="FILLSIZE=0x400"
-      macros="DeviceStartFile=$(TargetsDir)/iMXRT/startup_MIMXRT1176_cm7.s;DeviceSystemFile=$(TargetsDir)/iMXRT/devices/MIMXRT1176/system_MIMXRT1176_cm7.c;HYPER=MIMXRT117x_HYPER_256KB_SEC;QSPI=MIMXRT117x_QuadSPI_4KB_SEC;DeviceFamily=MIMXRT1176"
+      macros="DeviceStartFile=$(TargetsDir)/iMXRT/startup_MIMXRT1176_cm7.s;DeviceSystemFile=$(TargetsDir)/iMXRT/devices/MIMXRT1176/system_MIMXRT1176_cm7.c;HYPER=MIMXRT117x_FlexSPI_NOR_API_M7;QSPI=MIMXRT117x_FlexSPI_NOR_API_M7;DeviceFamily=MIMXRT1176"
       project_dependencies="Coremark_1170CM4"
       project_directory=""
       project_type="Executable"
@@ -1155,13 +1155,13 @@
       <file file_name="drivers/fsl_pmu.h" />
     </folder>
     <folder Name="src">
-      <file file_name="1170/board.c" />
-      <file file_name="1170/board.h" />
-      <file file_name="1170/clock_config.c" />
-      <file file_name="1170/clock_config.h" />
-      <file file_name="1170/config.h" />
-      <file file_name="1170/pin_mux.c" />
-      <file file_name="1170/pin_mux.h" />
+      <file file_name="boards/1170/board.c" />
+      <file file_name="boards/1170/board.h" />
+      <file file_name="boards/1170/clock_config.c" />
+      <file file_name="boards/1170/clock_config.h" />
+      <file file_name="boards/1170/config.h" />
+      <file file_name="boards/1170/pin_mux.c" />
+      <file file_name="boards/1170/pin_mux.h" />
     </folder>
     <folder Name="System Files">
       <configuration
