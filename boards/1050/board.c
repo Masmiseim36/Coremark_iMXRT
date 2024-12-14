@@ -275,38 +275,27 @@ void BOARD_ConfigMPU(void)
     ARM_MPU_Disable();
 
     /* MPU configure:
-     * Use ARM_MPU_RASR(DisableExec, AccessPermission, TypeExtField, IsShareable, IsCacheable, IsBufferable,
-     * SubRegionDisable, Size)
+     * Use ARM_MPU_RASR(DisableExec, AccessPermission, TypeExtField, IsShareable, IsCacheable, IsBufferable, SubRegionDisable, Size)
      * API in mpu_armv7.h.
-     * param DisableExec       Instruction access (XN) disable bit,0=instruction fetches enabled, 1=instruction fetches
-     * disabled.
-     * param AccessPermission  Data access permissions, allows you to configure read/write access for User and
-     * Privileged mode.
-     *      Use MACROS defined in mpu_armv7.h:
-     * ARM_MPU_AP_NONE/ARM_MPU_AP_PRIV/ARM_MPU_AP_URO/ARM_MPU_AP_FULL/ARM_MPU_AP_PRO/ARM_MPU_AP_RO
+     * param DisableExec       Instruction access (XN) disable bit,0=instruction fetches enabled, 1=instruction fetches disabled.
+     * param AccessPermission  Data access permissions, allows you to configure read/write access for User and Privileged mode.
+     *                         Use MACROS defined in mpu_armv7.h:
+     *                         ARM_MPU_AP_NONE/ARM_MPU_AP_PRIV/ARM_MPU_AP_URO/ARM_MPU_AP_FULL/ARM_MPU_AP_PRO/ARM_MPU_AP_RO
+     *
      * Combine TypeExtField/IsShareable/IsCacheable/IsBufferable to configure MPU memory access attributes.
      *  TypeExtField  IsShareable  IsCacheable  IsBufferable   Memory Attribute    Shareability        Cache
      *     0             x           0           0             Strongly Ordered    shareable
      *     0             x           0           1              Device             shareable
-     *     0             0           1           0              Normal             not shareable   Outer and inner write
-     * through no write allocate
-     *     0             0           1           1              Normal             not shareable   Outer and inner write
-     * back no write allocate
-     *     0             1           1           0              Normal             shareable       Outer and inner write
-     * through no write allocate
-     *     0             1           1           1              Normal             shareable       Outer and inner write
-     * back no write allocate
-     *     1             0           0           0              Normal             not shareable   outer and inner
-     * noncache
-     *     1             1           0           0              Normal             shareable       outer and inner
-     * noncache
-     *     1             0           1           1              Normal             not shareable   outer and inner write
-     * back write/read acllocate
-     *     1             1           1           1              Normal             shareable       outer and inner write
-     * back write/read acllocate
+     *     0             0           1           0              Normal             not shareable   Outer and inner write through no write allocate
+     *     0             0           1           1              Normal             not shareable   Outer and inner write back no write allocate
+     *     0             1           1           0              Normal             shareable       Outer and inner write through no write allocate
+     *     0             1           1           1              Normal             shareable       Outer and inner write back no write allocate
+     *     1             0           0           0              Normal             not shareable   outer and inner noncache
+     *     1             1           0           0              Normal             shareable       outer and inner noncache
+     *     1             0           1           1              Normal             not shareable   outer and inner write back write/read acllocate
+     *     1             1           1           1              Normal             shareable       outer and inner write back write/read acllocate
      *     2             x           0           0              Device              not shareable
-     *  Above are normal use settings, if your want to see more details or want to config different inner/outter cache
-     * policy.
+     *  Above are normal use settings, if your want to see more details or want to config different inner/outter cache policy.
      *  please refer to Table 4-55 /4-56 in arm cortex-M7 generic user guide <dui0646b_cortex_m7_dgug.pdf>
      * param SubRegionDisable  Sub-region disable field. 0=sub-region is enabled, 1=sub-region is disabled.
      * param Size              Region size of the region to be configured. use ARM_MPU_REGION_SIZE_xxx MACRO in

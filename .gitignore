@@ -8,3 +8,4 @@
 *.bc
 *.bin
 *.asm
+*_lto.txt

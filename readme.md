@@ -4,7 +4,7 @@
 
 This projects implements the Coremark benchmark for the [iMXRT Family](https://www.nxp.com/products/processors-and-microcontrollers/arm-microcontrollers/i-mx-rt-crossover-mcus:IMX-RT-SERIES) controller using [Rowley Crossworks](https://www.rowley.co.uk/). This project contains two solution files.
 
-- [Coremark_RowleyBsp.hzp](Coremark_RowleyBsp.hzp) uses the original CPU support package from Rowley
+- [Coremark_RowleyBsp.hzp](Coremark_RowleyBsp.hzp) uses the original CPU support package from Rowley.
 - [Coremark.hzp](Coremark.hzp) uses a customized and extended [version](https://github.com/Masmiseim36/iMXRT) of the CPU support package which makes in incompatible to the original one.
 
 Both solution files contain separate projects for the various derivatives of the iMXRT family which can be run on the respective evaluation boards. For iMXRT1160/1170, the projects for the M7 core must be active so that the projects for both cores can be loaded onto the CPU and debugged there. Unfortunately, the multicore functionality does not yet work for the iMXRT1180.
@@ -102,3 +102,15 @@ Controller                     | O0       | OG       | O1       | OSize    |  O2
 --------                       | --------:| --------:| --------:| --------:| --------:| --------:| --------:
 **iMX RT1060      ( 528 MHz)** |   386.04 |  1192.74 |  1589.31 |  1675.43 |  2110.68 |  2153.03 |  2156.84
 **iMX RT1060      ( 600 MHz)** |   438.68 |  1355.41 |  1806.09 |  1903.89 |  2398.54 |  2446.66 |  2436.17
+**iMX RT1170_CM7  ( 800 MHz)** |   549.16 |  1797.59 |  2387.31 |  2534.21 |  3192.03 |  3260.30 |  3265.19
+**iMX RT1170_CM7  (1000 MHz)** |   685.41 |  2243.56 |  2979.73 |  3162.95 |  3984.06 |  4069.34 |  4075.31
+**iMX RT1170_CM4  ( 400 MHz)** |   219.33 |   632.19 |   773.83 |   736.66 |   980.96 |  1040.36 |  1033.91
+
+## Results with GCC 14.2
+
+The results are in iterations per second (higher is better), code and data is stored in TCM.
+
+Controller                     | O0       | OG       | O1       | OSize    |  O2      | O3       | O3 + LTO      
+--------                       | --------:| --------:| --------:| --------:| --------:| --------:| --------:
+**iMX RT1060      ( 528 MHz)** |          |          |          |          |          |          |  
+**iMX RT1060      ( 600 MHz)** |   438.80 |  1411.15 |  1883.87 |  1905.34 |  2313.31 |  2363.39 |  2357.71
