@@ -4,7 +4,7 @@
 
 This projects implements the Coremark benchmark for the [iMXRT Family](https://www.nxp.com/products/processors-and-microcontrollers/arm-microcontrollers/i-mx-rt-crossover-mcus:IMX-RT-SERIES) controller using [Rowley Crossworks](https://www.rowley.co.uk/). This project contains two solution files.
 
-- [Coremark_RowleyBsp.hzp](Coremark_RowleyBsp.hzp) uses the original CPU support package from Rowley.
+- [Coremark_RowleyBsp.hzp](Coremark_RowleyBsp.hzp) uses the original CPU support package from Rowley. Use this if you are not shure which one to take.
 - [Coremark.hzp](Coremark.hzp) uses a customized and extended [version](https://github.com/Masmiseim36/iMXRT) of the CPU support package which makes in incompatible to the original one.
 
 Both solution files contain separate projects for the various derivatives of the iMXRT family which can be run on the respective evaluation boards. For iMXRT1160/1170, the projects for the M7 core must be active so that the projects for both cores can be loaded onto the CPU and debugged there. Unfortunately, the multicore functionality does not yet work for the iMXRT1180.
@@ -112,5 +112,16 @@ The results are in iterations per second (higher is better), code and data is st
 
 Controller                     | O0       | OG       | O1       | OSize    |  O2      | O3       | O3 + LTO      
 --------                       | --------:| --------:| --------:| --------:| --------:| --------:| --------:
-**iMX RT1060      ( 528 MHz)** |          |          |          |          |          |          |  
+**iMX RT1060      ( 528 MHz)** |   386.14 |  1241.80 |  1657.76 |  1676.72 |  2035.66 |  2079.78 |  2074.77
 **iMX RT1060      ( 600 MHz)** |   438.80 |  1411.15 |  1883.87 |  1905.34 |  2313.31 |  2363.39 |  2357.71
+
+## Results with GCC 14.3
+
+The results are in iterations per second (higher is better), code and data is stored in TCM.
+
+Controller                     | O0       | OG       | O1       | OSize    |  O2      | O3       | O3 + LTO      
+--------                       | --------:| --------:| --------:| --------:| --------:| --------:| --------:
+**iMX RT1011      ( 396 MHz)** |   173.10 |   931.46 |  1244.49 |  1256.75 |  1526.29 |  1563.72 |  1557.87
+**iMX RT1011      ( 500 MHz)** |   364.70 |  1175.97 |  1571.33 |  1586.84 |  1927.15 |  1974.41 |  1967.03
+**iMX RT1060      ( 528 MHz)** |   386.14 |  1241.80 |  1657.76 |  1677.17 |  2033.59 |  2080.38 |  2076.84
+**iMX RT1060      ( 600 MHz)** |   438.80 |  1411.15 |  1883.87 |  1905.92 |  2310.85 |  2364.06 |  2360.16

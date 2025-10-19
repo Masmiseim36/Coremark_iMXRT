@@ -23,7 +23,8 @@
   <configuration
     Name="Release"
     c_preprocessor_definitions="NDEBUG"
-    gcc_optimization_level="Level 3" />
+    gcc_optimization_level="Level 3"
+    link_time_optimization="No" />
   <project Name="Coremark_1010">
     <configuration
       CMSIS_CORE="Yes"
@@ -477,8 +478,12 @@
       <file file_name="XiP/flexspi_boot.c" />
       <file file_name="XiP/flexspi_boot.h" />
       <file file_name="XiP/flexspi_flash.h" />
-      <file file_name="XiP/flexspi_flash_Hyperflash.c" />
-      <file file_name="XiP/flexspi_flash_OSPI_Adesto.c" />
+      <file file_name="XiP/flexspi_flash_Hyperflash.c">
+        <configuration Name="Common" build_exclude_from_build="Yes" />
+      </file>
+      <file file_name="XiP/flexspi_flash_OSPI_Adesto.c">
+        <configuration Name="Common" build_exclude_from_build="Yes" />
+      </file>
       <file file_name="XiP/flexspi_flash_QSPI.c" />
     </folder>
   </project>
@@ -1027,8 +1032,6 @@
       <file file_name="drivers/fsl_dcdc.h" />
       <file file_name="drivers/fsl_flexspi.c" />
       <file file_name="drivers/fsl_flexspi.h" />
-      <file file_name="drivers/fsl_gpc.c" />
-      <file file_name="drivers/fsl_gpc.h" />
       <file file_name="drivers/fsl_gpio.c" />
       <file file_name="drivers/fsl_gpio.h" />
       <file file_name="drivers/fsl_iomuxc.h" />

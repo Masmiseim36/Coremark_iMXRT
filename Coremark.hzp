@@ -41,18 +41,18 @@
       arm_target_loader_default_loader="Flash"
       arm_target_loader_reset_after_download="No"
       c_preprocessor_definitions="USE_SDRAM;FLEXCAN_WAIT_TIMEOUT=1000;SERIAL_PORT_TYPE_UART=1"
-      c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRText"
+      c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRText/devices/$(Family)"
       c_user_include_directories="./drivers/1010;./drivers;./boards/1010"
-      debug_register_definition_file="$(TargetsDir)/iMXRText/XML/$(DeviceName)_registers.xml"
+      debug_register_definition_file="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_Registers.xml"
       debug_startup_completion_point="main"
       default_code_section=".text_tcm"
       default_const_section=".rodata_tcm"
       default_data_section=".data_tcm"
       default_zeroed_section=".bss_tcm"
-      linker_memory_map_file="$(TargetsDir)/iMXRText/MemoryMap_MIMXRT1011.xml"
+      linker_memory_map_file="$(TargetsDir)/iMXRText/devices/$(Family)/MemoryMap_MIMXRT1011.xml"
       linker_section_placement_file="$(TargetsDir)/iMXRText/placement_flexspi.xml"
       linker_section_placement_macros=""
-      macros="DeviceName=MIMXRT1011;Family=iMXRT1011;Core=CM7"
+      macros="DeviceName=MIMXRT1011;Family=iMXRT1010;Core=CM7"
       project_directory=""
       project_type="Executable"
       property_groups_file_path="$(TargetsDir)/iMXRText/propertyGroups.xml"
@@ -130,14 +130,20 @@
         default_data_section=".data"
         default_zeroed_section=".bss"
         link_time_optimization="No" />
-      <file file_name="$(TargetsDir)/iMXRText/$(DeviceName).h" />
-      <file file_name="$(TargetsDir)/iMXRText/$(DeviceName)_features.h" />
+      <folder
+        Name="periph"
+        exclude=""
+        filter="*.*"
+        path="$(TargetsDir)/iMXRText/devices/$(Family)/periph"
+        recurse="No" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName).h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_features.h" />
       <file file_name="$(TargetsDir)/iMXRText/fsl_device_registers.h" />
       <file file_name="$(TargetsDir)/iMXRText/iMXRT_Target.js" />
       <file file_name="placement_flexspi.xml" />
-      <file file_name="$(TargetsDir)/iMXRText/startup_$(DeviceName).s" />
-      <file file_name="$(TargetsDir)/iMXRText/system_$(DeviceName).c" />
-      <file file_name="$(TargetsDir)/iMXRText/system_$(DeviceName).h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/startup_$(DeviceName).s" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).c" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).h" />
       <file file_name="$(StudioDir)/source/thumb_crt0.s" />
     </folder>
     <folder Name="XIP">
@@ -164,15 +170,15 @@
       arm_target_loader_default_loader="Flash"
       arm_target_loader_reset_after_download="No"
       c_preprocessor_definitions="USE_SDRAM;FLEXCAN_WAIT_TIMEOUT=1000;SERIAL_PORT_TYPE_UART=1"
-      c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRText"
+      c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRText/devices/$(Family)"
       c_user_include_directories="./drivers/1015;./drivers;./boards/1015"
-      debug_register_definition_file="$(TargetsDir)/iMXRText/XML/$(DeviceName)_registers.xml"
+      debug_register_definition_file="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_Registers.xml"
       debug_startup_completion_point="main"
       default_code_section=".text_tcm"
       default_const_section=".rodata_tcm"
       default_data_section=".data_tcm"
       default_zeroed_section=".bss_tcm"
-      linker_memory_map_file="$(TargetsDir)/iMXRText/MemoryMap_MIMXRT1015.xml"
+      linker_memory_map_file="$(TargetsDir)/iMXRText/devices/$(Family)/MemoryMap_MIMXRT1015.xml"
       linker_section_placement_file="$(TargetsDir)/iMXRText/placement_flexspi.xml"
       linker_section_placement_macros=""
       macros="DeviceName=MIMXRT1015;Family=iMXRT1015;Core=CM7"
@@ -251,14 +257,20 @@
         default_data_section=".data"
         default_zeroed_section=".bss"
         link_time_optimization="No" />
-      <file file_name="$(TargetsDir)/iMXRText/$(DeviceName).h" />
-      <file file_name="$(TargetsDir)/iMXRText/$(DeviceName)_features.h" />
+      <folder
+        Name="periph"
+        exclude=""
+        filter="*.*"
+        path="$(TargetsDir)/iMXRText/devices/$(Family)/periph"
+        recurse="No" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName).h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_features.h" />
       <file file_name="$(TargetsDir)/iMXRText/fsl_device_registers.h" />
       <file file_name="$(TargetsDir)/iMXRText/iMXRT_Target.js" />
       <file file_name="placement_flexspi.xml" />
-      <file file_name="$(TargetsDir)/iMXRText/startup_$(DeviceName).s" />
-      <file file_name="$(TargetsDir)/iMXRText/system_$(DeviceName).c" />
-      <file file_name="$(TargetsDir)/iMXRText/system_$(DeviceName).h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/startup_$(DeviceName).s" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).c" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).h" />
       <file file_name="$(StudioDir)/source/thumb_crt0.s" />
     </folder>
     <folder Name="XIP">
@@ -285,18 +297,18 @@
       arm_target_loader_default_loader="Flash"
       arm_target_loader_reset_after_download="No"
       c_preprocessor_definitions="USE_SDRAM;FLEXCAN_WAIT_TIMEOUT=1000;SERIAL_PORT_TYPE_UART=1"
-      c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRText"
+      c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRText/devices/$(Family)"
       c_user_include_directories="./drivers/1020;./drivers;./boards/1020"
-      debug_register_definition_file="$(TargetsDir)/iMXRText/XML/$(DeviceName)_registers.xml"
+      debug_register_definition_file="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_Registers.xml"
       debug_startup_completion_point="main"
       default_code_section=".text_tcm"
       default_const_section=".rodata_tcm"
       default_data_section=".data_tcm"
       default_zeroed_section=".bss_tcm"
-      linker_memory_map_file="$(TargetsDir)/iMXRText/MemoryMap_MIMXRT102x.xml"
+      linker_memory_map_file="$(TargetsDir)/iMXRText/devices/$(Family)/MemoryMap_MIMXRT102x.xml"
       linker_section_placement_file="$(TargetsDir)/iMXRText/placement_flexspi.xml"
       linker_section_placement_macros=""
-      macros="DeviceName=MIMXRT1021;Family=iMXRT1021;Core=CM7"
+      macros="DeviceName=MIMXRT1021;Family=iMXRT1020;Core=CM7"
       project_directory=""
       project_type="Executable"
       property_groups_file_path="$(TargetsDir)/iMXRText/propertyGroups.xml"
@@ -372,15 +384,21 @@
         default_data_section=".data"
         default_zeroed_section=".bss"
         link_time_optimization="No" />
-      <file file_name="$(TargetsDir)/iMXRText/$(DeviceName).h" />
-      <file file_name="$(TargetsDir)/iMXRText/$(DeviceName)_features.h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName).h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_features.h" />
       <file file_name="$(TargetsDir)/iMXRText/fsl_device_registers.h" />
       <file file_name="$(TargetsDir)/iMXRText/iMXRT_Target.js" />
       <file file_name="placement_flexspi.xml" />
-      <file file_name="$(TargetsDir)/iMXRText/startup_$(DeviceName).s" />
-      <file file_name="$(TargetsDir)/iMXRText/system_$(DeviceName).c" />
-      <file file_name="$(TargetsDir)/iMXRText/system_$(DeviceName).h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/startup_$(DeviceName).s" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).c" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).h" />
       <file file_name="$(StudioDir)/source/thumb_crt0.s" />
+      <folder
+        Name="periph"
+        exclude=""
+        filter="*.*"
+        path="$(TargetsDir)/iMXRText/devices/$(Family)/periph"
+        recurse="No" />
     </folder>
     <folder Name="XIP">
       <file file_name="XiP/flexspi_boot.c" />
@@ -406,18 +424,18 @@
       arm_target_loader_default_loader="Flash"
       arm_target_loader_reset_after_download="No"
       c_preprocessor_definitions="USE_SDRAM;FLEXCAN_WAIT_TIMEOUT=1000;SERIAL_PORT_TYPE_UART=1"
-      c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRText"
+      c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRText/devices/$(Family)"
       c_user_include_directories="./drivers/1024;./drivers;./boards/1024"
-      debug_register_definition_file="$(TargetsDir)/iMXRText/XML/$(DeviceName)_registers.xml"
+      debug_register_definition_file="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_Registers.xml"
       debug_startup_completion_point="main"
       default_code_section=".text_tcm"
       default_const_section=".rodata_tcm"
       default_data_section=".data_tcm"
       default_zeroed_section=".bss_tcm"
-      linker_memory_map_file="$(TargetsDir)/iMXRText/MemoryMap_MIMXRT102x.xml"
+      linker_memory_map_file="$(TargetsDir)/iMXRText/devices/$(Family)/MemoryMap_MIMXRT102x.xml"
       linker_section_placement_file="$(TargetsDir)/iMXRText/placement_flexspi.xml"
       linker_section_placement_macros=""
-      macros="DeviceName=MIMXRT1024;Family=iMXRT1024;Core=CM7"
+      macros="DeviceName=MIMXRT1024;Family=iMXRT1020;Core=CM7"
       project_directory=""
       project_type="Executable"
       property_groups_file_path="$(TargetsDir)/iMXRText/propertyGroups.xml"
@@ -493,15 +511,21 @@
         default_data_section=".data"
         default_zeroed_section=".bss"
         link_time_optimization="No" />
-      <file file_name="$(TargetsDir)/iMXRText/$(DeviceName).h" />
-      <file file_name="$(TargetsDir)/iMXRText/$(DeviceName)_features.h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName).h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_features.h" />
       <file file_name="$(TargetsDir)/iMXRText/fsl_device_registers.h" />
       <file file_name="$(TargetsDir)/iMXRText/iMXRT_Target.js" />
       <file file_name="placement_flexspi.xml" />
-      <file file_name="$(TargetsDir)/iMXRText/startup_$(DeviceName).s" />
-      <file file_name="$(TargetsDir)/iMXRText/system_$(DeviceName).c" />
-      <file file_name="$(TargetsDir)/iMXRText/system_$(DeviceName).h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/startup_$(DeviceName).s" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).c" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).h" />
       <file file_name="$(StudioDir)/source/thumb_crt0.s" />
+      <folder
+        Name="periph"
+        exclude=""
+        filter="*.*"
+        path="$(TargetsDir)/iMXRText/devices/$(Family)/periph"
+        recurse="No" />
     </folder>
     <folder Name="XIP">
       <file file_name="XiP/flexspi_boot.c" />
@@ -531,15 +555,15 @@
       arm_target_loader_default_loader="Flash"
       arm_target_loader_reset_after_download="No"
       c_preprocessor_definitions="USE_SDRAM;FLEXCAN_WAIT_TIMEOUT=1000;SERIAL_PORT_TYPE_UART=1"
-      c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRText"
+      c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRText/devices/$(Family)"
       c_user_include_directories="./drivers/1040;./drivers;./boards/1040"
-      debug_register_definition_file="$(TargetsDir)/iMXRText/XML/$(DeviceName)_registers.xml"
+      debug_register_definition_file="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_Registers.xml"
       debug_startup_completion_point="main"
       default_code_section=".text_tcm"
       default_const_section=".rodata_tcm"
       default_data_section=".data_tcm"
       default_zeroed_section=".bss_tcm"
-      linker_memory_map_file="$(TargetsDir)/iMXRText/MemoryMap_MIMXRT104x.xml"
+      linker_memory_map_file="$(TargetsDir)/iMXRText/devices/$(Family)/MemoryMap_MIMXRT104x.xml"
       linker_section_placement_file="$(TargetsDir)/iMXRText/placement_flexspi.xml"
       linker_section_placement_macros="FLASH_NAME=FlexSPI"
       macros="DeviceName=MIMXRT1042;Family=iMXRT1040;Core=CM7"
@@ -618,15 +642,21 @@
         default_data_section=".data"
         default_zeroed_section=".bss"
         link_time_optimization="No" />
-      <file file_name="$(TargetsDir)/iMXRText/$(DeviceName).h" />
-      <file file_name="$(TargetsDir)/iMXRText/$(DeviceName)_features.h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName).h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_features.h" />
       <file file_name="$(TargetsDir)/iMXRText/fsl_device_registers.h" />
       <file file_name="$(TargetsDir)/iMXRText/iMXRT_Target.js" />
       <file file_name="placement_flexspi.xml" />
-      <file file_name="$(TargetsDir)/iMXRText/startup_$(DeviceName).s" />
-      <file file_name="$(TargetsDir)/iMXRText/system_$(DeviceName).c" />
-      <file file_name="$(TargetsDir)/iMXRText/system_$(DeviceName).h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/startup_$(DeviceName).s" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).c" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).h" />
       <file file_name="$(StudioDir)/source/thumb_crt0.s" />
+      <folder
+        Name="periph"
+        exclude=""
+        filter="*.*"
+        path="$(TargetsDir)/iMXRText/devices/$(Family)/periph"
+        recurse="No" />
     </folder>
     <folder Name="XIP">
       <file file_name="XiP/flexspi_boot.c" />
@@ -652,15 +682,15 @@
       arm_target_loader_default_loader="Flash"
       arm_target_loader_reset_after_download="No"
       c_preprocessor_definitions="USE_SDRAM;FLEXCAN_WAIT_TIMEOUT=1000;SERIAL_PORT_TYPE_UART=1"
-      c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRText"
+      c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRText/devices/$(Family)"
       c_user_include_directories="./drivers/1050;./drivers;./boards/1050"
-      debug_register_definition_file="$(TargetsDir)/iMXRText/XML/$(DeviceName)_registers.xml"
+      debug_register_definition_file="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_Registers.xml"
       debug_startup_completion_point="main"
       default_code_section=".text_tcm"
       default_const_section=".rodata_tcm"
       default_data_section=".data_tcm"
       default_zeroed_section=".bss_tcm"
-      linker_memory_map_file="$(TargetsDir)/iMXRText/MemoryMap_MIMXRT105x.xml"
+      linker_memory_map_file="$(TargetsDir)/iMXRText/devices/$(Family)/MemoryMap_MIMXRT105x.xml"
       linker_section_placement_file="$(TargetsDir)/iMXRText/placement_flexspi.xml"
       linker_section_placement_macros="FLASH_NAME=FlexSPI"
       macros="DeviceName=MIMXRT1052;Family=iMXRT1050;Core=CM7"
@@ -739,15 +769,21 @@
         default_data_section=".data"
         default_zeroed_section=".bss"
         link_time_optimization="No" />
-      <file file_name="$(TargetsDir)/iMXRText/$(DeviceName).h" />
-      <file file_name="$(TargetsDir)/iMXRText/$(DeviceName)_features.h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName).h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_features.h" />
       <file file_name="$(TargetsDir)/iMXRText/fsl_device_registers.h" />
       <file file_name="$(TargetsDir)/iMXRText/iMXRT_Target.js" />
       <file file_name="placement_flexspi.xml" />
-      <file file_name="$(TargetsDir)/iMXRText/startup_$(DeviceName).s" />
-      <file file_name="$(TargetsDir)/iMXRText/system_$(DeviceName).c" />
-      <file file_name="$(TargetsDir)/iMXRText/system_$(DeviceName).h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/startup_$(DeviceName).s" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).c" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).h" />
       <file file_name="$(StudioDir)/source/thumb_crt0.s" />
+      <folder
+        Name="periph"
+        exclude=""
+        filter="*.*"
+        path="$(TargetsDir)/iMXRText/devices/$(Family)/periph"
+        recurse="No" />
     </folder>
     <folder Name="XIP">
       <file file_name="XiP/flexspi_boot.c" />
@@ -773,15 +809,15 @@
       arm_target_loader_default_loader="Flash"
       arm_target_loader_reset_after_download="No"
       c_preprocessor_definitions="USE_SDRAM;FLEXCAN_WAIT_TIMEOUT=1000;SERIAL_PORT_TYPE_UART=1"
-      c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRText"
+      c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRText/devices/$(Family)"
       c_user_include_directories="./drivers/1060;./drivers;./boards/1060"
-      debug_register_definition_file="$(TargetsDir)/iMXRText/XML/$(DeviceName)_registers.xml"
+      debug_register_definition_file="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_Registers.xml"
       debug_startup_completion_point="main"
       default_code_section=".text_tcm"
       default_const_section=".rodata_tcm"
       default_data_section=".data_tcm"
       default_zeroed_section=".bss_tcm"
-      linker_memory_map_file="$(TargetsDir)/iMXRText/MemoryMap_MIMXRT106x.xml"
+      linker_memory_map_file="$(TargetsDir)/iMXRText/devices/$(Family)/MemoryMap_MIMXRT106x.xml"
       linker_section_placement_file="$(TargetsDir)/iMXRText/placement_flexspi.xml"
       linker_section_placement_macros="FLASH_NAME=FlexSPI"
       macros="DeviceName=MIMXRT1062;Family=iMXRT1060;Core=CM7"
@@ -860,15 +896,21 @@
         default_data_section=".data"
         default_zeroed_section=".bss"
         link_time_optimization="No" />
-      <file file_name="$(TargetsDir)/iMXRText/$(DeviceName).h" />
-      <file file_name="$(TargetsDir)/iMXRText/$(DeviceName)_features.h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName).h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_features.h" />
       <file file_name="$(TargetsDir)/iMXRText/fsl_device_registers.h" />
       <file file_name="$(TargetsDir)/iMXRText/iMXRT_Target.js" />
       <file file_name="placement_flexspi.xml" />
-      <file file_name="$(TargetsDir)/iMXRText/startup_$(DeviceName).s" />
-      <file file_name="$(TargetsDir)/iMXRText/system_$(DeviceName).c" />
-      <file file_name="$(TargetsDir)/iMXRText/system_$(DeviceName).h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/startup_$(DeviceName).s" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).c" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).h" />
       <file file_name="$(StudioDir)/source/thumb_crt0.s" />
+      <folder
+        Name="periph"
+        exclude=""
+        filter="*.*"
+        path="$(TargetsDir)/iMXRText/devices/$(Family)/periph"
+        recurse="No" />
     </folder>
     <folder Name="XIP">
       <file file_name="XiP/flexspi_boot.c" />
@@ -894,15 +936,15 @@
       arm_target_loader_default_loader="Flash"
       arm_target_loader_reset_after_download="No"
       c_preprocessor_definitions="USE_SDRAM;FLEXCAN_WAIT_TIMEOUT=1000;SERIAL_PORT_TYPE_UART=1"
-      c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRText"
+      c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRText/devices/$(Family)"
       c_user_include_directories="./drivers/1060;./drivers;./boards/1064"
-      debug_register_definition_file="$(TargetsDir)/iMXRText/XML/$(DeviceName)_registers.xml"
+      debug_register_definition_file="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_Registers.xml"
       debug_startup_completion_point="main"
       default_code_section=".text_tcm"
       default_const_section=".rodata_tcm"
       default_data_section=".data_tcm"
       default_zeroed_section=".bss_tcm"
-      linker_memory_map_file="$(TargetsDir)/iMXRText/MemoryMap_MIMXRT106x.xml"
+      linker_memory_map_file="$(TargetsDir)/iMXRText/devices/$(Family)/MemoryMap_MIMXRT1064.xml"
       linker_section_placement_file="$(TargetsDir)/iMXRText/placement_flexspi.xml"
       linker_section_placement_macros="FLASH_NAME=FlexSPI2"
       macros="DeviceName=MIMXRT1064;Family=iMXRT1064;Core=CM7"
@@ -983,15 +1025,21 @@
         default_data_section=".data"
         default_zeroed_section=".bss"
         link_time_optimization="No" />
-      <file file_name="$(TargetsDir)/iMXRText/$(DeviceName).h" />
-      <file file_name="$(TargetsDir)/iMXRText/$(DeviceName)_features.h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName).h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_features.h" />
       <file file_name="$(TargetsDir)/iMXRText/fsl_device_registers.h" />
       <file file_name="$(TargetsDir)/iMXRText/iMXRT_Target.js" />
       <file file_name="placement_flexspi.xml" />
-      <file file_name="$(TargetsDir)/iMXRText/startup_$(DeviceName).s" />
-      <file file_name="$(TargetsDir)/iMXRText/system_$(DeviceName).c" />
-      <file file_name="$(TargetsDir)/iMXRText/system_$(DeviceName).h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/startup_$(DeviceName).s" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).c" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).h" />
       <file file_name="$(StudioDir)/source/thumb_crt0.s" />
+      <folder
+        Name="periph"
+        exclude=""
+        filter="*.*"
+        path="$(TargetsDir)/iMXRText/devices/$(Family)/periph"
+        recurse="No" />
     </folder>
     <folder Name="XIP">
       <file file_name="XiP/flexspi_boot.c" />
@@ -1020,15 +1068,15 @@
       arm_target_loader_applicable_loaders="Flash"
       arm_target_loader_default_loader="Flash"
       c_preprocessor_definitions="USE_SDRAM;FLEXCAN_WAIT_TIMEOUT=1000;SERIAL_PORT_TYPE_UART=1"
-      c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRText"
+      c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRText/devices/$(Family)"
       c_user_include_directories="./drivers/1160cm4;./drivers;./boards/1160"
-      debug_register_definition_file="$(TargetsDir)/iMXRText/XML/$(DeviceName)_registers.xml"
+      debug_register_definition_file="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_Registers.xml"
       debug_startup_completion_point="main"
       default_code_section=".text_tcm"
       default_const_section=".rodata_tcm"
       default_data_section=".data_tcm"
       default_zeroed_section=".bss_tcm"
-      linker_memory_map_file="$(TargetsDir)/iMXRText/MemoryMap_MIMXRT116x_cm4.xml"
+      linker_memory_map_file="$(TargetsDir)/iMXRText/devices/$(Family)/MemoryMap_MIMXRT116x_cm4.xml"
       linker_memory_map_macros="FlexSPISTART=0x08010000;FlexSPISIZE=0x10000"
       linker_section_placement_file="$(TargetsDir)/iMXRText/placement_flexspi.xml"
       linker_section_placement_macros="RAM_NAME=OCRAM2;VECTOR_OFFSET=0"
@@ -1091,8 +1139,6 @@
       <file file_name="drivers/fsl_dcdc.h" />
       <file file_name="drivers/fsl_flexspi.c" />
       <file file_name="drivers/fsl_flexspi.h" />
-      <file file_name="drivers/fsl_gpc.c" />
-      <file file_name="drivers/fsl_gpc.h" />
       <file file_name="drivers/fsl_gpio.c" />
       <file file_name="drivers/fsl_gpio.h" />
       <file file_name="drivers/fsl_iomuxc.h" />
@@ -1118,15 +1164,21 @@
         default_data_section=".data"
         default_zeroed_section=".bss"
         link_time_optimization="No" />
-      <file file_name="$(TargetsDir)/iMXRText/$(DeviceName).h" />
-      <file file_name="$(TargetsDir)/iMXRText/$(DeviceName)_features.h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName).h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_features.h" />
       <file file_name="$(TargetsDir)/iMXRText/fsl_device_registers.h" />
       <file file_name="$(TargetsDir)/iMXRText/iMXRT_Target.js" />
       <file file_name="placement_flexspi.xml" />
-      <file file_name="$(TargetsDir)/iMXRText/startup_$(DeviceName).s" />
-      <file file_name="$(TargetsDir)/iMXRText/system_$(DeviceName).c" />
-      <file file_name="$(TargetsDir)/iMXRText/system_$(DeviceName).h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/startup_$(DeviceName).s" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).c" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).h" />
       <file file_name="$(StudioDir)/source/thumb_crt0.s" />
+      <folder
+        Name="periph"
+        exclude=""
+        filter="*.*"
+        path="$(TargetsDir)/iMXRText/devices/$(Family)/periph"
+        recurse="No" />
     </folder>
   </project>
   <project Name="Coremark_1160CM7">
@@ -1144,16 +1196,16 @@
       arm_target_loader_default_loader="Flash"
       arm_target_loader_reset_after_download="No"
       c_preprocessor_definitions="USE_SDRAM;FLEXCAN_WAIT_TIMEOUT=1000;SERIAL_PORT_TYPE_UART=1"
-      c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRText"
+      c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRText/devices/$(Family)"
       c_user_include_directories="./drivers/1160cm7;./drivers;./boards/1160"
       debug_dependent_projects="Coremark_1160CM4"
-      debug_register_definition_file="$(TargetsDir)/iMXRText/XML/$(DeviceName)_registers.xml"
+      debug_register_definition_file="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_Registers.xml"
       debug_startup_completion_point="main"
       default_code_section=".text_tcm"
       default_const_section=".rodata_tcm"
       default_data_section=".data_tcm"
       default_zeroed_section=".bss_tcm"
-      linker_memory_map_file="$(TargetsDir)/iMXRText/MemoryMap_MIMXRT116x_cm7.xml"
+      linker_memory_map_file="$(TargetsDir)/iMXRText/devices/$(Family)/MemoryMap_MIMXRT116x_cm7.xml"
       linker_memory_map_macros="FlexSPISIZE=0x00010000;RAM_NAME=OCRAM1"
       linker_section_placement_file="$(TargetsDir)/iMXRText/placement_flexspi.xml"
       linker_section_placement_macros="FLASH_NAME=FlexSPI"
@@ -1241,15 +1293,21 @@
         default_data_section=".data"
         default_zeroed_section=".bss"
         link_time_optimization="No" />
-      <file file_name="$(TargetsDir)/iMXRText/$(DeviceName).h" />
-      <file file_name="$(TargetsDir)/iMXRText/$(DeviceName)_features.h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName).h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_features.h" />
       <file file_name="$(TargetsDir)/iMXRText/fsl_device_registers.h" />
       <file file_name="$(TargetsDir)/iMXRText/iMXRT_Target.js" />
       <file file_name="placement_flexspi.xml" />
-      <file file_name="$(TargetsDir)/iMXRText/startup_$(DeviceName).s" />
-      <file file_name="$(TargetsDir)/iMXRText/system_$(DeviceName).c" />
-      <file file_name="$(TargetsDir)/iMXRText/system_$(DeviceName).h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/startup_$(DeviceName).s" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).c" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).h" />
       <file file_name="$(StudioDir)/source/thumb_crt0.s" />
+      <folder
+        Name="periph"
+        exclude=""
+        filter="*.*"
+        path="$(TargetsDir)/iMXRText/devices/$(Family)/periph"
+        recurse="No" />
     </folder>
     <folder Name="XIP">
       <file file_name="XiP/flexspi_boot.c" />
@@ -1279,15 +1337,15 @@
       arm_target_loader_applicable_loaders="Flash"
       arm_target_loader_default_loader="Flash"
       c_preprocessor_definitions="USE_SDRAM;FLEXCAN_WAIT_TIMEOUT=1000;SERIAL_PORT_TYPE_UART=1"
-      c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRText"
+      c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRText/devices/$(Family)"
       c_user_include_directories="./drivers/1170cm4;./drivers;./boards/1170"
-      debug_register_definition_file="$(TargetsDir)/iMXRText/XML/$(DeviceName)_registers.xml"
+      debug_register_definition_file="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_Registers.xml"
       debug_startup_completion_point="main"
       default_code_section=".text_tcm"
       default_const_section=".rodata_tcm"
       default_data_section=".data_tcm"
       default_zeroed_section=".bss_tcm"
-      linker_memory_map_file="$(TargetsDir)/iMXRText/MemoryMap_MIMXRT117x_cm4.xml"
+      linker_memory_map_file="$(TargetsDir)/iMXRText/devices/$(Family)/MemoryMap_MIMXRT117x_cm4.xml"
       linker_memory_map_macros="FlexSPISTART=0x08010000;FlexSPISIZE=0x10000"
       linker_section_placement_file="$(TargetsDir)/iMXRText/placement_flexspi.xml"
       linker_section_placement_macros="RAM_NAME=OCRAM2;VECTOR_OFFSET=0"
@@ -1350,8 +1408,6 @@
       <file file_name="drivers/fsl_dcdc.h" />
       <file file_name="drivers/fsl_flexspi.c" />
       <file file_name="drivers/fsl_flexspi.h" />
-      <file file_name="drivers/fsl_gpc.c" />
-      <file file_name="drivers/fsl_gpc.h" />
       <file file_name="drivers/fsl_gpio.c" />
       <file file_name="drivers/fsl_gpio.h" />
       <file file_name="drivers/fsl_iomuxc.h" />
@@ -1377,15 +1433,21 @@
         default_data_section=".data"
         default_zeroed_section=".bss"
         link_time_optimization="No" />
-      <file file_name="$(TargetsDir)/iMXRText/$(DeviceName).h" />
-      <file file_name="$(TargetsDir)/iMXRText/$(DeviceName)_features.h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName).h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_features.h" />
       <file file_name="$(TargetsDir)/iMXRText/fsl_device_registers.h" />
       <file file_name="$(TargetsDir)/iMXRText/iMXRT_Target.js" />
       <file file_name="placement_flexspi.xml" />
-      <file file_name="$(TargetsDir)/iMXRText/startup_$(DeviceName).s" />
-      <file file_name="$(TargetsDir)/iMXRText/system_$(DeviceName).c" />
-      <file file_name="$(TargetsDir)/iMXRText/system_$(DeviceName).h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/startup_$(DeviceName).s" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).c" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).h" />
       <file file_name="$(StudioDir)/source/thumb_crt0.s" />
+      <folder
+        Name="periph"
+        exclude=""
+        filter="*.*"
+        path="$(TargetsDir)/iMXRText/devices/$(Family)/periph"
+        recurse="No" />
     </folder>
   </project>
   <project Name="Coremark_1170CM7">
@@ -1403,16 +1465,16 @@
       arm_target_loader_default_loader="Flash"
       arm_target_loader_reset_after_download="No"
       c_preprocessor_definitions="USE_SDRAM;FLEXCAN_WAIT_TIMEOUT=1000;SERIAL_PORT_TYPE_UART=1"
-      c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRText"
+      c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRText/devices/$(Family)"
       c_user_include_directories="./drivers/1170cm7;./drivers;./boards/1170"
       debug_dependent_projects="Coremark_1170CM4"
-      debug_register_definition_file="$(TargetsDir)/iMXRText/XML/$(DeviceName)_registers.xml"
+      debug_register_definition_file="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_Registers.xml"
       debug_startup_completion_point="main"
       default_code_section=".text_tcm"
       default_const_section=".rodata_tcm"
       default_data_section=".data_tcm"
       default_zeroed_section=".bss_tcm"
-      linker_memory_map_file="$(TargetsDir)/iMXRText/MemoryMap_MIMXRT117x_cm7.xml"
+      linker_memory_map_file="$(TargetsDir)/iMXRText/devices/$(Family)/MemoryMap_MIMXRT117x_cm7.xml"
       linker_memory_map_macros="FlexSPISIZE=0x00010000;RAM_NAME=OCRAM1"
       linker_section_placement_file="$(TargetsDir)/iMXRText/placement_flexspi.xml"
       linker_section_placement_macros="FLASH_NAME=FlexSPI"
@@ -1500,15 +1562,21 @@
         default_data_section=".data"
         default_zeroed_section=".bss"
         link_time_optimization="No" />
-      <file file_name="$(TargetsDir)/iMXRText/$(DeviceName).h" />
-      <file file_name="$(TargetsDir)/iMXRText/$(DeviceName)_features.h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName).h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_features.h" />
       <file file_name="$(TargetsDir)/iMXRText/fsl_device_registers.h" />
       <file file_name="$(TargetsDir)/iMXRText/iMXRT_Target.js" />
       <file file_name="placement_flexspi.xml" />
-      <file file_name="$(TargetsDir)/iMXRText/startup_$(DeviceName).s" />
-      <file file_name="$(TargetsDir)/iMXRText/system_$(DeviceName).c" />
-      <file file_name="$(TargetsDir)/iMXRText/system_$(DeviceName).h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/startup_$(DeviceName).s" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).c" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).h" />
       <file file_name="$(StudioDir)/source/thumb_crt0.s" />
+      <folder
+        Name="periph"
+        exclude=""
+        filter="*.*"
+        path="$(TargetsDir)/iMXRText/devices/$(Family)/periph"
+        recurse="No" />
     </folder>
     <folder Name="XIP">
       <file file_name="XiP/flexspi_boot.c" />
@@ -1543,16 +1611,16 @@
       arm_v8M_has_cmse="Yes"
       arm_v8M_has_dsp="Yes"
       c_preprocessor_definitions="USE_SDRAM;FLEXCAN_WAIT_TIMEOUT=1000;SERIAL_PORT_TYPE_UART=1"
-      c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRText"
+      c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRText/devices/$(Family)"
       c_user_include_directories="./drivers/1180cm33;./drivers;./boards/1180"
       debug_dependent_projects=""
-      debug_register_definition_file="$(TargetsDir)/iMXRText/XML/$(DeviceName)_registers.xml"
+      debug_register_definition_file="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_Registers.xml"
       debug_startup_completion_point="main"
       default_code_section=".text_tcm"
       default_const_section=".rodata_tcm"
       default_data_section=".data_tcm"
       default_zeroed_section=".bss_tcm"
-      linker_memory_map_file="$(TargetsDir)/iMXRText/MemoryMap_MIMXRT118x_cm33.xml"
+      linker_memory_map_file="$(TargetsDir)/iMXRText/devices/$(Family)/MemoryMap_MIMXRT118x_cm33.xml"
       linker_memory_map_macros="OCRAMSTART=0x20490000;FlexSPISIZE=0x00010000"
       linker_section_placement_file="$(TargetsDir)/iMXRText/placement_flexspi.xml"
       linker_section_placement_macros="FLASH_NAME=FlexSPI"
@@ -1623,6 +1691,10 @@
       <file file_name="drivers/fsl_semc.h" />
       <file file_name="drivers/fsl_tempsensor.c" />
       <file file_name="drivers/fsl_tempsensor.h" />
+      <file file_name="drivers/1180cm33/fsl_ele_base_api.c" />
+      <file file_name="drivers/1180cm33/fsl_ele_base_api.h" />
+      <file file_name="drivers/fsl_s3mu.c" />
+      <file file_name="drivers/fsl_s3mu.h" />
     </folder>
     <folder Name="src">
       <file file_name="boards/1180/board.c" />
@@ -1641,15 +1713,21 @@
         default_data_section=".data"
         default_zeroed_section=".bss"
         link_time_optimization="No" />
-      <file file_name="$(TargetsDir)/iMXRText/$(DeviceName).h" />
-      <file file_name="$(TargetsDir)/iMXRText/$(DeviceName)_features.h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName).h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_features.h" />
       <file file_name="$(TargetsDir)/iMXRText/fsl_device_registers.h" />
       <file file_name="$(TargetsDir)/iMXRText/iMXRT_Target.js" />
       <file file_name="placement_flexspi.xml" />
-      <file file_name="$(TargetsDir)/iMXRText/startup_$(DeviceName).s" />
-      <file file_name="$(TargetsDir)/iMXRText/system_$(DeviceName).c" />
-      <file file_name="$(TargetsDir)/iMXRText/system_$(DeviceName).h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/startup_$(DeviceName).s" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).c" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).h" />
       <file file_name="$(StudioDir)/source/thumb_crt0.s" />
+      <folder
+        Name="periph"
+        exclude=""
+        filter="*.*"
+        path="$(TargetsDir)/iMXRText/devices/$(Family)/periph"
+        recurse="No" />
     </folder>
     <folder Name="XIP">
       <file file_name="XiP/flexspi_boot.c">
@@ -1659,14 +1737,20 @@
       <file file_name="XiP/flexspi_container_config.c" />
       <file file_name="XiP/flexspi_container_config.h" />
       <file file_name="XiP/flexspi_flash.h" />
-      <file file_name="XiP/flexspi_flash_Hyperflash.c" />
+      <file file_name="XiP/flexspi_flash_Hyperflash.c">
+        <configuration Name="Common" build_exclude_from_build="Yes" />
+      </file>
       <file file_name="XiP/flexspi_flash_OSPI_Adesto.c">
-        <configuration Name="Common" build_exclude_from_build="No" />
+        <configuration Name="Common" build_exclude_from_build="Yes" />
       </file>
       <file file_name="XiP/flexspi_flash_OSPI_Macronix.c">
         <configuration Name="Common" build_exclude_from_build="Yes" />
       </file>
       <file file_name="XiP/flexspi_flash_QSPI.c" />
+      <file file_name="XiP/flexspi_flash_OSPI_ISSI.c">
+        <configuration Name="Common" build_exclude_from_build="Yes" />
+      </file>
+      <file file_name="XiP/flexspi_flash_OSPI_Micron.c" />
     </folder>
   </project>
   <project Name="Coremark_1180CM7">
@@ -1684,15 +1768,15 @@
       arm_target_loader_default_loader="Flash"
       arm_target_loader_reset_after_download="No"
       c_preprocessor_definitions="USE_SDRAM;FLEXCAN_WAIT_TIMEOUT=1000;SERIAL_PORT_TYPE_UART=1"
-      c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRText"
+      c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRText/devices/$(Family)"
       c_user_include_directories="./drivers/1180cm7;./drivers;./boards/1180"
-      debug_register_definition_file="$(TargetsDir)/iMXRText/XML/$(DeviceName)_registers.xml"
+      debug_register_definition_file="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_Registers.xml"
       debug_startup_completion_point="main"
       default_code_section=".text_tcm"
       default_const_section=".rodata_tcm"
       default_data_section=".data_tcm"
       default_zeroed_section=".bss_tcm"
-      linker_memory_map_file="$(TargetsDir)/iMXRText/MemoryMap_MIMXRT118x_cm7.xml"
+      linker_memory_map_file="$(TargetsDir)/iMXRText/devices/$(Family)/MemoryMap_MIMXRT118x_cm7.xml"
       linker_memory_map_macros="FlexSPISTART=0x28010000;FlexSPISIZE=0x10000"
       linker_section_placement_file="$(TargetsDir)/iMXRText/placement_flexspi.xml"
       linker_section_placement_macros="FLASH_NAME=FlexSPI;VECTOR_OFFSET=0"
@@ -1764,6 +1848,10 @@
       <file file_name="drivers/fsl_semc.h" />
       <file file_name="drivers/fsl_tempsensor.c" />
       <file file_name="drivers/fsl_tempsensor.h" />
+      <file file_name="drivers/1180cm33/fsl_ele_base_api.c" />
+      <file file_name="drivers/1180cm33/fsl_ele_base_api.h" />
+      <file file_name="drivers/fsl_s3mu.c" />
+      <file file_name="drivers/fsl_s3mu.h" />
     </folder>
     <folder Name="src">
       <file file_name="boards/1180/board.c" />
@@ -1782,14 +1870,20 @@
         default_data_section=".data_tcm"
         default_zeroed_section=".bss"
         link_time_optimization="No" />
-      <file file_name="$(TargetsDir)/iMXRText/$(DeviceName).h" />
-      <file file_name="$(TargetsDir)/iMXRText/$(DeviceName)_features.h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName).h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_features.h" />
       <file file_name="$(TargetsDir)/iMXRText/fsl_device_registers.h" />
       <file file_name="placement_flexspi.xml" />
-      <file file_name="$(TargetsDir)/iMXRText/startup_$(DeviceName).s" />
-      <file file_name="$(TargetsDir)/iMXRText/system_$(DeviceName).c" />
-      <file file_name="$(TargetsDir)/iMXRText/system_$(DeviceName).h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/startup_$(DeviceName).s" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).c" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).h" />
       <file file_name="$(StudioDir)/source/thumb_crt0.s" />
+      <folder
+        Name="periph"
+        exclude=""
+        filter="*.*"
+        path="$(TargetsDir)/iMXRText/devices/$(Family)/periph"
+        recurse="No" />
     </folder>
   </project>
   <project Name="Coremark_600">
@@ -1810,11 +1904,11 @@
       arm_v8M_has_dsp="Yes"
       c_preprocessor_definitions="FSL_SDK_DRIVER_QUICK_ACCESS_ENABLE=1;BOOT_HEADER_ENABLE=1;ARM_MATH_CM33;SERIAL_PORT_TYPE_UART=1"
       c_preprocessor_undefinitions="INITIALIZE_TCM_SECTIONS"
-      c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRText"
+      c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRText/devices/$(Family)"
       c_user_include_directories="./drivers/600;./drivers;./boards/600"
-      debug_register_definition_file="$(TargetsDir)/iMXRText/XML/$(DeviceName)_registers.xml"
+      debug_register_definition_file="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_Registers.xml"
       debug_startup_completion_point="main"
-      linker_memory_map_file="$(TargetsDir)/iMXRText/MemoryMap_MIMXRT600.xml"
+      linker_memory_map_file="$(TargetsDir)/iMXRText/devices/$(Family)/MemoryMap_MIMXRT600.xml"
       linker_memory_map_macros="SRAMCODESIZE=0x00100000;SRAMDATASIZE=0x00100000;SRAMDATASTART=0x30100000"
       linker_section_placement_file="$(TargetsDir)/iMXRText/placement_flexspi.xml"
       linker_section_placement_macros="FLASH_NAME=FlexSPI;ITCM_NAME=SRAM_code;DTCM_NAME=SRAM_data;RAM_NAME=SRAM_data;VECTOR_OFFSET=0x1000"
@@ -1904,13 +1998,19 @@
         default_data_section=".data"
         default_zeroed_section=".bss"
         link_time_optimization="No" />
-      <file file_name="$(TargetsDir)/iMXRText/$(DeviceName).h" />
-      <file file_name="$(TargetsDir)/iMXRText/$(DeviceName)_features.h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName).h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_features.h" />
       <file file_name="$(TargetsDir)/iMXRText/fsl_device_registers.h" />
-      <file file_name="$(TargetsDir)/iMXRText/startup_$(DeviceName).s" />
-      <file file_name="$(TargetsDir)/iMXRText/system_$(DeviceName).c" />
-      <file file_name="$(TargetsDir)/iMXRText/system_$(DeviceName).h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/startup_$(DeviceName).s" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).c" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).h" />
       <file file_name="$(StudioDir)/source/thumb_crt0.s" />
+      <folder
+        Name="periph"
+        exclude=""
+        filter="*.*"
+        path="$(TargetsDir)/iMXRText/devices/$(Family)/periph"
+        recurse="No" />
     </folder>
     <folder Name="XIP">
       <file file_name="XiP/flexspi_boot.c">

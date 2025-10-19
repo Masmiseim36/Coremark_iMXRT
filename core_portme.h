@@ -70,15 +70,25 @@ typedef clock_t CORE_TICKS;
         Initialize these strings per platform */
 #ifndef COMPILER_VERSION 
 	#ifdef __GNUC__
-		#define COMPILER_VERSION "GCC" __VERSION__
+		#define COMPILER_VERSION "GCC " __VERSION__
 	#elif defined __CC_ARM || defined __KEIL__
 		#define COMPILER_VERSION "µVision4.14 - ARMCCV4.1.0.567"
 	#elif defined __IAR_SYSTEMS_ICC__
 		#define COMPILER_VERSION "IAR"
 	#endif
 #endif
-#ifndef COMPILER_FLAGS 
-	#define COMPILER_FLAGS " unknown"
+#ifndef COMPILER_FLAGS
+	#if defined __OPTIMIZE_SIZE__ && defined __FAST_MATH__
+		#define COMPILER_FLAGS "OS with fast math"
+	#elif defined __OPTIMIZE_SIZE__
+		#define COMPILER_FLAGS "OS"
+	#elif defined __OPTIMIZE__ && defined __FAST_MATH__
+		#define COMPILER_FLAGS "O1 or O2 or O3 with fast math"
+	#elif defined __OPTIMIZE__
+		#define COMPILER_FLAGS "O1 or O2 or O3"
+	#else
+		#define COMPILER_FLAGS " unknown compiler flags"
+	#endif
 #endif
 #ifndef MEM_LOCATION 
 	#define MEM_LOCATION "Flash"
