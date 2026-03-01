@@ -190,7 +190,7 @@ extern "C"
 		#elif __CORTEX_M == 7
 			MyPrintf ("Hello Coremark on M7 core\r\n");
 		#elif __CORTEX_M == 33
-			MyPrintf ("Hello Coremark on M33 core\r\n");
+			MyPrintf ("Hello Coremark on M33 core :-)\r\n");
 		#else
 			#error "unknown core"
 		#endif
@@ -205,27 +205,72 @@ extern "C"
 			SRC->SCR |= SRC_SCR_BT_RELEASE_M4_MASK;
 		#elif defined MIMXRT1189_cm33_SERIES || defined MIMXRT1187_cm33_SERIES
 			// Start the M7 core
-			extern uint32_t __ITCM_M7_segment_start__ [];
+			// Compare Chapter 12.10 "Cortex-M7 kick-off procedure"
+//			extern uint32_t __ITCM_M7_segment_start__ [];
+
+			// Enable clock
+//			ANADIG_OSC->OSC_RC24M_CTRL = 0x007901F2;
+//			ANADIG_OSC->OSC_24M_CTRL   = 0x40000014;
+//			CCM->CLOCK_ROOT[1].CONTROL = 0x000; // Use OSC_RC_24M as clock source
+
+			PHY_LDO->CTRL0.RW          = PHY_LDO_CTRL0_LINREG_OUTPUT_TRG(0x10) | PHY_LDO_CTRL0_LINREG_ILIMIT_EN_MASK | PHY_LDO_CTRL0_LINREG_EN_MASK;
+			ANADIG_PLL->ARM_PLL_CTRL   = ANADIG_PLL_ARM_PLL_CTRL_ARM_PLL_GATE_MASK | ANADIG_PLL_ARM_PLL_CTRL_POWERUP_MASK | ANADIG_PLL_ARM_PLL_CTRL_DIV_SELECT(0x84);
+			ANADIG_PLL->ARM_PLL_CTRL   = ANADIG_PLL_ARM_PLL_CTRL_ENABLE_CLK_MASK | ANADIG_PLL_ARM_PLL_CTRL_POWERUP_MASK | ANADIG_PLL_ARM_PLL_CTRL_DIV_SELECT(0x84);
+			DCDC->REG3                 = DCDC_REG3_REG_FBK_SEL(2) | DCDC_REG3_DISABLE_IDLE_SKIP_MASK | DCDC_REG3_DISABLE_PULSE_SKIP_MASK;
+			DCDC->TRG_SW_0             = DCDC_TRG_SW_0_VDD1P0CTRL_LP_TRG(0x10) | DCDC_TRG_SW_0_VDD1P8CTRL_TRG(0xC) | DCDC_TRG_SW_0_VDD1P0CTRL_TRG(0x14);
+
+			// Set Initial VTOR
 			extern uint32_t __FlexSPI_segment_end__[];
-			// Copy the vector table of the M7 core from the flash to the ITCM of the M7:
-/*			memcpy (__ITCM_M7_segment_start__, __FlexSPI_segment_end__, 1020);
+			const uint32_t bootaddr = (reinterpret_cast<uint32_t>(__FlexSPI_segment_end__) - 0x10000000);
+			BLK_CTRL_S_AONMIX->M7_CFG = bootaddr | BLK_CTRL_S_AONMIX_M7_CFG_WAIT(1);
+
+			// Release Cortex-M7 reset 
+			SRC_GENERAL_REG_NS->SCR = SRC_GENERAL_SCR_BT_RELEASE_M7(1);
+			SRC_GENERAL_REG->SCR    = SRC_GENERAL_SCR_BT_RELEASE_M7_MASK;
+
+			auto InitM7Mem = [](uint32_t targetAddr)
+			{
+				DMA4->TCD[0].SADDR          = 0x20484000;
+				DMA4->TCD[0].DADDR          = targetAddr;
+				DMA4->TCD[0].NBYTES_MLOFFNO = 0x20000;
+				DMA4->TCD[0].CITER_ELINKNO  = 0x1;
+				DMA4->TCD[0].BITER_ELINKNO  = 0x1;
+				DMA4->TCD[0].ATTR           = 0x303;
+				DMA4->TCD[0].SOFF           = 0;
+				DMA4->TCD[0].DOFF           = 0x8;
+				DMA4->TCD[0].CH_CSR         = 0x7;
+				DMA4->TCD[0].CSR            = 0x8;
+				DMA4->TCD[0].CSR            = 0x9;
+
+				DMA4->TCD[0].CH_CSR = 0x40000006;
+
+				while ((DMA4->TCD[0].CH_CSR & DMA4_CH_CSR_DONE_MASK) == 0UL)
+				{
+				}
+
+				DMA4->TCD[0].CH_CSR = (1UL << DMA4_CH_CSR_DONE_SHIFT);
+			};
+
+			InitM7Mem (0x303C0000);
+			InitM7Mem (0x303C0000);
+			InitM7Mem (0x30400000);
+			InitM7Mem (0x30420000);
 
 			// Trigger S401
-			while ((MU_RT_S3MUA->TSR & MU_TSR_TE0_MASK) == 0)
-				; // Wait TR empty
+//			while ((MU_RT_S3MUA->TSR & MU_TSR_TE0_MASK) == 0)
+//				; // Wait TR empty
 			MU_RT_S3MUA->TR[0] = 0x17d20106;
-			while ((MU_RT_S3MUA->RSR & MU_RSR_RF0_MASK) == 0)
-				; // Wait RR Full
-			while ((MU_RT_S3MUA->RSR & MU_RSR_RF1_MASK) == 0)
-				; // Wait RR Full
+//			while ((MU_RT_S3MUA->RSR & MU_RSR_RF0_MASK) == 0)
+//				; // Wait RR Full
+//			while ((MU_RT_S3MUA->RSR & MU_RSR_RF1_MASK) == 0)
+//				; // Wait RR Full
 
 			// Response from ELE must be always read 
 			[[maybe_unused]]volatile uint32_t result1 = MU_RT_S3MUA->RR[0];
 			[[maybe_unused]]volatile uint32_t result2 = MU_RT_S3MUA->RR[1];
 
 			// Deassert Wait
-			BLK_CTRL_S_AONMIX->M7_CFG = (BLK_CTRL_S_AONMIX->M7_CFG & (~BLK_CTRL_S_AONMIX_M7_CFG_WAIT_MASK)) | BLK_CTRL_S_AONMIX_M7_CFG_WAIT(0);
-			*/
+			BLK_CTRL_S_AONMIX->M7_CFG = bootaddr;
 		#endif
 	}
 

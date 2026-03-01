@@ -138,7 +138,11 @@ typedef struct _ivt_
 	#define FLASH_SIZE (FLASH_END-FLASH_BASE)
 #endif
 
-#define DCD_ADDRESS           dcd_data
+#if defined(XIP_BOOT_HEADER_DCD_ENABLE) && (XIP_BOOT_HEADER_DCD_ENABLE == 1)
+	#define DCD_ADDRESS       dcd_data
+#else
+	#define DCD_ADDRESS       0
+#endif
 #define BOOT_DATA_ADDRESS     &boot_data
 #define CSF_ADDRESS           0
 #define IVT_RSVD             (uint32_t)(0x00000000)

@@ -1,5 +1,5 @@
 <!DOCTYPE CrossStudio_Project_File>
-<solution Name="Coremark iMXRT - Rowley BSP" version="2" target="8">
+<solution Name="Coremark iMXRT - Rowley BSP" target="8" version="2">
   <configuration
     Name="Common"
     Platform="ARM"
@@ -8,7 +8,7 @@
     arm_target_interface_type="SWD"
     build_intermediate_directory="out/$(ProjectName) $(Configuration)"
     build_output_directory="bin/$(ProjectName) $(Configuration)"
-    c_preprocessor_definitions="__THUMB;VECTORS_IN_RAM=1;STARTUP_FROM_RESET=1;PRINTF_FLOAT_ENABLE=1;INITIALIZE_TCM_SECTIONS=1;"
+    c_preprocessor_definitions="__THUMB;VECTORS_IN_RAM=1;STARTUP_FROM_RESET=1;PRINTF_FLOAT_ENABLE=1;INITIALIZE_TCM_SECTIONS=1;SERIAL_PORT_TYPE_UART=1"
     c_user_include_directories="./components"
     gcc_c_language_standard="c11"
     gcc_cplusplus_language_standard="c++17"
@@ -39,7 +39,7 @@
       arm_target_device_name="MIMXRT1011xxx5A"
       arm_target_loader_applicable_loaders="Flash"
       arm_target_loader_default_loader="Flash"
-      c_preprocessor_definitions="SERIAL_PORT_TYPE_UART=1;XIP_BOOT_FLEXSPI1"
+      c_preprocessor_definitions="XIP_BOOT_FLEXSPI1"
       c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRT;$(TargetsDir)/iMXRT/devices/$(DeviceFamily)"
       c_user_include_directories="./drivers/1010;./drivers;./boards/1010"
       debug_register_definition_file="$(TargetsDir)/iMXRT/XML/MIMXRT1011_registers.xml"
@@ -155,7 +155,7 @@
       arm_target_device_name="MIMXRT1015xxx5A"
       arm_target_loader_applicable_loaders="Flash"
       arm_target_loader_default_loader="Flash"
-      c_preprocessor_definitions="SERIAL_PORT_TYPE_UART=1;XIP_BOOT_FLEXSPI1"
+      c_preprocessor_definitions="XIP_BOOT_FLEXSPI1"
       c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRT;$(TargetsDir)/iMXRT/devices/$(DeviceFamily)"
       c_user_include_directories="./drivers/1015;./drivers;./boards/1015"
       debug_register_definition_file="$(TargetsDir)/iMXRT/XML/MIMXRT1015_registers.xml"
@@ -269,7 +269,7 @@
       arm_target_device_name="MIMXRT1021xxx5A"
       arm_target_loader_applicable_loaders="Flash"
       arm_target_loader_default_loader="Flash"
-      c_preprocessor_definitions="SERIAL_PORT_TYPE_UART=1;XIP_BOOT_FLEXSPI1"
+      c_preprocessor_definitions="XIP_BOOT_FLEXSPI1"
       c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRT;$(TargetsDir)/iMXRT/devices/$(DeviceFamily)"
       c_user_include_directories="./drivers/1020;./drivers;./boards/1020"
       debug_register_definition_file="$(TargetsDir)/iMXRT/XML/MIMXRT1021_registers.xml"
@@ -383,7 +383,7 @@
       arm_target_device_name="MIMXRT1024xxx5B"
       arm_target_loader_applicable_loaders="Flash"
       arm_target_loader_default_loader="Flash"
-      c_preprocessor_definitions="SERIAL_PORT_TYPE_UART=1;XIP_BOOT_FLEXSPI1"
+      c_preprocessor_definitions="XIP_BOOT_FLEXSPI1"
       c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRT;$(TargetsDir)/iMXRT/devices/$(DeviceFamily)"
       c_user_include_directories="./drivers/1024;./drivers;./boards/1024"
       debug_register_definition_file="$(TargetsDir)/iMXRT/XML/MIMXRT1024_registers.xml"
@@ -501,7 +501,7 @@
       arm_target_device_name="MIMXRT1042xxx5B"
       arm_target_loader_applicable_loaders="Flash"
       arm_target_loader_default_loader="Flash"
-      c_preprocessor_definitions="SERIAL_PORT_TYPE_UART=1;XIP_BOOT_FLEXSPI1"
+      c_preprocessor_definitions="XIP_BOOT_FLEXSPI1"
       c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRT;$(TargetsDir)/iMXRT/devices/$(DeviceFamily)"
       c_user_include_directories="./drivers/1040;./drivers;./boards/1040"
       debug_register_definition_file="$(TargetsDir)/iMXRT/XML/MIMXRT1042_registers.xml"
@@ -615,7 +615,7 @@
       arm_target_device_name="MIMXRT1052xxx6B"
       arm_target_loader_applicable_loaders="Flash"
       arm_target_loader_default_loader="Flash"
-      c_preprocessor_definitions="SERIAL_PORT_TYPE_UART=1;XIP_BOOT_FLEXSPI1"
+      c_preprocessor_definitions="XIP_BOOT_FLEXSPI1"
       c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRT;$(TargetsDir)/iMXRT/devices/$(DeviceFamily)"
       c_user_include_directories="./drivers/1050;./drivers;./boards/1050"
       debug_register_definition_file="$(TargetsDir)/iMXRT/XML/MIMXRT1052_registers.xml"
@@ -729,7 +729,7 @@
       arm_target_device_name="MIMXRT1062xxx6B"
       arm_target_loader_applicable_loaders="Flash"
       arm_target_loader_default_loader="Flash"
-      c_preprocessor_definitions="SERIAL_PORT_TYPE_UART=1;XIP_BOOT_FLEXSPI1"
+      c_preprocessor_definitions="XIP_BOOT_FLEXSPI1"
       c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRT;$(TargetsDir)/iMXRT/devices/$(DeviceFamily)"
       c_user_include_directories="./drivers/1060;./drivers;./boards/1060"
       debug_register_definition_file="$(TargetsDir)/iMXRT/XML/MIMXRT1062_registers.xml"
@@ -843,7 +843,7 @@
       arm_target_device_name="MIMXRT1064xxx6A"
       arm_target_loader_applicable_loaders="Flash"
       arm_target_loader_default_loader="Flash"
-      c_preprocessor_definitions="SERIAL_PORT_TYPE_UART=1;XIP_BOOT_FLEXSPI1"
+      c_preprocessor_definitions="XIP_BOOT_FLEXSPI1"
       c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRT;$(TargetsDir)/iMXRT/devices/$(DeviceFamily)"
       c_user_include_directories="./drivers/1060;./drivers;./boards/1064"
       debug_register_definition_file="$(TargetsDir)/iMXRT/XML/MIMXRT1064_registers.xml"
@@ -949,6 +949,246 @@
       <file file_name="XiP/flexspi_flash_QSPI.c" />
     </folder>
   </project>
+  <project Name="Coremark_1160CM4">
+    <configuration
+      CMSIS_CORE="Yes"
+      Name="Common"
+      Placement="FlexSPI (QuadSPI, No DCD)"
+      Target="MIMXRT1166DVM6A_M4"
+      arm_architecture="v7EM"
+      arm_core_type="Cortex-M4"
+      arm_fp_abi="Hard"
+      arm_fpu_type="FPv4-SP-D16"
+      arm_linker_stack_size="10240"
+      arm_target_device_name="MIMXRT1166xxx6_M4"
+      arm_target_loader_applicable_loaders="Flash"
+      arm_target_loader_default_loader="Flash"
+      c_preprocessor_definitions="XIP_BOOT_FLEXSPI1"
+      c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRT;$(TargetsDir)/iMXRT/devices/$(DeviceFamily)"
+      c_user_include_directories="./drivers/1160;./drivers/1160/cm4;./drivers;./boards/1160"
+      debug_register_definition_file="$(TargetsDir)/iMXRT/XML/MIMXRT11_cm4_registers.xml"
+      debug_startup_completion_point="main"
+      default_code_section=".text_tcm"
+      default_const_section=".rodata_tcm"
+      default_data_section=".data_tcm"
+      default_zeroed_section=".bss_tcm"
+      linker_memory_map_file="$(TargetsDir)/iMXRT/iMXRT11_cm4_MemoryMap.xml"
+      linker_memory_map_macros="SRAMSIZE=0x10000;OCRAMSIZE=0x10000;OCRAM1SIZE=0x10000;OCRAM2SIZE=0x10000"
+      linker_section_placement_file="$(TargetsDir)/iMXRT/flexspi_placement.xml"
+      linker_section_placement_macros="FILLSIZE=0x400"
+      macros="DeviceStartFile=$(TargetsDir)/iMXRT/startup_MIMXRT1166_cm4.s;DeviceSystemFile=$(TargetsDir)/iMXRT/devices/MIMXRT1166/system_MIMXRT1166_cm4.c;HYPER=MIMXRT116x_FlexSPI_NOR_API_M4;QSPI=MIMXRT116x_FlexSPI_NOR_API_M4;DeviceFamily=MIMXRT1166"
+      project_directory=""
+      project_type="Executable"
+      property_groups_file_path="$(TargetsDir)/iMXRT/propertyGroups.xml"
+      target_get_partname_script="EnableCM4()"
+      target_reset_script="ResetCM4()"
+      target_script_file="$(TargetsDir)/iMXRT/iMXRT_Target.js" />
+    <configuration
+      Name="Flash"
+      arm_target_flash_loader_file_path="$(TargetsDir)/iMXRT/Loader/$(QSPI)_Loader.elf"
+      arm_target_loader_parameter="24000000"
+      target_loader_reset_script=""
+      target_reset_script="" />
+    <folder Name="component">
+      <file file_name="components/fsl_adapter_uart.h" />
+      <file file_name="components/fsl_component_serial_manager.h" />
+      <file file_name="components/fsl_component_serial_port_uart.h" />
+      <file file_name="components/fsl_debug_console.c" />
+      <file file_name="components/fsl_debug_console.h" />
+      <file file_name="components/fsl_str.c" />
+      <file file_name="components/fsl_str.h" />
+      <file file_name="components/generic_list.c" />
+      <file file_name="components/generic_list.h" />
+      <file file_name="components/lpuart_adapter.c" />
+      <file file_name="components/serial_manager.c" />
+      <file file_name="components/serial_manager.h" />
+      <file file_name="components/serial_port_internal.h" />
+      <file file_name="components/serial_port_uart.c" />
+      <file file_name="components/serial_port_uart.h" />
+      <file file_name="components/uart.h" />
+    </folder>
+    <folder Name="coremark">
+      <file file_name="core_list_join.c" />
+      <file file_name="core_main.c" />
+      <file file_name="core_matrix.c" />
+      <file file_name="core_portme.cpp" />
+      <file file_name="core_portme.h" />
+      <file file_name="core_state.c" />
+      <file file_name="core_util.c" />
+      <file file_name="coremark.h" />
+    </folder>
+    <folder Name="drivers">
+      <file file_name="drivers/1160/cm4/fsl_cache.c" />
+      <file file_name="drivers/1160/cm4/fsl_cache.h" />
+      <file file_name="drivers/1160/fsl_anatop_ai.c" />
+      <file file_name="drivers/1160/fsl_anatop_ai.h" />
+      <file file_name="drivers/1160/fsl_clock.c" />
+      <file file_name="drivers/1160/fsl_clock.h" />
+      <file file_name="drivers/fsl_common.c" />
+      <file file_name="drivers/fsl_common.h" />
+      <file file_name="drivers/fsl_common_arm.c" />
+      <file file_name="drivers/fsl_common_arm.h" />
+      <file file_name="drivers/fsl_dcdc.c" />
+      <file file_name="drivers/fsl_dcdc.h" />
+      <file file_name="drivers/fsl_flexspi.c" />
+      <file file_name="drivers/fsl_flexspi.h" />
+      <file file_name="drivers/fsl_gpio.c" />
+      <file file_name="drivers/fsl_gpio.h" />
+      <file file_name="drivers/fsl_iomuxc.h" />
+      <file file_name="drivers/fsl_lpuart.c" />
+      <file file_name="drivers/fsl_lpuart.h" />
+      <file file_name="drivers/fsl_pmu.c" />
+      <file file_name="drivers/fsl_pmu.h" />
+    </folder>
+    <folder Name="src">
+      <file file_name="boards/1160/board.c" />
+      <file file_name="boards/1160/board.h" />
+      <file file_name="boards/1160/clock_config.c" />
+      <file file_name="boards/1160/clock_config.h" />
+      <file file_name="boards/1160/config.h" />
+      <file file_name="boards/1160/pin_mux.c" />
+      <file file_name="boards/1160/pin_mux.h" />
+    </folder>
+    <folder Name="System Files">
+      <configuration
+        Name="Common"
+        default_code_section=".init"
+        default_const_section=".init_rodata"
+        default_data_section=".data"
+        default_zeroed_section=".bss"
+        link_time_optimization="No" />
+      <file file_name="$(DeviceStartFile)" />
+      <file file_name="$(DeviceSystemFile)" />
+      <file file_name="$(TargetsDir)/iMXRT/iMXRT_Target.js" />
+      <file file_name="placement_flexspi_RowleyBsp.xml" />
+      <file file_name="$(StudioDir)/source/thumb_crt0.s" />
+    </folder>
+  </project>
+  <project Name="Coremark_1160CM7">
+    <configuration
+      CMSIS_CORE="Yes"
+      Name="Common"
+      Placement="FlexSPI (QuadSPI, No DCD)"
+      Target="MIMXRT1166DVM6A_M7"
+      arm_architecture="v7EM"
+      arm_core_type="Cortex-M7"
+      arm_fp_abi="Hard"
+      arm_fpu_type="FPv5-D16"
+      arm_linker_stack_size="10240"
+      arm_target_device_name="MIMXRT1166xxx6_M7"
+      arm_target_loader_applicable_loaders="Flash"
+      arm_target_loader_default_loader="Flash"
+      c_preprocessor_definitions="XIP_BOOT_FLEXSPI1"
+      c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRT;$(TargetsDir)/iMXRT/devices/$(DeviceFamily)"
+      c_user_include_directories="./drivers/1160;./drivers/1160/cm7;./drivers;./boards/1160"
+      debug_dependent_projects="Coremark_1160CM4"
+      debug_register_definition_file="$(TargetsDir)/iMXRT/XML/MIMXRT11_cm7_registers.xml"
+      debug_startup_completion_point="main"
+      default_code_section=".text_tcm"
+      default_const_section=".rodata_tcm"
+      default_data_section=".data_tcm"
+      default_zeroed_section=".bss_tcm"
+      linker_memory_map_file="$(TargetsDir)/iMXRT/iMXRT11_cm7_MemoryMap.xml"
+      linker_memory_map_macros="SRAMSIZE=0x10000;OCRAMSIZE=0x10000;OCRAM1SIZE=0x10000;OCRAM2SIZE=0x10000"
+      linker_section_placement_file="$(TargetsDir)/iMXRT/flexspi_placement.xml"
+      linker_section_placement_macros="FILLSIZE=0x400"
+      macros="DeviceStartFile=$(TargetsDir)/iMXRT/startup_MIMXRT1166_cm7.s;DeviceSystemFile=$(TargetsDir)/iMXRT/devices/MIMXRT1166/system_MIMXRT1166_cm7.c;HYPER=MIMXRT116x_FlexSPI_NOR_API_M7;QSPI=MIMXRT116x_FlexSPI_NOR_API_M7;DeviceFamily=MIMXRT1166"
+      project_dependencies="Coremark_1160CM4"
+      project_directory=""
+      project_type="Executable"
+      property_groups_file_path="$(TargetsDir)/iMXRT/propertyGroups.xml"
+      target_get_partname_script=""
+      target_reset_script="Reset()"
+      target_script_file="$(TargetsDir)/iMXRT/iMXRT_Target.js" />
+    <configuration
+      Name="Flash"
+      arm_target_flash_loader_file_path="$(TargetsDir)/iMXRT/Loader/$(QSPI)_Loader.elf"
+      arm_target_loader_parameter="24000000"
+      target_loader_reset_script=""
+      target_reset_script="Reset2()" />
+    <folder Name="component">
+      <file file_name="components/fsl_adapter_uart.h" />
+      <file file_name="components/fsl_component_serial_manager.h" />
+      <file file_name="components/fsl_component_serial_port_uart.h" />
+      <file file_name="components/fsl_debug_console.c" />
+      <file file_name="components/fsl_debug_console.h" />
+      <file file_name="components/fsl_str.c" />
+      <file file_name="components/fsl_str.h" />
+      <file file_name="components/generic_list.c" />
+      <file file_name="components/generic_list.h" />
+      <file file_name="components/lpuart_adapter.c" />
+      <file file_name="components/serial_manager.c" />
+      <file file_name="components/serial_manager.h" />
+      <file file_name="components/serial_port_internal.h" />
+      <file file_name="components/serial_port_uart.c" />
+      <file file_name="components/serial_port_uart.h" />
+      <file file_name="components/uart.h" />
+    </folder>
+    <folder Name="coremark">
+      <file file_name="core_list_join.c" />
+      <file file_name="core_main.c" />
+      <file file_name="core_matrix.c" />
+      <file file_name="core_portme.cpp" />
+      <file file_name="core_portme.h" />
+      <file file_name="core_state.c" />
+      <file file_name="core_util.c" />
+      <file file_name="coremark.h" />
+    </folder>
+    <folder Name="drivers">
+      <file file_name="drivers/1160/cm7/fsl_cache.c" />
+      <file file_name="drivers/1160/cm7/fsl_cache.h" />
+      <file file_name="drivers/1160/fsl_anatop_ai.c" />
+      <file file_name="drivers/1160/fsl_anatop_ai.h" />
+      <file file_name="drivers/1160/fsl_clock.c" />
+      <file file_name="drivers/1160/fsl_clock.h" />
+      <file file_name="drivers/fsl_common.c" />
+      <file file_name="drivers/fsl_common.h" />
+      <file file_name="drivers/fsl_common_arm.c" />
+      <file file_name="drivers/fsl_common_arm.h" />
+      <file file_name="drivers/fsl_dcdc.c" />
+      <file file_name="drivers/fsl_dcdc.h" />
+      <file file_name="drivers/fsl_flexspi.c" />
+      <file file_name="drivers/fsl_flexspi.h" />
+      <file file_name="drivers/fsl_gpio.c" />
+      <file file_name="drivers/fsl_gpio.h" />
+      <file file_name="drivers/fsl_iomuxc.h" />
+      <file file_name="drivers/fsl_lpuart.c" />
+      <file file_name="drivers/fsl_lpuart.h" />
+      <file file_name="drivers/fsl_pmu.c" />
+      <file file_name="drivers/fsl_pmu.h" />
+    </folder>
+    <folder Name="src">
+      <file file_name="boards/1160/board.c" />
+      <file file_name="boards/1160/board.h" />
+      <file file_name="boards/1160/clock_config.c" />
+      <file file_name="boards/1160/clock_config.h" />
+      <file file_name="boards/1160/config.h" />
+      <file file_name="boards/1160/pin_mux.c" />
+      <file file_name="boards/1160/pin_mux.h" />
+    </folder>
+    <folder Name="System Files">
+      <configuration
+        Name="Common"
+        default_code_section=".init"
+        default_const_section=".init_rodata"
+        default_data_section=".data"
+        default_zeroed_section=".bss"
+        link_time_optimization="No" />
+      <file file_name="$(DeviceStartFile)" />
+      <file file_name="$(DeviceSystemFile)" />
+      <file file_name="$(TargetsDir)/iMXRT/iMXRT_Target.js" />
+      <file file_name="placement_flexspi_RowleyBsp.xml" />
+      <file file_name="$(StudioDir)/source/thumb_crt0.s" />
+    </folder>
+    <folder Name="XIP">
+      <file file_name="XiP/flexspi_boot.c" />
+      <file file_name="XiP/flexspi_boot.h" />
+      <file file_name="XiP/flexspi_flash.h" />
+      <file file_name="XiP/flexspi_flash_Hyperflash.c" />
+      <file file_name="XiP/flexspi_flash_OSPI_Adesto.c" />
+      <file file_name="XiP/flexspi_flash_QSPI.c" />
+    </folder>
+  </project>
   <project Name="Coremark_1170CM4">
     <configuration
       CMSIS_CORE="Yes"
@@ -963,9 +1203,9 @@
       arm_target_device_name="MIMXRT1176xxxA_M4"
       arm_target_loader_applicable_loaders="Flash"
       arm_target_loader_default_loader="Flash"
-      c_preprocessor_definitions="SERIAL_PORT_TYPE_UART=1;XIP_BOOT_FLEXSPI1"
+      c_preprocessor_definitions="XIP_BOOT_FLEXSPI1"
       c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRT;$(TargetsDir)/iMXRT/devices/$(DeviceFamily)"
-      c_user_include_directories="./drivers/1170cm4;./drivers;./boards/1170"
+      c_user_include_directories="./drivers/1170;./drivers/1170/cm4;./drivers;./boards/1170"
       debug_register_definition_file="$(TargetsDir)/iMXRT/XML/MIMXRT11_cm4_Registers.xml"
       debug_startup_completion_point="main"
       default_code_section=".text_tcm"
@@ -1018,12 +1258,12 @@
       <file file_name="coremark.h" />
     </folder>
     <folder Name="drivers">
-      <file file_name="drivers/1170cm4/fsl_anatop_ai.c" />
-      <file file_name="drivers/1170cm4/fsl_anatop_ai.h" />
-      <file file_name="drivers/1170cm4/fsl_cache.c" />
-      <file file_name="drivers/1170cm4/fsl_cache.h" />
-      <file file_name="drivers/1170cm4/fsl_clock.c" />
-      <file file_name="drivers/1170cm4/fsl_clock.h" />
+      <file file_name="drivers/1170/cm4/fsl_cache.c" />
+      <file file_name="drivers/1170/cm4/fsl_cache.h" />
+      <file file_name="drivers/1170/fsl_anatop_ai.c" />
+      <file file_name="drivers/1170/fsl_anatop_ai.h" />
+      <file file_name="drivers/1170/fsl_clock.c" />
+      <file file_name="drivers/1170/fsl_clock.h" />
       <file file_name="drivers/fsl_common.c" />
       <file file_name="drivers/fsl_common.h" />
       <file file_name="drivers/fsl_common_arm.c" />
@@ -1078,9 +1318,9 @@
       arm_target_device_name="MIMXRT1176xxxA_M7"
       arm_target_loader_applicable_loaders="Flash"
       arm_target_loader_default_loader="Flash"
-      c_preprocessor_definitions="SERIAL_PORT_TYPE_UART=1;XIP_BOOT_FLEXSPI1"
+      c_preprocessor_definitions="XIP_BOOT_FLEXSPI1"
       c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRT;$(TargetsDir)/iMXRT/devices/$(DeviceFamily)"
-      c_user_include_directories="./drivers/1170cm7;./drivers;./boards/1170"
+      c_user_include_directories="./drivers/1170;./drivers/1170/cm7;./drivers;./boards/1170"
       debug_dependent_projects="Coremark_1170CM4"
       debug_register_definition_file="$(TargetsDir)/iMXRT/XML/MIMXRT11_cm7_registers.xml"
       debug_startup_completion_point="main"
@@ -1135,12 +1375,12 @@
       <file file_name="coremark.h" />
     </folder>
     <folder Name="drivers">
-      <file file_name="drivers/1170cm7/fsl_anatop_ai.c" />
-      <file file_name="drivers/1170cm7/fsl_anatop_ai.h" />
-      <file file_name="drivers/1170cm7/fsl_cache.c" />
-      <file file_name="drivers/1170cm7/fsl_cache.h" />
-      <file file_name="drivers/1170cm7/fsl_clock.c" />
-      <file file_name="drivers/1170cm7/fsl_clock.h" />
+      <file file_name="drivers/1170/cm7/fsl_cache.c" />
+      <file file_name="drivers/1170/cm7/fsl_cache.h" />
+      <file file_name="drivers/1170/fsl_anatop_ai.c" />
+      <file file_name="drivers/1170/fsl_anatop_ai.h" />
+      <file file_name="drivers/1170/fsl_clock.c" />
+      <file file_name="drivers/1170/fsl_clock.h" />
       <file file_name="drivers/fsl_common.c" />
       <file file_name="drivers/fsl_common.h" />
       <file file_name="drivers/fsl_common_arm.c" />

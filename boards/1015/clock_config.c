@@ -40,8 +40,6 @@ board: MIMXRT1015-EVK
 /*******************************************************************************
  * Variables
  ******************************************************************************/
-/* System clock frequency. */
-extern uint32_t SystemCoreClock;
 
 /*******************************************************************************
  ************************ BOARD_InitBootClocks function ************************
@@ -146,6 +144,18 @@ const clock_enet_pll_config_t enetPllConfig_BOARD_BootClockRUN =
         .enableClkOutput500M = true,              /* Enable the PLL providing the ENET 500MHz reference clock */
         .src = 0,                                 /* Bypass clock source, 0 - OSC 24M, 1 - CLK1_P and CLK1_N */
     };
+
+#if (defined(CPU_MIMXRT1015CAF4A) || defined(CPU_MIMXRT1015CAF4B))
+	static const uint8_t SysPfd3_Div  = 18; // PLL2Pfd3 ==> 528 MHz *18/18 ==> 528 MHz
+	static const uint8_t PrePeriphMux = 3;  // Derive clock from divided PLL6 ==> 500 MHz
+#elif (defined(CPU_MIMXRT1015DAF5A) || defined(CPU_MIMXRT1015DAF5B))
+	static const uint8_t SysPfd3_Div  = 24; // PLL2 ==> 528 MHz *18/24 ==> 396 MHz
+	static const uint8_t PrePeriphMux = 2;  // Derive clock from PLL2 PFD3 ==> 396 MHz
+#else
+	#error "No valid CPU defined!"
+#endif
+
+
 /*******************************************************************************
  * Code for BOARD_BootClockRUN configuration
  ******************************************************************************/
@@ -295,13 +305,7 @@ void BOARD_BootClockRUN(void)
     /* Init System pfd2. */
     CLOCK_InitSysPfd(kCLOCK_Pfd2, 18);
     /* Init System pfd3. */
-    #if defined(CPU_MIMXRT1015DAF5A)
-        CLOCK_InitSysPfd(kCLOCK_Pfd3, 18);
-    #elif defined(CPU_MIMXRT1015CAF4A)
-        CLOCK_InitSysPfd(kCLOCK_Pfd3, 24);
-    #else
-        #error "Unknown controller"
-    #endif
+    CLOCK_InitSysPfd(kCLOCK_Pfd3, SysPfd3_Div);
     /* In SDK projects, external flash (configured by FLEXSPI) will be initialized by dcd.
      * With this macro XIP_EXTERNAL_FLASH, usb1 pll (selected to be FLEXSPI clock source in SDK projects) will be left unchanged.
      * Note: If another clock source is selected for FLEXSPI, user may want to avoid changing that clock as well.*/
@@ -331,13 +335,7 @@ void BOARD_BootClockRUN(void)
     /* Init Enet PLL. */
     CLOCK_InitEnetPll(&enetPllConfig_BOARD_BootClockRUN);
     /* Set preperiph clock source. */
-    #if defined(CPU_MIMXRT1015DAF5A)
-        CLOCK_SetMux(kCLOCK_PrePeriphMux, 3);
-    #elif defined(CPU_MIMXRT1015CAF4A)
-        CLOCK_SetMux(kCLOCK_PrePeriphMux, 2);
-    #else
-        #error "Unknown controller"
-    #endif
+    CLOCK_SetMux(kCLOCK_PrePeriphMux, PrePeriphMux);
     /* Set periph clock source. */
     CLOCK_SetMux(kCLOCK_PeriphMux, 0);
     /* Set periph clock2 clock source. */
@@ -377,3 +375,4 @@ void BOARD_BootClockRUN(void)
     /* Set SystemCoreClock variable. */
     SystemCoreClock = BOARD_BOOTCLOCKRUN_CORE_CLOCK;
 }
+

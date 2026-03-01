@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 NXP
+ * Copyright 2022 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -43,11 +43,11 @@ void BOARD_InitBootClocks(void);
 #if (defined(CPU_MIMXRT1061DVJ6A) || defined(CPU_MIMXRT1061DVL6A) || defined(CPU_MIMXRT1061DVJ6B) || defined(CPU_MIMXRT1061DVL6B) || \
 	 defined(CPU_MIMXRT1062DVJ6A) || defined(CPU_MIMXRT1062DVL6A) || defined(CPU_MIMXRT1062DVJ6B) || defined(CPU_MIMXRT1062DVL6B) || \
 	 defined(CPU_MIMXRT1062DVN6B))
-   #define BOARD_BOOTCLOCKRUN_CORE_CLOCK             600000000U  /*!< Core clock frequency: 600000000Hz */
+	#define BOARD_BOOTCLOCKRUN_CORE_CLOCK             600000000U  /*!< Core clock frequency: 600000000Hz */
 #elif (defined(CPU_MIMXRT1061CVJ5A) || defined(CPU_MIMXRT1061CVL5A) || defined(CPU_MIMXRT1061CVJ5B) || defined(CPU_MIMXRT1061CVL5B) || \
 	   defined(CPU_MIMXRT1061XVN5B) || defined(CPU_MIMXRT1062CVJ5A) || defined(CPU_MIMXRT1062CVL5A) || defined(CPU_MIMXRT1062CVJ5B) || \
 	   defined(CPU_MIMXRT1062CVL5B) || defined(CPU_MIMXRT1062XVN5B))
-   #define BOARD_BOOTCLOCKRUN_CORE_CLOCK             528000000U  /*!< Core clock frequency: 528000000Hz */
+	#define BOARD_BOOTCLOCKRUN_CORE_CLOCK             528000000U  /*!< Core clock frequency: 528000000Hz */
 #else
 	#error "Unknown iMXRT1060 device"
 #endif

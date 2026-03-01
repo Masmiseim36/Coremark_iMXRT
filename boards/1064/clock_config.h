@@ -41,9 +41,9 @@ void BOARD_InitBootClocks(void);
  * Definitions for BOARD_BootClockRUN configuration
  ******************************************************************************/
 #if (defined(CPU_MIMXRT1064DVJ6A) || defined(CPU_MIMXRT1064DVL6A))
-   #define BOARD_BOOTCLOCKRUN_CORE_CLOCK             600000000U  /*!< Core clock frequency: 600000000Hz */
+	#define BOARD_BOOTCLOCKRUN_CORE_CLOCK             600000000U  /*!< Core clock frequency: 600000000Hz */
 #elif (defined(CPU_MIMXRT1064CVJ5A) || defined(CPU_MIMXRT1064CVL5A))
-   #define BOARD_BOOTCLOCKRUN_CORE_CLOCK             528000000U  /*!< Core clock frequency: 528000000Hz */
+	#define BOARD_BOOTCLOCKRUN_CORE_CLOCK             528000000U  /*!< Core clock frequency: 528000000Hz */
 #else
 	#error "Unknown iMXRT1060 device"
 #endif

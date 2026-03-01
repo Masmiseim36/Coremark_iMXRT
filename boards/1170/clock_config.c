@@ -1,6 +1,5 @@
 /*
- * Copyright 2020 NXP
- * All rights reserved.
+ * Copyright 2025 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -18,12 +17,11 @@
 
 /* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 !!GlobalInfo
-product: Clocks v7.0
+product: Clocks v16.0
 processor: MIMXRT1176xxxxx
-package_id: MIMXRT1176DVMAA
+package_id: MIMXRT1176DVMAB
 mcu_data: ksdk2_0
-processor_version: 0.8.1
-board: MIMXRT1170-EVK
+processor_version: 0.2506.20
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
 
 #include "clock_config.h"
@@ -39,8 +37,14 @@ board: MIMXRT1170-EVK
 /*******************************************************************************
  * Variables
  ******************************************************************************/
-/* System clock frequency. */
-extern uint32_t SystemCoreClock;
+
+/*******************************************************************************
+ ************************ BOARD_InitBootClocks function ************************
+ ******************************************************************************/
+void BOARD_InitBootClocks(void)
+{
+    BOARD_BootClockRUN();
+}
 
 #if defined(XIP_BOOT_HEADER_ENABLE) && (XIP_BOOT_HEADER_ENABLE == 1)
 #if defined(XIP_BOOT_HEADER_DCD_ENABLE) && (XIP_BOOT_HEADER_DCD_ENABLE == 1)
@@ -63,15 +67,7 @@ void UpdateSemcClock(void)
     CCM->CLOCK_ROOT[kCLOCK_Root_Semc].CONTROL = 0x602;
 }
 #endif
-#endif 
-
-/*******************************************************************************
- ************************ BOARD_InitBootClocks function ************************
- ******************************************************************************/
-void BOARD_InitBootClocks(void)
-{
-    BOARD_BootClockRUN();
-}
+#endif
 
 /*******************************************************************************
  ********************** Configuration BOARD_BootClockRUN ***********************
@@ -100,7 +96,7 @@ outputs:
 - {id: CSI2_UI_CLK_ROOT.outFreq, value: 24 MHz}
 - {id: CSI_CLK_ROOT.outFreq, value: 24 MHz}
 - {id: CSSYS_CLK_ROOT.outFreq, value: 24 MHz}
-- {id: CSTRACE_CLK_ROOT.outFreq, value: 24 MHz}
+- {id: CSTRACE_CLK_ROOT.outFreq, value: 132 MHz}
 - {id: ELCDIF_CLK_ROOT.outFreq, value: 24 MHz}
 - {id: EMV1_CLK_ROOT.outFreq, value: 24 MHz}
 - {id: EMV2_CLK_ROOT.outFreq, value: 24 MHz}
@@ -112,7 +108,6 @@ outputs:
 - {id: ENET_TIMER1_CLK_ROOT.outFreq, value: 24 MHz}
 - {id: ENET_TIMER2_CLK_ROOT.outFreq, value: 24 MHz}
 - {id: ENET_TIMER3_CLK_ROOT.outFreq, value: 24 MHz}
-- {id: ENET_TX_CLK.outFreq, value: 24 MHz}
 - {id: FLEXIO1_CLK_ROOT.outFreq, value: 24 MHz}
 - {id: FLEXIO2_CLK_ROOT.outFreq, value: 24 MHz}
 - {id: FLEXSPI1_CLK_ROOT.outFreq, value: 24 MHz}
@@ -234,6 +229,8 @@ settings:
 - {id: CCM.CLOCK_ROOT3.MUX.sel, value: ANADIG_PLL.SYS_PLL3_CLK}
 - {id: CCM.CLOCK_ROOT4.DIV.scale, value: '3'}
 - {id: CCM.CLOCK_ROOT4.MUX.sel, value: ANADIG_PLL.SYS_PLL2_PFD1_CLK}
+- {id: CCM.CLOCK_ROOT6.DIV.scale, value: '4'}
+- {id: CCM.CLOCK_ROOT6.MUX.sel, value: ANADIG_PLL.SYS_PLL2_CLK}
 - {id: CCM.CLOCK_ROOT68.DIV.scale, value: '2'}
 - {id: CCM.CLOCK_ROOT68.MUX.sel, value: ANADIG_PLL.PLL_VIDEO_CLK}
 - {id: CCM.CLOCK_ROOT8.DIV.scale, value: '240'}
@@ -244,23 +241,30 @@ settings:
  ******************************************************************************/
 
 #ifndef SKIP_POWER_ADJUSTMENT
-#if __CORTEX_M == 7
-#define BYPASS_LDO_LPSR 1
-#define SKIP_LDO_ADJUSTMENT 1
-#elif __CORTEX_M == 4
-#define SKIP_DCDC_ADJUSTMENT 1
-#define SKIP_FBB_ENABLE 1
-#endif
+	#if __CORTEX_M == 7
+		#define BYPASS_LDO_LPSR 1
+		#define SKIP_LDO_ADJUSTMENT 1
+	#elif __CORTEX_M == 4
+		#define SKIP_DCDC_ADJUSTMENT 1
+		#define SKIP_FBB_ENABLE 1
+	#endif
 #endif
 
 const clock_arm_pll_config_t armPllConfig_BOARD_BootClockRUN =
 {
 	.postDivider = kCLOCK_PllPostDiv2,        /* Post divider, 0 - DIV by 2, 1 - DIV by 4, 2 - DIV by 8, 3 - DIV by 1 */
-	#if defined(CPU_MIMXRT1176DVMAA_cm7) || defined(CPU_MIMXRT1175DVMAA_cm7) || \
-		defined(CPU_MIMXRT1176DVMAA_cm4) || defined(CPU_MIMXRT1175DVMAA_cm4)
+	#if (defined(CPU_MIMXRT1176DVMAA_cm7) || defined(CPU_MIMXRT1176DVMAB_cm7) || defined(CPU_MIMXRT1175DVMAA_cm7) || defined(CPU_MIMXRT1175DVMAB_cm7) || \
+		 defined(CPU_MIMXRT1172DVMAA)     || defined(CPU_MIMXRT1172DVMAB)     || defined(CPU_MIMXRT1171DVMAA)     || defined(CPU_MIMXRT1171DVMAB) || \
+		 defined(CPU_MIMXRT1175DVMAA_cm4) || defined(CPU_MIMXRT1175DVMAB_cm4) || defined(CPU_MIMXRT1176DVMAA_cm4) || defined(CPU_MIMXRT1176DVMAB_cm4))
 		.loopDivider = 166,                   /* PLL Loop divider, Fout = Fin * 41.5  --> 996 MHz */
-	#elif defined(CPU_MIMXRT1176AVM8A_cm7) || defined(CPU_MIMXRT1176CVM8A_cm7) || defined(CPU_MIMXRT1175AVM8A_cm7) || defined(CPU_MIMXRT1175CVM8A_cm7) || \
-		  defined(CPU_MIMXRT1176AVM8A_cm4) || defined(CPU_MIMXRT1176CVM8A_cm4) || defined(CPU_MIMXRT1175AVM8A_cm4) || defined(CPU_MIMXRT1175CVM8A_cm4)
+	#elif (defined(CPU_MIMXRT1176AVM8A_cm7) || defined(CPU_MIMXRT1176AVM8B_cm7) || defined(CPU_MIMXRT1176CVM8A_cm7) || defined(CPU_MIMXRT1176CVM8B_cm7) || \
+		   defined(CPU_MIMXRT1175AVM8A_cm7) || defined(CPU_MIMXRT1175AVM8B_cm7) || defined(CPU_MIMXRT1173CVM8A_cm7) || defined(CPU_MIMXRT1173CVM8B_cm7) || \
+		   defined(CPU_MIMXRT1175CVM8A_cm7) || defined(CPU_MIMXRT1175CVM8B_cm7) || defined(CPU_MIMXRT1171AVM8A)     || defined(CPU_MIMXRT1171AVM8B)     || \
+		   defined(CPU_MIMXRT1171CVM8A)     || defined(CPU_MIMXRT1171CVM8B)     || defined(CPU_MIMXRT1172AVM8A)     || defined(CPU_MIMXRT1172AVM8B)     || \
+		   defined(CPU_MIMXRT1172CVM8A)     || defined(CPU_MIMXRT1172CVM8B)     || \
+		   defined(CPU_MIMXRT1173CVM8A_cm4) || defined(CPU_MIMXRT1173CVM8B_cm4) || \
+		   defined(CPU_MIMXRT1175AVM8A_cm4) || defined(CPU_MIMXRT1175AVM8B_cm4) || defined(CPU_MIMXRT1175CVM8A_cm4) || defined(CPU_MIMXRT1175CVM8B_cm4) || \
+		   defined(CPU_MIMXRT1176AVM8A_cm4) || defined(CPU_MIMXRT1176AVM8B_cm4) || defined(CPU_MIMXRT1176CVM8A_cm4) || defined(CPU_MIMXRT1176CVM8B_cm4))
 		.loopDivider = 133,                   /* PLL Loop divider, Fout = Fin * 41.5  --> 798 MHz */
 	#else
 		#error "Unknown iMXRT1170 device"
@@ -291,9 +295,22 @@ void BOARD_BootClockRUN(void)
 {
     clock_root_config_t rootCfg = {0};
 
+#if !defined(SKIP_DCDC_CONFIGURATION) || (!SKIP_DCDC_CONFIGURATION)
+    /* Set DCDC to CCM mode to improve stablility. */
+    DCDC_BootIntoCCM(DCDC);
+
 #if !defined(SKIP_DCDC_ADJUSTMENT) || (!SKIP_DCDC_ADJUSTMENT)
-    DCDC_SetVDD1P0BuckModeTargetVoltage(DCDC, kDCDC_1P0BuckTarget1P15V);
-#endif
+    if((OCOTP->FUSEN[16].FUSE == 0x57AC5969U) && ((OCOTP->FUSEN[17].FUSE & 0xFFU) == 0x0BU))
+    {
+        DCDC_SetVDD1P0BuckModeTargetVoltage(DCDC, kDCDC_1P0BuckTarget1P15V);
+    }
+    else
+    {
+        /* Set 1.125V for production samples to align with data sheet requirement */
+        DCDC_SetVDD1P0BuckModeTargetVoltage(DCDC, kDCDC_1P0BuckTarget1P125V);
+    }
+#endif /* SKIP_DCDC_ADJUSTMENT */
+#endif /* SKIP_DCDC_CONFIGURATION */
 
 #if !defined(SKIP_FBB_ENABLE) || (!SKIP_FBB_ENABLE)
     /* Check if FBB need to be enabled in OverDrive(OD) mode */
@@ -330,8 +347,6 @@ void BOARD_BootClockRUN(void)
     }
 #endif
 
-    /* PLL LDO shall be enabled first before enable PLLs */
-
     /* Config CLK_1M */
     CLOCK_OSC_Set1MHzOutputBehavior(kCLOCK_1MHzOutEnableFreeRunning1Mhz);
 
@@ -340,7 +355,6 @@ void BOARD_BootClockRUN(void)
 
     /* Init OSC RC 400M */
     CLOCK_OSC_EnableOscRc400M();
-    CLOCK_OSC_GateOscRc400M(true);
 
     /* Init OSC RC 48M */
     CLOCK_OSC_EnableOsc48M(true);
@@ -354,21 +368,37 @@ void BOARD_BootClockRUN(void)
     {
     }
 
-    /* Swicth both core, M7 Systick and Bus_Lpsr to OscRC48MDiv2 first */
+    /* Switch core M7 clock root to OscRC48MDiv2 first */
+#if __CORTEX_M == 7
     rootCfg.mux = kCLOCK_M7_ClockRoot_MuxOscRc48MDiv2;
     rootCfg.div = 1;
-#if __CORTEX_M == 7
     CLOCK_SetRootClock(kCLOCK_Root_M7, &rootCfg);
+#endif
+
+    /* Switch core M7 systick clock root to OscRC48MDiv2 first */
+#if __CORTEX_M == 7
+    rootCfg.mux = kCLOCK_M7_SYSTICK_ClockRoot_MuxOscRc48MDiv2;
+    rootCfg.div = 1;
     CLOCK_SetRootClock(kCLOCK_Root_M7_Systick, &rootCfg);
 #endif
+
+    /* Switch core M4 clock root to OscRC48MDiv2 first */
 #if __CORTEX_M == 4
+    rootCfg.mux = kCLOCK_M4_ClockRoot_MuxOscRc48MDiv2;
+    rootCfg.div = 1;
     CLOCK_SetRootClock(kCLOCK_Root_M4, &rootCfg);
+#endif
+
+    /* Switch the Bus_Lpsr clock root to OscRC48MDiv2 first */
+#if __CORTEX_M == 4
+    rootCfg.mux = kCLOCK_BUS_LPSR_ClockRoot_MuxOscRc48MDiv2;
+    rootCfg.div = 1;
     CLOCK_SetRootClock(kCLOCK_Root_Bus_Lpsr, &rootCfg);
 #endif
 
     /*
-     * if DCD is used, please make sure the clock source of SEMC is not changed in the following PLL/PFD configuration code.
-     */
+    * if DCD is used, please make sure the clock source of SEMC is not changed in the following PLL/PFD configuration code.
+    */
     /* Init Arm Pll. */
     CLOCK_InitArmPll(&armPllConfig_BOARD_BootClockRUN);
 
@@ -417,7 +447,7 @@ void BOARD_BootClockRUN(void)
     /* Init Video Pll. */
     CLOCK_InitVideoPll(&videoPllConfig_BOARD_BootClockRUN);
 
-    /* Moduel clock root configurations. */
+    /* Module clock root configurations. */
     /* Configure M7 using ARM_PLL_CLK */
 #if __CORTEX_M == 7
     rootCfg.mux = kCLOCK_M7_ClockRoot_MuxArmPllOut;
@@ -433,18 +463,14 @@ void BOARD_BootClockRUN(void)
 #endif
 
     /* Configure BUS using SYS_PLL3_CLK */
-#if __CORTEX_M == 7
     rootCfg.mux = kCLOCK_BUS_ClockRoot_MuxSysPll3Out;
     rootCfg.div = 2;
     CLOCK_SetRootClock(kCLOCK_Root_Bus, &rootCfg);
-#endif
 
     /* Configure BUS_LPSR using SYS_PLL3_CLK */
-#if __CORTEX_M == 4
     rootCfg.mux = kCLOCK_BUS_LPSR_ClockRoot_MuxSysPll3Out;
     rootCfg.div = 3;
     CLOCK_SetRootClock(kCLOCK_Root_Bus_Lpsr, &rootCfg);
-#endif
 
     /* Configure SEMC using SYS_PLL2_PFD1_CLK */
 #ifndef SKIP_SEMC_INIT
@@ -464,9 +490,9 @@ void BOARD_BootClockRUN(void)
     rootCfg.div = 1;
     CLOCK_SetRootClock(kCLOCK_Root_Cssys, &rootCfg);
 
-    /* Configure CSTRACE using OSC_RC_48M_DIV2 */
-    rootCfg.mux = kCLOCK_CSTRACE_ClockRoot_MuxOscRc48MDiv2;
-    rootCfg.div = 1;
+    /* Configure CSTRACE using SYS_PLL2_CLK */
+    rootCfg.mux = kCLOCK_CSTRACE_ClockRoot_MuxSysPll2Out;
+    rootCfg.div = 4;
     CLOCK_SetRootClock(kCLOCK_Root_Cstrace, &rootCfg);
 
     /* Configure M4_SYSTICK using OSC_RC_48M_DIV2 */
@@ -539,7 +565,7 @@ void BOARD_BootClockRUN(void)
     CLOCK_SetRootClock(kCLOCK_Root_Gpt6, &rootCfg);
 
     /* Configure FLEXSPI1 using OSC_RC_48M_DIV2 */
-#if !(defined(XIP_EXTERNAL_FLASH) && (XIP_EXTERNAL_FLASH == 1))
+#if !(defined(XIP_EXTERNAL_FLASH) && (XIP_EXTERNAL_FLASH == 1) || defined(FLEXSPI_IN_USE))
     rootCfg.mux = kCLOCK_FLEXSPI1_ClockRoot_MuxOscRc48MDiv2;
     rootCfg.div = 1;
     CLOCK_SetRootClock(kCLOCK_Root_Flexspi1, &rootCfg);
@@ -848,10 +874,16 @@ void BOARD_BootClockRUN(void)
 
     /* Set MQS configuration. */
     IOMUXC_MQSConfig(IOMUXC_GPR,kIOMUXC_MqsPwmOverSampleRate32, 0);
-    /* Set ENET Tx clock source. */
-    IOMUXC_GPR->GPR4 &= ~IOMUXC_GPR_GPR4_ENET_TX_CLK_SEL_MASK;
+    /* Set ENET Ref clock source. */
+    IOMUXC_GPR->GPR4 &= ~IOMUXC_GPR_GPR4_ENET_REF_CLK_DIR_MASK;
     /* Set ENET_1G Tx clock source. */
-    IOMUXC_GPR->GPR5 &= ~IOMUXC_GPR_GPR5_ENET1G_TX_CLK_SEL_MASK;
+    IOMUXC_GPR->GPR5 = ((IOMUXC_GPR->GPR5 & ~IOMUXC_GPR_GPR5_ENET1G_TX_CLK_SEL_MASK) | IOMUXC_GPR_GPR5_ENET1G_RGMII_EN_MASK);
+    /* Set ENET_1G Ref clock source. */
+    IOMUXC_GPR->GPR5 &= ~IOMUXC_GPR_GPR5_ENET1G_REF_CLK_DIR_MASK;
+    /* Set ENET_QOS Tx clock source. */
+    IOMUXC_GPR->GPR6 &= ~IOMUXC_GPR_GPR6_ENET_QOS_RGMII_EN_MASK;
+    /* Set ENET_QOS Ref clock source. */
+    IOMUXC_GPR->GPR6 &= ~IOMUXC_GPR_GPR6_ENET_QOS_REF_CLK_DIR_MASK;
     /* Set GPT1 High frequency reference clock source. */
     IOMUXC_GPR->GPR22 &= ~IOMUXC_GPR_GPR22_REF_1M_CLK_GPT1_MASK;
     /* Set GPT2 High frequency reference clock source. */

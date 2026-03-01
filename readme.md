@@ -13,7 +13,7 @@ Both solution files contain separate projects for the various derivatives of the
 
 The results are in iterations per second (higher is better), code and data is stored in TCM.
 
-Controller                    | O0       | OG       | O1       | OSize    |  O2      | O3       | O3 + LTO       
+Controller                    | O0       | OG       | O1       | OSize    |  O2      | O3       | O3 + LTO
 --------                      | --------:| --------:| --------:| --------:| --------:| --------:| --------:
 **iMX RT1011     ( 396 MHz)** |   289.59 |   906.88 |  1159.52 |  1147.26 |  1590.48 |  1584.53 |  1622.42
 **iMX RT1011     ( 500 MHz)** |   365.65 |  1140.87 |  1463.22 |  1448.56 |  2008.67 |  1999.68 |  2048.59
@@ -30,7 +30,7 @@ Controller                    | O0       | OG       | O1       | OSize    |  O2 
 
 The results are in iterations per second (higher is better), code and data is stored in TCM.
 
-Controller                    | O0       | OG       | O1       | OSize    |  O2      | O3       | O3 + LTO       
+Controller                    | O0       | OG       | O1       | OSize    |  O2      | O3       | O3 + LTO
 --------                      | --------:| --------:| --------:| --------:| --------:| --------:| --------:
 **iMX RT1011     ( 396 MHz)** |   289.59 |   909.12 |  1170.16 |  1207.23 |  1598.10 |  1588.56 |  1630.31
 **iMX RT1011     ( 500 MHz)** |   365.65 |  1153.61 |  1480.42 |  1524.29 |  2008.67 |  2001.60 |  2058.46
@@ -47,7 +47,7 @@ Controller                    | O0       | OG       | O1       | OSize    |  O2 
 
 The results are in iterations per second (higher is better), code and data is stored in TCM.
 
-Controller                    | O0       | OG       | O1       | OSize    |  O2      | O3       | O3 + LTO       
+Controller                    | O0       | OG       | O1       | OSize    |  O2      | O3       | O3 + LTO
 --------                      | --------:| --------:| --------:| --------:| --------:| --------:| --------:
 **iMX RT1011     ( 396 MHz)** |   289.59 |   887.04 |  1201.69 |  1498.62 |  1601.38 |  1604.87 |  1635.96
 **iMX RT1011     ( 500 MHz)** |   365.65 |  1127.11 |  1521.23 |  1892.21 |  2024.12 |  2032.93 |  2065.51
@@ -64,7 +64,7 @@ Controller                    | O0       | OG       | O1       | OSize    |  O2 
 
 The results are in iterations per second (higher is better), code and data is stored in TCM.
 
-Controller                     | O0       | OG       | O1       | OSize    |  O2      | O3       | O3 + LTO      
+Controller                     | O0       | OG       | O1       | OSize    |  O2      | O3       | O3 + LTO
 --------                       | --------:| --------:| --------:| --------:| --------:| --------:| --------:
 **iMX RT1011      ( 396 MHz)** |   289.52 |   886.58 |  1200.45 |  1499.11 |  1570.54 |  1594.38 |  1607.66
 **iMX RT1011      ( 500 MHz)** |   365.56 |  1127.09 |  1523.46 |  1892.86 |  1975.65 |  2011.50 |  2029.87
@@ -79,7 +79,7 @@ Controller                     | O0       | OG       | O1       | OSize    |  O2
 
 The results are in iterations per second (higher is better), code and data is stored in TCM.
 
-Controller                     | O0       | OG       | O1       | OSize    |  O2      | O3       | O3 + LTO      
+Controller                     | O0       | OG       | O1       | OSize    |  O2      | O3       | O3 + LTO
 --------                       | --------:| --------:| --------:| --------:| --------:| --------:| --------:
 **iMX RT1011      ( 396 MHz)** |   289.52 |   892.69 |  1187.56 |  1257.54 |  1581.62 |  1613.52 |  1617.23
 **iMX RT1011      ( 500 MHz)** |   365.56 |  1119.44 |  1498.62 |  1587.85 |  1994.65 |  2042.73 |  2042.48
@@ -98,7 +98,7 @@ Controller                     | O0       | OG       | O1       | OSize    |  O2
 
 The results are in iterations per second (higher is better), code and data is stored in TCM.
 
-Controller                     | O0       | OG       | O1       | OSize    |  O2      | O3       | O3 + LTO      
+Controller                     | O0       | OG       | O1       | OSize    |  O2      | O3       | O3 + LTO
 --------                       | --------:| --------:| --------:| --------:| --------:| --------:| --------:
 **iMX RT1060      ( 528 MHz)** |   386.04 |  1192.74 |  1589.31 |  1675.43 |  2110.68 |  2153.03 |  2156.84
 **iMX RT1060      ( 600 MHz)** |   438.68 |  1355.41 |  1806.09 |  1903.89 |  2398.54 |  2446.66 |  2436.17
@@ -110,7 +110,7 @@ Controller                     | O0       | OG       | O1       | OSize    |  O2
 
 The results are in iterations per second (higher is better), code and data is stored in TCM.
 
-Controller                     | O0       | OG       | O1       | OSize    |  O2      | O3       | O3 + LTO      
+Controller                     | O0       | OG       | O1       | OSize    |  O2      | O3       | O3 + LTO
 --------                       | --------:| --------:| --------:| --------:| --------:| --------:| --------:
 **iMX RT1060      ( 528 MHz)** |   386.14 |  1241.80 |  1657.76 |  1676.72 |  2035.66 |  2079.78 |  2074.77
 **iMX RT1060      ( 600 MHz)** |   438.80 |  1411.15 |  1883.87 |  1905.34 |  2313.31 |  2363.39 |  2357.71
@@ -119,9 +119,25 @@ Controller                     | O0       | OG       | O1       | OSize    |  O2
 
 The results are in iterations per second (higher is better), code and data is stored in TCM.
 
-Controller                     | O0       | OG       | O1       | OSize    |  O2      | O3       | O3 + LTO      
+Controller                     | O0       | OG       | O1       | OSize    |  O2      | O3       | O3 + LTO
 --------                       | --------:| --------:| --------:| --------:| --------:| --------:| --------:
 **iMX RT1011      ( 396 MHz)** |   173.10 |   931.46 |  1244.49 |  1256.75 |  1526.29 |  1563.72 |  1557.87
 **iMX RT1011      ( 500 MHz)** |   364.70 |  1175.97 |  1571.33 |  1586.84 |  1927.15 |  1974.41 |  1967.03
 **iMX RT1060      ( 528 MHz)** |   386.14 |  1241.80 |  1657.76 |  1677.17 |  2033.59 |  2080.38 |  2076.84
 **iMX RT1060      ( 600 MHz)** |   438.80 |  1411.15 |  1883.87 |  1905.92 |  2310.85 |  2364.06 |  2360.16
+
+
+## Results with GCC 15.2
+
+The results are in iterations per second (higher is better), code and data is stored in TCM.
+
+Controller                     | O0       | OG       | O1       | OSize    |  O2      | O3       | O3 + LTO
+--------                       | --------:| --------:| --------:| --------:| --------:| --------:| --------:
+**iMX RT1060      ( 528 MHz)** |   378.84 |  1223.90 |  1645.00 |  1756.11 |  2131.65 |  2145.73 |  2078.05
+**iMX RT1060      ( 600 MHz)** |   430.50 |  1390.70 |  1869.43 |  1995.60 |  2422.36 |  2438.31 |  2361.49
+**iMX RT1160_CM7  ( 500 MHz)** |   336.58 |  1154.28 |  1547.65 |  1651.85 |  2010.53 |  2023.71 |  1963.40
+**iMX RT1160_CM7  ( 600 MHz)** |   405.53 |  1390.70 |  1864.69 |  1990.20 |  2422.36 |  2438.19 |  2365.52
+**iMX RT1160_CM4  ( 240 MHz)** |   131.22 |   403.52 |   478.77 |   483.87 |   609.53 |   610.74 |   631.20
+**iMX RT1170_CM7  ( 800 MHz)** |   539.36 |  1849.72 |  2480.03 |  2647.04 |  3221.85 |  3242.96 |  3140.90
+**iMX RT1170_CM7  (1000 MHz)** |   673.20 |  2308.72 |  3095.40 |  3303.81 |  4021.23 |  4047.59 |  3920.33
+**iMX RT1170_CM4  ( 400 MHz)** |   214.73 |   660.35 |   783.45 |   791.84 |   997.47 |   999.46 |  1032.91

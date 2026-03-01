@@ -139,6 +139,17 @@ const clock_enet_pll_config_t enetPllConfig_BOARD_BootClockRUN =
         .enableClkOutput500M = true,              /* Enable the PLL providing the ENET 500MHz reference clock */
         .src = 0,                                 /* Bypass clock source, 0 - OSC 24M, 1 - CLK1_P and CLK1_N */
     };
+
+#if (defined(CPU_MIMXRT1011DAE5A))
+	static const uint8_t SysPfd3_Div  = 18; // PLL2Pfd3 ==> 528 MHz *18/18 ==> 528 MHz
+	static const uint8_t PrePeriphMux = 3;  // Derive clock from divided PLL6 ==> 500 MHz
+#elif (defined(CPU_MIMXRT1011CAE4A))
+	static const uint8_t SysPfd3_Div  = 24; // PLL2 ==> 528 MHz *18/24 ==> 396 MHz
+	static const uint8_t PrePeriphMux = 2;  // Derive clock from PLL2 PFD3 ==> 396 MHz
+#else
+	#error "No valid CPU defined!"
+#endif
+
 /*******************************************************************************
  * Code for BOARD_BootClockRUN configuration
  ******************************************************************************/
@@ -295,13 +306,7 @@ void BOARD_BootClockRUN(void)
     /* Init System pfd2. */
     CLOCK_InitSysPfd(kCLOCK_Pfd2, 18);
     /* Init System pfd3. */
-    #if defined(CPU_MIMXRT1011DAE5A)
-        CLOCK_InitSysPfd(kCLOCK_Pfd3, 18);
-    #elif defined(CPU_MIMXRT1011CAE4A)
-        CLOCK_InitSysPfd(kCLOCK_Pfd3, 24);
-    #else
-        #error "unknown controller"
-    #endif
+    CLOCK_InitSysPfd(kCLOCK_Pfd3, SysPfd3_Div);
     /* DeInit Audio PLL. */
     CLOCK_DeinitAudioPll();
     /* Bypass Audio PLL. */
@@ -311,14 +316,8 @@ void BOARD_BootClockRUN(void)
     CCM_ANALOG->MISC2 &= ~CCM_ANALOG_MISC2_AUDIO_DIV_MSB_MASK;
     /* Enable Audio PLL output. */
     CCM_ANALOG->PLL_AUDIO |= CCM_ANALOG_PLL_AUDIO_ENABLE_MASK;
-    #if defined(CPU_MIMXRT1011DAE5A)
-        /* Set preperiph clock source. */
-        CLOCK_SetMux(kCLOCK_PrePeriphMux, 3);
-    #elif defined(CPU_MIMXRT1011CAE4A)
-        CLOCK_SetMux(kCLOCK_PrePeriphMux, 2);
-    #else
-        #error "unknown controller"
-    #endif
+    /* Set preperiph clock source. */
+    CLOCK_SetMux(kCLOCK_PrePeriphMux, PrePeriphMux);
     /* Set periph clock source. */
     CLOCK_SetMux(kCLOCK_PeriphMux, 0);
     /* Set periph clock2 clock source. */
