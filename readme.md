@@ -2,14 +2,71 @@
 
 [CoreMark](https://www.eembc.org/coremark/scores.php) is a benchmark that measures the performance of central processing units (CPU) used in embedded systems. It was developed in 2009 by Shay Gal-On at [EEMBC](https://www.eembc.org/) and is intended to become an industry standard, replacing the Dhrystone benchmark. The code is written in C and contains implementations of the following algorithms: list processing (find and sort), matrix manipulation (common matrix operations), state machine (determine if an input stream contains valid numbers), and CRC. The code is under the [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0) and is free of cost to use, but ownership is retained by the Consortium and publication of modified versions under the CoreMark name prohibited. ([Wikipedia](https://en.wikipedia.org/wiki/Coremark))
 
-This projects implements the Coremark benchmark for the [iMXRT Family](https://www.nxp.com/products/processors-and-microcontrollers/arm-microcontrollers/i-mx-rt-crossover-mcus:IMX-RT-SERIES) controller using [Rowley Crossworks](https://www.rowley.co.uk/). This project contains two solution files.
+This projects implements the Coremark benchmark for the [iMXRT Family](https://www.nxp.com/products/processors-and-microcontrollers/arm-microcontrollers/i-mx-rt-crossover-mcus:IMX-RT-SERIES) controller using [Rowley Crossworks](https://www.rowley.co.uk/).
 
-- [Coremark_RowleyBsp.hzp](Coremark_RowleyBsp.hzp) uses the original CPU support package from Rowley. Use this if you are not shure which one to take.
-- [Coremark.hzp](Coremark.hzp) uses a customized and extended [version](https://github.com/Masmiseim36/iMXRT) of the CPU support package which makes in incompatible to the original one.
+## Table of Contents
+
+- [Prerequisites](#prerequisites)
+- [How to get started](#how-to-get-started)
+- [Building](#building)
+- [Running](#running)
+- [What happens](#what-happens)
+- [How do I port](#how-do-i-port)
+- [Results](#results)
+
+## Prerequisites
+
+Before building and running the Coremark benchmark, ensure you have the following:
+
+- [Rowley Crossworks](https://www.rowley.co.uk/) IDE installed.
+- Install CPU Support Package for iMXRT from [here](https://github.com/Masmiseim36/iMXRT). Follow the instructions in the repository to set it up in Crossworks. (optionally, you can use Rowley’s original CPU support package, but it has some weaknesses as described below).
+- iMXRT evaluation board (e.g., for the specific derivative you're targeting).
+- USB connection for debugging and UART output via CMSIS-DAP.
+
+## How to get started
+This project contains three solution files. Use [Coremark.hzp](Coremark.hzp) to open the project in Crossworks. This solution links to the other two solutions, you do not have to open them individually.
+- [Coremark_Original.hzp](Coremark_Original.hzp) uses Rowley’s original CPU support package. Unfortunately, this package has a few weaknesses
+  - It contains outdated CMSIS headers, meaning the iMXRT1040 project cannot compile
+  - Dual-core applications do not work
+  - There is no support for the iMXRT1180
+- [Coremark_Extended.hzp](Coremark_Extended.hzp) uses a customised and extended version of the [CPU support package](https://github.com/Masmiseim36/iMXRT), which makes it incompatible with the original version. You must install it manually in Crossworks. The weaknesses described above have been resolved in this package
 
 Both solution files contain separate projects for the various derivatives of the iMXRT family which can be run on the respective evaluation boards. For iMXRT1160/1170, the projects for the M7 core must be active so that the projects for both cores can be loaded onto the CPU and debugged there. Unfortunately, the multicore functionality does not yet work for the iMXRT1180.
 
-## Results with GCC 10.3
+## Building
+
+1. Open the project in Rowley Crossworks using [Coremark.hzp](Coremark.hzp).
+2. Select the appropriate project for your iMXRT derivative.
+3. Set build configuration (e.g., Debug / Release) in the project explorer.
+4. Build the project: Go to Build > Build Coremark.
+
+## Running
+
+1. Connect your iMXRT evaluation board via USB.
+2. Connect via CMSIS-DAP to the controller
+2. Load the built binary onto the board using the debugger.
+3. Run the application.
+4. View results via UART output on the terminal connected to the CMSIS-DAP USB port. Use as a configuration of 115200 baud, 8 data bits, no parity, and 1 stop bit.
+
+## What happens
+What does the code on the controller do? Well, it runs the CoreMark benchmark, which is used to estimate the speed of the core. The results are output via the UART, which is available on the PC via the CMSIS-DAP USB port.
+
+## How do I port
+The projects are configured for the respective evaluation boards. Here is a checklist to help you adapt the projects to your own hardware:
+- Memory interface:
+The type of memory interface can be changed via the project options (Build -> Section Placement)
+- Flash type:
+For the application to boot, the external flash must be configured using the flexspi_nor_config_t data structure. Several preconfigured variants are available (--> XiP/flexspi_flash*.c). Include the appropriate file – and only that file – in the project. If there is no suitable configuration for your flash memory, you must create your own.
+- UART for Terminal Output:  
+   The UART must be configured in two places:
+  - boards/<controller>/board.h  
+    Configure the UART instance and the associated interrupt source here
+  - boards/<controller>/pin_mux.c  
+    Configure the pins used here.
+
+## Results
+
+### Results with [GCC 10.3](https://developer.arm.com/downloads/-/gnu-rm)
 
 The results are in iterations per second (higher is better), code and data is stored in TCM.
 
@@ -26,7 +83,7 @@ Controller                    | O0       | OG       | O1       | OSize    |  O2 
 **iMX RT1170_CM7 (1000 MHz)** |   683.62 |  2273.55 |  2918.34 |  2875.05 |  3993.29 |  3985.65 |  4076.97
 **iMX RT1170_CM4 ( 400 MHz)** |   219.33 |   631.95 |   745.00 |   676.28 |   952.38 |  1009.35 |  1018.60
 
-## Results with GCC 11.3
+### Results with [GCC 11.3](https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads)
 
 The results are in iterations per second (higher is better), code and data is stored in TCM.
 
@@ -43,7 +100,7 @@ Controller                    | O0       | OG       | O1       | OSize    |  O2 
 **iMX RT1170_CM7 (1000 MHz)** |   683.63 |  2285.60 |  2944.64 |  3038.59 |  4002.24 |  3993.92 |  4099.36
 **iMX RT1170_CM4 ( 400 MHz)** |   219.33 |   637.75 |   760.76 |   713.57 |   972.57 |  1024.52 |  1030.43
 
-## Results with GCC 12.2
+### Results with [GCC 12.2](https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads)
 
 The results are in iterations per second (higher is better), code and data is stored in TCM.
 
@@ -60,7 +117,7 @@ Controller                    | O0       | OG       | O1       | OSize    |  O2 
 **iMX RT1170_CM7 (1000 MHz)** |   683.62 |  2243.15 |  3023.88 |  3766.47 |  4020.90 |  4049.56 |  4137.36
 **iMX RT1170_CM4 ( 400 MHz)** |   219.33 |   632.21 |   803.21 |   836.30 |   991.60 |  1038.49 |  1058.72
 
-## Results with GCC 12.3
+### Results with [GCC 12.3](https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads)
 
 The results are in iterations per second (higher is better), code and data is stored in TCM.
 
@@ -75,7 +132,7 @@ Controller                     | O0       | OG       | O1       | OSize    |  O2
 **iMX RT1180_CM33 ( 240 MHz)** |   153.52 |   452.44 |   550.66 |   583.20 |   651.09 |   697.35 |   699.33
 **iMX RT1180_CM7  ( 800 MHz)** |   530.49 |  1784.12 |  2402.80 |  2991.86 |  3136.76 |  3186.74 |  3209.65
 
-## Results with GCC 13.2
+### Results with [GCC 13.2](https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads)
 
 The results are in iterations per second (higher is better), code and data is stored in TCM.
 
@@ -94,7 +151,7 @@ Controller                     | O0       | OG       | O1       | OSize    |  O2
 **iMX RT1180_CM33 ( 240 MHz)** |   153.52 |   452.44 |   524.29 |   527.98 |   685.43 |   710.59 |   708.88
 **iMX RT1180_CM7  ( 800 MHz)** |   531.67 |  1784.37 |  2373.83 |  2513.19 |  3149.01 |  3227.05 |  3237.08
 
-## Results with GCC 13.3
+### Results with [GCC 13.3](https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads)
 
 The results are in iterations per second (higher is better), code and data is stored in TCM.
 
@@ -106,7 +163,7 @@ Controller                     | O0       | OG       | O1       | OSize    |  O2
 **iMX RT1170_CM7  (1000 MHz)** |   685.41 |  2243.56 |  2979.73 |  3162.95 |  3984.06 |  4069.34 |  4075.31
 **iMX RT1170_CM4  ( 400 MHz)** |   219.33 |   632.19 |   773.83 |   736.66 |   980.96 |  1040.36 |  1033.91
 
-## Results with GCC 14.2
+### Results with [GCC 14.2](https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads)
 
 The results are in iterations per second (higher is better), code and data is stored in TCM.
 
@@ -115,7 +172,7 @@ Controller                     | O0       | OG       | O1       | OSize    |  O2
 **iMX RT1060      ( 528 MHz)** |   386.14 |  1241.80 |  1657.76 |  1676.72 |  2035.66 |  2079.78 |  2074.77
 **iMX RT1060      ( 600 MHz)** |   438.80 |  1411.15 |  1883.87 |  1905.34 |  2313.31 |  2363.39 |  2357.71
 
-## Results with GCC 14.3
+### Results with [GCC 14.3](https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads)
 
 The results are in iterations per second (higher is better), code and data is stored in TCM.
 
@@ -127,7 +184,7 @@ Controller                     | O0       | OG       | O1       | OSize    |  O2
 **iMX RT1060      ( 600 MHz)** |   438.80 |  1411.15 |  1883.87 |  1905.92 |  2310.85 |  2364.06 |  2360.16
 
 
-## Results with GCC 15.2
+### Results with [GCC 15.2](https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads)
 
 The results are in iterations per second (higher is better), code and data is stored in TCM.
 

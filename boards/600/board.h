@@ -23,7 +23,6 @@
 
 /*! @brief The UART to use for debug messages. */
 #define BOARD_DEBUG_UART_TYPE     kSerialPort_Uart
-#define BOARD_DEBUG_UART_BASEADDR (uint32_t) USART0
 #define BOARD_DEBUG_UART_INSTANCE 0U
 #define BOARD_DEBUG_UART_CLK_FREQ CLOCK_GetFlexCommClkFreq(0U)
 #define BOARD_DEBUG_UART_FRG_CLK (&(const clock_frg_clk_config_t){0, kCLOCK_FrgPllDiv, 255, 0}) /*!< Select FRG0 mux as frg_pll */
