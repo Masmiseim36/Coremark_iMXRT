@@ -135,15 +135,15 @@
         filter="*.*"
         path="$(TargetsDir)/iMXRText/devices/$(Family)/periph"
         recurse="No" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/fsl_device_registers.h" />
       <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName).h" />
       <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_COMMON.h" />
       <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_features.h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/fsl_device_registers.h" />
+      <file file_name="$(TargetsDir)/iMXRText/iMXRT_Target.js" />
+      <file file_name="placement_flexspi.xml" />
       <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/startup_$(DeviceName).s" />
       <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).c" />
       <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).h" />
-      <file file_name="$(TargetsDir)/iMXRText/iMXRT_Target.js" />
-      <file file_name="placement_flexspi.xml" />
       <file file_name="$(StudioDir)/source/thumb_crt0.s" />
     </folder>
     <folder Name="XIP">
@@ -262,15 +262,15 @@
         filter="*.*"
         path="$(TargetsDir)/iMXRText/devices/$(Family)/periph"
         recurse="No" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/fsl_device_registers.h" />
       <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName).h" />
       <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_COMMON.h" />
       <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_features.h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/fsl_device_registers.h" />
+      <file file_name="$(TargetsDir)/iMXRText/iMXRT_Target.js" />
+      <file file_name="placement_flexspi.xml" />
       <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/startup_$(DeviceName).s" />
       <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).c" />
       <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).h" />
-      <file file_name="$(TargetsDir)/iMXRText/iMXRT_Target.js" />
-      <file file_name="placement_flexspi.xml" />
       <file file_name="$(StudioDir)/source/thumb_crt0.s" />
     </folder>
     <folder Name="XIP">
@@ -383,22 +383,22 @@
         default_data_section=".data"
         default_zeroed_section=".bss"
         link_time_optimization="No" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/fsl_device_registers.h" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName).h" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_COMMON.h" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_features.h" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/startup_$(DeviceName).s" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).c" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).h" />
-      <file file_name="$(TargetsDir)/iMXRText/iMXRT_Target.js" />
-      <file file_name="placement_flexspi.xml" />
-      <file file_name="$(StudioDir)/source/thumb_crt0.s" />
       <folder
         Name="periph"
         exclude=""
         filter="*.*"
         path="$(TargetsDir)/iMXRText/devices/$(Family)/periph"
         recurse="No" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName).h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_COMMON.h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_features.h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/fsl_device_registers.h" />
+      <file file_name="$(TargetsDir)/iMXRText/iMXRT_Target.js" />
+      <file file_name="placement_flexspi.xml" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/startup_$(DeviceName).s" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).c" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).h" />
+      <file file_name="$(StudioDir)/source/thumb_crt0.s" />
     </folder>
     <folder Name="XIP">
       <file file_name="XiP/flexspi_boot.c" />
@@ -510,22 +510,22 @@
         default_data_section=".data"
         default_zeroed_section=".bss"
         link_time_optimization="No" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/fsl_device_registers.h" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName).h" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_COMMON.h" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_features.h" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/startup_$(DeviceName).s" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).c" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).h" />
-      <file file_name="$(TargetsDir)/iMXRText/iMXRT_Target.js" />
-      <file file_name="placement_flexspi.xml" />
-      <file file_name="$(StudioDir)/source/thumb_crt0.s" />
       <folder
         Name="periph"
         exclude=""
         filter="*.*"
         path="$(TargetsDir)/iMXRText/devices/$(Family)/periph"
         recurse="No" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName).h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_COMMON.h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_features.h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/fsl_device_registers.h" />
+      <file file_name="$(TargetsDir)/iMXRText/iMXRT_Target.js" />
+      <file file_name="placement_flexspi.xml" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/startup_$(DeviceName).s" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).c" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).h" />
+      <file file_name="$(StudioDir)/source/thumb_crt0.s" />
     </folder>
     <folder Name="XIP">
       <file file_name="XiP/flexspi_boot.c" />
@@ -641,22 +641,22 @@
         default_data_section=".data"
         default_zeroed_section=".bss"
         link_time_optimization="No" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/fsl_device_registers.h" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName).h" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_COMMON.h" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_features.h" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/startup_$(DeviceName).s" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).c" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).h" />
-      <file file_name="$(TargetsDir)/iMXRText/iMXRT_Target.js" />
-      <file file_name="placement_flexspi.xml" />
-      <file file_name="$(StudioDir)/source/thumb_crt0.s" />
       <folder
         Name="periph"
         exclude=""
         filter="*.*"
         path="$(TargetsDir)/iMXRText/devices/$(Family)/periph"
         recurse="No" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName).h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_COMMON.h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_features.h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/fsl_device_registers.h" />
+      <file file_name="$(TargetsDir)/iMXRText/iMXRT_Target.js" />
+      <file file_name="placement_flexspi.xml" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/startup_$(DeviceName).s" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).c" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).h" />
+      <file file_name="$(StudioDir)/source/thumb_crt0.s" />
     </folder>
     <folder Name="XIP">
       <file file_name="XiP/flexspi_boot.c" />
@@ -768,22 +768,22 @@
         default_data_section=".data"
         default_zeroed_section=".bss"
         link_time_optimization="No" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/fsl_device_registers.h" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName).h" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_COMMON.h" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_features.h" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/startup_$(DeviceName).s" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).c" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).h" />
-      <file file_name="$(TargetsDir)/iMXRText/iMXRT_Target.js" />
-      <file file_name="placement_flexspi.xml" />
-      <file file_name="$(StudioDir)/source/thumb_crt0.s" />
       <folder
         Name="periph"
         exclude=""
         filter="*.*"
         path="$(TargetsDir)/iMXRText/devices/$(Family)/periph"
         recurse="No" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName).h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_COMMON.h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_features.h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/fsl_device_registers.h" />
+      <file file_name="$(TargetsDir)/iMXRText/iMXRT_Target.js" />
+      <file file_name="placement_flexspi.xml" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/startup_$(DeviceName).s" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).c" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).h" />
+      <file file_name="$(StudioDir)/source/thumb_crt0.s" />
     </folder>
     <folder Name="XIP">
       <file file_name="XiP/flexspi_boot.c" />
@@ -895,22 +895,22 @@
         default_data_section=".data"
         default_zeroed_section=".bss"
         link_time_optimization="No" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/fsl_device_registers.h" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName).h" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_COMMON.h" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_features.h" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/startup_$(DeviceName).s" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).c" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).h" />
-      <file file_name="$(TargetsDir)/iMXRText/iMXRT_Target.js" />
-      <file file_name="placement_flexspi.xml" />
-      <file file_name="$(StudioDir)/source/thumb_crt0.s" />
       <folder
         Name="periph"
         exclude=""
         filter="*.*"
         path="$(TargetsDir)/iMXRText/devices/$(Family)/periph"
         recurse="No" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName).h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_COMMON.h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_features.h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/fsl_device_registers.h" />
+      <file file_name="$(TargetsDir)/iMXRText/iMXRT_Target.js" />
+      <file file_name="placement_flexspi.xml" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/startup_$(DeviceName).s" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).c" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).h" />
+      <file file_name="$(StudioDir)/source/thumb_crt0.s" />
     </folder>
     <folder Name="XIP">
       <file file_name="XiP/flexspi_boot.c" />
@@ -1024,22 +1024,22 @@
         default_data_section=".data"
         default_zeroed_section=".bss"
         link_time_optimization="No" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/fsl_device_registers.h" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName).h" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_COMMON.h" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_features.h" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/startup_$(DeviceName).s" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).c" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).h" />
-      <file file_name="$(TargetsDir)/iMXRText/iMXRT_Target.js" />
-      <file file_name="placement_flexspi.xml" />
-      <file file_name="$(StudioDir)/source/thumb_crt0.s" />
       <folder
         Name="periph"
         exclude=""
         filter="*.*"
         path="$(TargetsDir)/iMXRText/devices/$(Family)/periph"
         recurse="No" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName).h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_COMMON.h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_features.h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/fsl_device_registers.h" />
+      <file file_name="$(TargetsDir)/iMXRText/iMXRT_Target.js" />
+      <file file_name="placement_flexspi.xml" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/startup_$(DeviceName).s" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).c" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).h" />
+      <file file_name="$(StudioDir)/source/thumb_crt0.s" />
     </folder>
     <folder Name="XIP">
       <file file_name="XiP/flexspi_boot.c" />
@@ -1124,10 +1124,10 @@
       <file file_name="coremark.h" />
     </folder>
     <folder Name="drivers">
-      <file file_name="drivers/1160/cm4/fsl_cache.c" />
-      <file file_name="drivers/1160/cm4/fsl_cache.h" />
       <file file_name="drivers/1160/fsl_anatop_ai.c" />
       <file file_name="drivers/1160/fsl_anatop_ai.h" />
+      <file file_name="drivers/1160/cm4/fsl_cache.c" />
+      <file file_name="drivers/1160/cm4/fsl_cache.h" />
       <file file_name="drivers/1160/fsl_clock.c" />
       <file file_name="drivers/1160/fsl_clock.h" />
       <file file_name="drivers/fsl_common.c" />
@@ -1163,22 +1163,22 @@
         default_data_section=".data"
         default_zeroed_section=".bss"
         link_time_optimization="No" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/fsl_device_registers.h" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName).h" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_COMMON.h" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_features.h" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/startup_$(DeviceName).s" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).c" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).h" />
-      <file file_name="$(TargetsDir)/iMXRText/iMXRT_Target.js" />
-      <file file_name="placement_flexspi.xml" />
-      <file file_name="$(StudioDir)/source/thumb_crt0.s" />
       <folder
         Name="periph"
         exclude=""
         filter="*.*"
         path="$(TargetsDir)/iMXRText/devices/$(Family)/periph"
         recurse="No" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName).h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_COMMON.h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_features.h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/fsl_device_registers.h" />
+      <file file_name="$(TargetsDir)/iMXRText/iMXRT_Target.js" />
+      <file file_name="placement_flexspi.xml" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/startup_$(DeviceName).s" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).c" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).h" />
+      <file file_name="$(StudioDir)/source/thumb_crt0.s" />
     </folder>
   </project>
   <project Name="Coremark_1160CM7">
@@ -1253,10 +1253,10 @@
       <file file_name="coremark.h" />
     </folder>
     <folder Name="drivers">
-      <file file_name="drivers/1160/cm7/fsl_cache.c" />
-      <file file_name="drivers/1160/cm7/fsl_cache.h" />
       <file file_name="drivers/1160/fsl_anatop_ai.c" />
       <file file_name="drivers/1160/fsl_anatop_ai.h" />
+      <file file_name="drivers/1160/cm7/fsl_cache.c" />
+      <file file_name="drivers/1160/cm7/fsl_cache.h" />
       <file file_name="drivers/1160/fsl_clock.c" />
       <file file_name="drivers/1160/fsl_clock.h" />
       <file file_name="drivers/fsl_common.c" />
@@ -1292,22 +1292,22 @@
         default_data_section=".data"
         default_zeroed_section=".bss"
         link_time_optimization="No" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/fsl_device_registers.h" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName).h" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_COMMON.h" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_features.h" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/startup_$(DeviceName).s" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).c" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).h" />
-      <file file_name="$(TargetsDir)/iMXRText/iMXRT_Target.js" />
-      <file file_name="placement_flexspi.xml" />
-      <file file_name="$(StudioDir)/source/thumb_crt0.s" />
       <folder
         Name="periph"
         exclude=""
         filter="*.*"
         path="$(TargetsDir)/iMXRText/devices/$(Family)/periph"
         recurse="No" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName).h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_COMMON.h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_features.h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/fsl_device_registers.h" />
+      <file file_name="$(TargetsDir)/iMXRText/iMXRT_Target.js" />
+      <file file_name="placement_flexspi.xml" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/startup_$(DeviceName).s" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).c" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).h" />
+      <file file_name="$(StudioDir)/source/thumb_crt0.s" />
     </folder>
     <folder Name="XIP">
       <file file_name="XiP/flexspi_boot.c" />
@@ -1394,10 +1394,10 @@
       <file file_name="coremark.h" />
     </folder>
     <folder Name="drivers">
-      <file file_name="drivers/1170/cm4/fsl_cache.c" />
-      <file file_name="drivers/1170/cm4/fsl_cache.h" />
       <file file_name="drivers/1170/fsl_anatop_ai.c" />
       <file file_name="drivers/1170/fsl_anatop_ai.h" />
+      <file file_name="drivers/1170/cm4/fsl_cache.c" />
+      <file file_name="drivers/1170/cm4/fsl_cache.h" />
       <file file_name="drivers/1170/fsl_clock.c" />
       <file file_name="drivers/1170/fsl_clock.h" />
       <file file_name="drivers/fsl_common.c" />
@@ -1433,22 +1433,22 @@
         default_data_section=".data"
         default_zeroed_section=".bss"
         link_time_optimization="No" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/fsl_device_registers.h" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName).h" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_COMMON.h" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_features.h" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/startup_$(DeviceName).s" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).c" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).h" />
-      <file file_name="$(TargetsDir)/iMXRText/iMXRT_Target.js" />
-      <file file_name="placement_flexspi.xml" />
-      <file file_name="$(StudioDir)/source/thumb_crt0.s" />
       <folder
         Name="periph"
         exclude=""
         filter="*.*"
         path="$(TargetsDir)/iMXRText/devices/$(Family)/periph"
         recurse="No" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName).h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_COMMON.h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_features.h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/fsl_device_registers.h" />
+      <file file_name="$(TargetsDir)/iMXRText/iMXRT_Target.js" />
+      <file file_name="placement_flexspi.xml" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/startup_$(DeviceName).s" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).c" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).h" />
+      <file file_name="$(StudioDir)/source/thumb_crt0.s" />
     </folder>
   </project>
   <project Name="Coremark_1170CM7">
@@ -1524,10 +1524,10 @@
       <file file_name="coremark.h" />
     </folder>
     <folder Name="drivers">
-      <file file_name="drivers/1170/cm7/fsl_cache.c" />
-      <file file_name="drivers/1170/cm7/fsl_cache.h" />
       <file file_name="drivers/1170/fsl_anatop_ai.c" />
       <file file_name="drivers/1170/fsl_anatop_ai.h" />
+      <file file_name="drivers/1170/cm7/fsl_cache.c" />
+      <file file_name="drivers/1170/cm7/fsl_cache.h" />
       <file file_name="drivers/1170/fsl_clock.c" />
       <file file_name="drivers/1170/fsl_clock.h" />
       <file file_name="drivers/fsl_common.c" />
@@ -1563,22 +1563,22 @@
         default_data_section=".data"
         default_zeroed_section=".bss"
         link_time_optimization="No" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/fsl_device_registers.h" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName).h" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_COMMON.h" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_features.h" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/startup_$(DeviceName).s" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).c" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).h" />
-      <file file_name="$(TargetsDir)/iMXRText/iMXRT_Target.js" />
-      <file file_name="placement_flexspi.xml" />
-      <file file_name="$(StudioDir)/source/thumb_crt0.s" />
       <folder
         Name="periph"
         exclude=""
         filter="*.*"
         path="$(TargetsDir)/iMXRText/devices/$(Family)/periph"
         recurse="No" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName).h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_COMMON.h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_features.h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/fsl_device_registers.h" />
+      <file file_name="$(TargetsDir)/iMXRText/iMXRT_Target.js" />
+      <file file_name="placement_flexspi.xml" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/startup_$(DeviceName).s" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).c" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).h" />
+      <file file_name="$(StudioDir)/source/thumb_crt0.s" />
     </folder>
     <folder Name="XIP">
       <file file_name="XiP/flexspi_boot.c" />
@@ -1673,14 +1673,12 @@
       <file file_name="drivers/1180/cm33/fsl_cache.h" />
       <file file_name="drivers/1180/fsl_clock.c" />
       <file file_name="drivers/1180/fsl_clock.h" />
-      <file file_name="drivers/1180/fsl_ele_base_api.c" />
-      <file file_name="drivers/1180/fsl_ele_base_api.h" />
-      <file file_name="drivers/1180/fsl_pmu.c" />
-      <file file_name="drivers/1180/fsl_pmu.h" />
       <file file_name="drivers/fsl_common.c" />
       <file file_name="drivers/fsl_common.h" />
       <file file_name="drivers/fsl_common_arm.c" />
       <file file_name="drivers/fsl_common_arm.h" />
+      <file file_name="drivers/1180/fsl_ele_base_api.c" />
+      <file file_name="drivers/1180/fsl_ele_base_api.h" />
       <file file_name="drivers/fsl_flexspi.c" />
       <file file_name="drivers/fsl_flexspi.h" />
       <file file_name="drivers/fsl_iomuxc.h" />
@@ -1688,14 +1686,16 @@
       <file file_name="drivers/fsl_lpuart.h" />
       <file file_name="drivers/fsl_pdm.c" />
       <file file_name="drivers/fsl_pdm.h" />
+      <file file_name="drivers/1180/fsl_pmu.c" />
+      <file file_name="drivers/1180/fsl_pmu.h" />
       <file file_name="drivers/fsl_rgpio.c" />
       <file file_name="drivers/fsl_rgpio.h" />
+      <file file_name="drivers/fsl_s3mu.c" />
+      <file file_name="drivers/fsl_s3mu.h" />
       <file file_name="drivers/fsl_semc.c" />
       <file file_name="drivers/fsl_semc.h" />
       <file file_name="drivers/fsl_tempsensor.c" />
       <file file_name="drivers/fsl_tempsensor.h" />
-      <file file_name="drivers/fsl_s3mu.c" />
-      <file file_name="drivers/fsl_s3mu.h" />
     </folder>
     <folder Name="src">
       <file file_name="boards/1180/board.c" />
@@ -1714,22 +1714,22 @@
         default_data_section=".data"
         default_zeroed_section=".bss"
         link_time_optimization="No" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/fsl_device_registers.h" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName).h" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_COMMON.h" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_features.h" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/startup_$(DeviceName).s" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).c" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).h" />
-      <file file_name="$(TargetsDir)/iMXRText/iMXRT_Target.js" />
-      <file file_name="placement_flexspi.xml" />
-      <file file_name="$(StudioDir)/source/thumb_crt0.s" />
       <folder
         Name="periph"
         exclude=""
         filter="*.*"
         path="$(TargetsDir)/iMXRText/devices/$(Family)/periph"
         recurse="No" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName).h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_COMMON.h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_features.h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/fsl_device_registers.h" />
+      <file file_name="$(TargetsDir)/iMXRText/iMXRT_Target.js" />
+      <file file_name="placement_flexspi.xml" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/startup_$(DeviceName).s" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).c" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).h" />
+      <file file_name="$(StudioDir)/source/thumb_crt0.s" />
     </folder>
     <folder Name="XIP">
       <file file_name="XiP/flexspi_boot.c">
@@ -1745,14 +1745,14 @@
       <file file_name="XiP/flexspi_flash_OSPI_Adesto.c">
         <configuration Name="Common" build_exclude_from_build="Yes" />
       </file>
-      <file file_name="XiP/flexspi_flash_OSPI_Macronix.c">
-        <configuration Name="Common" build_exclude_from_build="Yes" />
-      </file>
-      <file file_name="XiP/flexspi_flash_QSPI.c" />
       <file file_name="XiP/flexspi_flash_OSPI_ISSI.c">
         <configuration Name="Common" build_exclude_from_build="Yes" />
       </file>
+      <file file_name="XiP/flexspi_flash_OSPI_Macronix.c">
+        <configuration Name="Common" build_exclude_from_build="Yes" />
+      </file>
       <file file_name="XiP/flexspi_flash_OSPI_Micron.c" />
+      <file file_name="XiP/flexspi_flash_QSPI.c" />
     </folder>
   </project>
   <project Name="Coremark_1180CM7">
@@ -1827,32 +1827,32 @@
       <file file_name="drivers/1180/cm7/fsl_cache.h" />
       <file file_name="drivers/1180/fsl_clock.c" />
       <file file_name="drivers/1180/fsl_clock.h" />
-      <file file_name="drivers/1180/fsl_dcdc.c" />
-      <file file_name="drivers/1180/fsl_dcdc.h" />
-      <file file_name="drivers/1180/fsl_ele_base_api.c" />
-      <file file_name="drivers/1180/fsl_ele_base_api.h" />
-      <file file_name="drivers/1180/fsl_iomuxc.h" />
-      <file file_name="drivers/1180/fsl_misc.h" />
-      <file file_name="drivers/1180/fsl_pmu.c" />
-      <file file_name="drivers/1180/fsl_pmu.h" />
       <file file_name="drivers/fsl_common.c" />
       <file file_name="drivers/fsl_common.h" />
       <file file_name="drivers/fsl_common_arm.c" />
       <file file_name="drivers/fsl_common_arm.h" />
+      <file file_name="drivers/1180/fsl_dcdc.c" />
+      <file file_name="drivers/1180/fsl_dcdc.h" />
+      <file file_name="drivers/1180/fsl_ele_base_api.c" />
+      <file file_name="drivers/1180/fsl_ele_base_api.h" />
       <file file_name="drivers/fsl_flexspi.c" />
       <file file_name="drivers/fsl_flexspi.h" />
+      <file file_name="drivers/1180/fsl_iomuxc.h" />
       <file file_name="drivers/fsl_lpuart.c" />
       <file file_name="drivers/fsl_lpuart.h" />
+      <file file_name="drivers/1180/fsl_misc.h" />
       <file file_name="drivers/fsl_pdm.c" />
       <file file_name="drivers/fsl_pdm.h" />
+      <file file_name="drivers/1180/fsl_pmu.c" />
+      <file file_name="drivers/1180/fsl_pmu.h" />
       <file file_name="drivers/fsl_rgpio.c" />
       <file file_name="drivers/fsl_rgpio.h" />
+      <file file_name="drivers/fsl_s3mu.c" />
+      <file file_name="drivers/fsl_s3mu.h" />
       <file file_name="drivers/fsl_semc.c" />
       <file file_name="drivers/fsl_semc.h" />
       <file file_name="drivers/fsl_tempsensor.c" />
       <file file_name="drivers/fsl_tempsensor.h" />
-      <file file_name="drivers/fsl_s3mu.c" />
-      <file file_name="drivers/fsl_s3mu.h" />
     </folder>
     <folder Name="src">
       <file file_name="boards/1180/board.c" />
@@ -1871,22 +1871,184 @@
         default_data_section=".data_tcm"
         default_zeroed_section=".bss"
         link_time_optimization="No" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/fsl_device_registers.h" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName).h" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_COMMON.h" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_features.h" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/startup_$(DeviceName).s" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).c" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).h" />
-      <file file_name="$(TargetsDir)/iMXRText/iMXRT_Target.js" />
-      <file file_name="placement_flexspi.xml" />
-      <file file_name="$(StudioDir)/source/thumb_crt0.s" />
       <folder
         Name="periph"
         exclude=""
         filter="*.*"
         path="$(TargetsDir)/iMXRText/devices/$(Family)/periph"
         recurse="No" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName).h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_COMMON.h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_features.h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/fsl_device_registers.h" />
+      <file file_name="$(TargetsDir)/iMXRText/iMXRT_Target.js" />
+      <file file_name="placement_flexspi.xml" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/startup_$(DeviceName).s" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).c" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).h" />
+      <file file_name="$(StudioDir)/source/thumb_crt0.s" />
+    </folder>
+  </project>
+  <project Name="Coremark_1186CM33">
+    <configuration
+      CMSIS_CORE="Yes"
+      Name="Common"
+      Placement="FlexSPI2 (QuadSPI)"
+      Target="MIMXRT1186XVJ8C_cm33"
+      arm_architecture="v8M_Mainline"
+      arm_core_type="Cortex-M33"
+      arm_fp_abi="Hard"
+      arm_fpu_type="FPv5-SP-D16"
+      arm_linker_additional_output_file_gap_fill="0xFF"
+      arm_linker_script_generator_default_fill_pattern="0xFF"
+      arm_linker_stack_size="10240"
+      arm_target_loader_applicable_loaders="Flash"
+      arm_target_loader_default_loader="Flash"
+      arm_target_loader_reset_after_download="No"
+      arm_v8M_has_cmse="Yes"
+      arm_v8M_has_dsp="Yes"
+      c_preprocessor_definitions="USE_HYPERRAM"
+      c_system_include_directories="$(StudioDir)/include;$(PackagesDir)/include;$(TargetsDir)/iMXRText/devices/$(Family)"
+      c_user_include_directories="./drivers/1180;./drivers/1180/cm33;./drivers;./boards/1180"
+      debug_dependent_projects=""
+      debug_register_definition_file="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_Registers.xml"
+      debug_startup_completion_point="main"
+      default_code_section=".text_tcm"
+      default_const_section=".rodata_tcm"
+      default_data_section=".data_tcm"
+      default_zeroed_section=".bss_tcm"
+      linker_memory_map_file="$(TargetsDir)/iMXRText/devices/$(Family)/MemoryMap_MIMXRT118x_cm33.xml"
+      linker_memory_map_macros="OCRAMSTART=0x20490000;FlexSPI2SIZE=0x00010000;FlexSPI2SIZE_NS=0x00010000"
+      linker_section_placement_file="$(TargetsDir)/iMXRText/placement_flexspi.xml"
+      linker_section_placement_macros="FLASH_NAME=FlexSPI2"
+      macros="DeviceName=MIMXRT1186_cm33;Family=iMXRT1180;Core=CM33"
+      project_dependencies="Coremark_1180CM7"
+      project_directory=""
+      project_type="Executable"
+      property_groups_file_path="$(TargetsDir)/iMXRText/propertyGroups.xml"
+      target_connect_script="Connect()"
+      target_get_partname_script="GetPartName()"
+      target_match_partname_script="MatchPartName(&quot;$(Family)&quot;)"
+      target_reset_script="Reset()"
+      target_script_file="$(TargetsDir)/iMXRText/iMXRT_Target.js"
+      target_trace_initialize_script="EnableTrace(&quot;$(TraceInterfaceType)&quot;)" />
+    <configuration
+      Name="Flash"
+      arm_target_flash_loader_file_path="$(TargetsDir)/iMXRText/Loader2/Loader_$(Family)_$(Core).elf"
+      arm_target_loader_parameter="80" />
+    <folder Name="component">
+      <file file_name="components/fsl_adapter_uart.h" />
+      <file file_name="components/fsl_component_serial_manager.h" />
+      <file file_name="components/fsl_component_serial_port_uart.h" />
+      <file file_name="components/fsl_debug_console.c" />
+      <file file_name="components/fsl_debug_console.h" />
+      <file file_name="components/fsl_str.c" />
+      <file file_name="components/fsl_str.h" />
+      <file file_name="components/generic_list.c" />
+      <file file_name="components/generic_list.h" />
+      <file file_name="components/lpuart_adapter.c" />
+      <file file_name="components/serial_manager.c" />
+      <file file_name="components/serial_manager.h" />
+      <file file_name="components/serial_port_internal.h" />
+      <file file_name="components/serial_port_uart.c" />
+      <file file_name="components/serial_port_uart.h" />
+      <file file_name="components/uart.h" />
+    </folder>
+    <folder Name="coremark">
+      <file file_name="core_list_join.c" />
+      <file file_name="core_main.c" />
+      <file file_name="core_matrix.c" />
+      <file file_name="core_portme.cpp" />
+      <file file_name="core_portme.h" />
+      <file file_name="core_state.c" />
+      <file file_name="core_util.c" />
+      <file file_name="coremark.h" />
+    </folder>
+    <folder Name="drivers">
+      <file file_name="drivers/1180/cm33/fsl_cache.c" />
+      <file file_name="drivers/1180/cm33/fsl_cache.h" />
+      <file file_name="drivers/1180/fsl_clock.c" />
+      <file file_name="drivers/1180/fsl_clock.h" />
+      <file file_name="drivers/fsl_common.c" />
+      <file file_name="drivers/fsl_common.h" />
+      <file file_name="drivers/fsl_common_arm.c" />
+      <file file_name="drivers/fsl_common_arm.h" />
+      <file file_name="drivers/1180/fsl_ele_base_api.c" />
+      <file file_name="drivers/1180/fsl_ele_base_api.h" />
+      <file file_name="drivers/fsl_flexspi.c" />
+      <file file_name="drivers/fsl_flexspi.h" />
+      <file file_name="drivers/fsl_iomuxc.h" />
+      <file file_name="drivers/fsl_lpuart.c" />
+      <file file_name="drivers/fsl_lpuart.h" />
+      <file file_name="drivers/fsl_pdm.c" />
+      <file file_name="drivers/fsl_pdm.h" />
+      <file file_name="drivers/1180/fsl_pmu.c" />
+      <file file_name="drivers/1180/fsl_pmu.h" />
+      <file file_name="drivers/fsl_rgpio.c" />
+      <file file_name="drivers/fsl_rgpio.h" />
+      <file file_name="drivers/fsl_s3mu.c" />
+      <file file_name="drivers/fsl_s3mu.h" />
+      <file file_name="drivers/fsl_semc.c" />
+      <file file_name="drivers/fsl_semc.h" />
+      <file file_name="drivers/fsl_tempsensor.c" />
+      <file file_name="drivers/fsl_tempsensor.h" />
+    </folder>
+    <folder Name="src">
+      <file file_name="boards/1180/board.c" />
+      <file file_name="boards/1180/board.h" />
+      <file file_name="boards/1180/clock_config.c" />
+      <file file_name="boards/1180/clock_config.h" />
+      <file file_name="boards/1180/config.h" />
+      <file file_name="boards/1180/pin_mux.c" />
+      <file file_name="boards/1180/pin_mux.h" />
+    </folder>
+    <folder Name="System Files">
+      <configuration
+        Name="Common"
+        default_code_section=".init"
+        default_const_section=".init_rodata"
+        default_data_section=".data"
+        default_zeroed_section=".bss"
+        link_time_optimization="No" />
+      <folder
+        Name="periph"
+        exclude=""
+        filter="*.*"
+        path="$(TargetsDir)/iMXRText/devices/$(Family)/periph"
+        recurse="No" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName).h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_COMMON.h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_features.h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/fsl_device_registers.h" />
+      <file file_name="$(TargetsDir)/iMXRText/iMXRT_Target.js" />
+      <file file_name="placement_flexspi.xml" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/startup_$(DeviceName).s" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).c" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).h" />
+      <file file_name="$(StudioDir)/source/thumb_crt0.s" />
+    </folder>
+    <folder Name="XIP">
+      <file file_name="XiP/flexspi_boot.c">
+        <configuration Name="Common" build_exclude_from_build="Yes" />
+      </file>
+      <file file_name="XiP/flexspi_boot.h" />
+      <file file_name="XiP/flexspi_container_config.c" />
+      <file file_name="XiP/flexspi_container_config.h" />
+      <file file_name="XiP/flexspi_flash.h" />
+      <file file_name="XiP/flexspi_flash_Hyperflash.c">
+        <configuration Name="Common" build_exclude_from_build="Yes" />
+      </file>
+      <file file_name="XiP/flexspi_flash_OSPI_Adesto.c">
+        <configuration Name="Common" build_exclude_from_build="Yes" />
+      </file>
+      <file file_name="XiP/flexspi_flash_OSPI_ISSI.c">
+        <configuration Name="Common" build_exclude_from_build="Yes" />
+      </file>
+      <file file_name="XiP/flexspi_flash_OSPI_Macronix.c">
+        <configuration Name="Common" build_exclude_from_build="Yes" />
+      </file>
+      <file file_name="XiP/flexspi_flash_OSPI_Micron.c" />
+      <file file_name="XiP/flexspi_flash_QSPI.c" />
     </folder>
   </project>
   <project Name="Coremark_600">
@@ -2001,21 +2163,21 @@
         default_data_section=".data"
         default_zeroed_section=".bss"
         link_time_optimization="No" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/fsl_device_registers.h" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName).h" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_COMMON.h" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_features.h" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/startup_$(DeviceName).s" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).c" />
-      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).h" />
-      <file file_name="$(TargetsDir)/iMXRText/iMXRT_Target.js" />
-      <file file_name="$(StudioDir)/source/thumb_crt0.s" />
       <folder
         Name="periph"
         exclude=""
         filter="*.*"
         path="$(TargetsDir)/iMXRText/devices/$(Family)/periph"
         recurse="No" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName).h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_COMMON.h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/$(DeviceName)_features.h" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/fsl_device_registers.h" />
+      <file file_name="$(TargetsDir)/iMXRText/iMXRT_Target.js" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/startup_$(DeviceName).s" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).c" />
+      <file file_name="$(TargetsDir)/iMXRText/devices/$(Family)/system_$(DeviceName).h" />
+      <file file_name="$(StudioDir)/source/thumb_crt0.s" />
     </folder>
     <folder Name="XIP">
       <file file_name="XiP/flexspi_boot.c">

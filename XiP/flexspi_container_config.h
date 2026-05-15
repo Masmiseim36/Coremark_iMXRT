@@ -115,14 +115,24 @@ typedef struct __attribute__((packed)) _container_
 	#define IMAGE_LOAD_ADDRESS  ((uint32_t)Image$$VECTOR_ROM$$Base)
 	#define IMAGE_ENTRY_ADDRESS ((uint32_t)Image$$VECTOR_ROM$$Base)
 #elif defined __CROSSWORKS_ARM
-	extern const uint32_t __vectors_start__[];
-	extern const uint32_t __FlexSPI_segment_used_end__[];
-	extern const uint32_t __FlexSPI_segment_used_size__[];
-	#define IMAGE_OFFSET        ((uint32_t)__vectors_start__)
-//	#define IMAGE_SIZE          ((uint32_t)__FlexSPI_segment_used_end__ - (uint32_t)__vectors_start__)
-	#define IMAGE_SIZE          ((uint32_t)__FlexSPI_segment_used_size__)
-	#define IMAGE_LOAD_ADDRESS  ((uint32_t)__vectors_start__)
-	#define IMAGE_ENTRY_ADDRESS ((uint32_t)__vectors_start__)
+	#if defined XIP_BOOT_FLEXSPI1
+		extern const uint32_t __vectors_start__[];
+		extern const uint32_t __FlexSPI_segment_used_end__[];
+		extern const uint32_t __FlexSPI_segment_used_size__[];
+		#define IMAGE_OFFSET        ((uint32_t)__vectors_start__)
+//		#define IMAGE_SIZE          ((uint32_t)__FlexSPI_segment_used_end__ - (uint32_t)__vectors_start__)
+		#define IMAGE_SIZE          ((uint32_t)__FlexSPI_segment_used_size__)
+		#define IMAGE_LOAD_ADDRESS  ((uint32_t)__vectors_start__)
+		#define IMAGE_ENTRY_ADDRESS ((uint32_t)__vectors_start__)
+	#elif defined XIP_BOOT_FLEXSPI2
+		extern const uint32_t __vectors_start__[];
+		extern const uint32_t __FlexSPI2_segment_used_end__[];
+		extern const uint32_t __FlexSPI2_segment_used_size__[];
+		#define IMAGE_OFFSET        ((uint32_t)__vectors_start__)
+		#define IMAGE_SIZE          ((uint32_t)__FlexSPI2_segment_used_size__)
+		#define IMAGE_LOAD_ADDRESS  ((uint32_t)__vectors_start__)
+		#define IMAGE_ENTRY_ADDRESS ((uint32_t)__vectors_start__)
+	#endif
 #elif defined(__GNUC__)
 	extern uint32_t __CONTAINER_IMG_OFFSET[];
 	extern uint32_t __CONTAINER_IMG_SIZE[];
