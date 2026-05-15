@@ -133,8 +133,9 @@ extern "C"
 				CLOCK_ControlGate  (clocks[BOARD_DEBUG_UART_INSTANCE], kCLOCK_On);
 
 				uint32_t ClockFrequency = CLOCK_GetRootClockFreq (RootClocks[BOARD_DEBUG_UART_INSTANCE]);
-			#elif (defined(MIMXRT1181_SERIES)     || defined(MIMXRT1182_SERIES)     || defined(MIMXRT1187_cm7_SERIES) || defined(MIMXRT1187_cm33_SERIES) ||\
-				   defined(MIMXRT1189_cm7_SERIES) || defined(MIMXRT1189_cm33_SERIES))
+			#elif (defined(MIMXRT1181_SERIES)      || defined(MIMXRT1182_SERIES)     || defined(MIMXRT118C_cm33_SERIES) || defined(MIMXRT118C_cm7_SERIES) || \
+				   defined(MIMXRT1185_cm33_SERIES) || defined(MIMXRT1185_cm7_SERIES) || defined(MIMXRT1186_cm33_SERIES) || defined(MIMXRT1186_cm7_SERIES) || \
+				   defined(MIMXRT1187_cm33_SERIES) || defined(MIMXRT1187_cm7_SERIES) || defined(MIMXRT1189_cm33_SERIES) || defined(MIMXRT1189_cm7_SERIES))
 				// Configure Lpuartx using SysPll2
 				static const clock_root_t RootClocks [] 
 				{
@@ -204,6 +205,7 @@ extern "C"
 			IOMUXC_LPSR_GPR->GPR1 = IOMUXC_LPSR_GPR_GPR1_CM4_INIT_VTOR_HIGH((uint32_t)bootAddress >> 16);
 			SRC->SCR |= SRC_SCR_BT_RELEASE_M4_MASK;
 		#elif defined MIMXRT1189_cm33_SERIES || defined MIMXRT1187_cm33_SERIES
+#if 0
 			// Start the M7 core
 			// Compare Chapter 12.10 "Cortex-M7 kick-off procedure"
 //			extern uint32_t __ITCM_M7_segment_start__ [];
@@ -271,6 +273,7 @@ extern "C"
 
 			// Deassert Wait
 			BLK_CTRL_S_AONMIX->M7_CFG = bootaddr;
+#endif
 		#endif
 	}
 
