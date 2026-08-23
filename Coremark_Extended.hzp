@@ -1,5 +1,5 @@
 <!DOCTYPE CrossStudio_Project_File>
-<solution Name="Coremark iMXRT" target="8" version="2">
+<solution Name="Coremark iMXRT - extended" target="8" version="2">
   <configuration
     Name="Common"
     Platform="ARM"
@@ -20,7 +20,7 @@
   <configuration
     Name="Debug"
     c_preprocessor_definitions="DEBUG"
-    gcc_optimization_level="None" />
+    gcc_optimization_level="Level 0" />
   <configuration
     Name="Release"
     c_preprocessor_definitions="NDEBUG"
@@ -434,7 +434,7 @@
       linker_memory_map_file="$(TargetsDir)/iMXRText/devices/$(Family)/MemoryMap_MIMXRT102x.xml"
       linker_section_placement_file="$(TargetsDir)/iMXRText/placement_flexspi.xml"
       linker_section_placement_macros=""
-      macros="DeviceName=MIMXRT1024;Family=iMXRT1020;Core=CM7"
+      macros="DeviceName=MIMXRT1024;Family=iMXRT1020;Core=CM7;Loader=iMXRT1024"
       project_directory=""
       project_type="Executable"
       property_groups_file_path="$(TargetsDir)/iMXRText/propertyGroups.xml"
@@ -447,7 +447,7 @@
       target_trace_initialize_script="EnableTrace(&quot;$(TraceInterfaceType)&quot;)" />
     <configuration
       Name="Flash"
-      arm_target_flash_loader_file_path="$(TargetsDir)/iMXRText/Loader2/Loader_$(Family)_$(Core).elf"
+      arm_target_flash_loader_file_path="$(TargetsDir)/iMXRText/Loader2/Loader_$(Loader)_$(Core).elf"
       arm_target_loader_parameter="5" />
     <folder Name="component">
       <file file_name="components/fsl_adapter_uart.h" />
@@ -819,7 +819,7 @@
       linker_memory_map_file="$(TargetsDir)/iMXRText/devices/$(Family)/MemoryMap_MIMXRT106x.xml"
       linker_section_placement_file="$(TargetsDir)/iMXRText/placement_flexspi.xml"
       linker_section_placement_macros="FLASH_NAME=FlexSPI"
-      macros="DeviceName=MIMXRT1062;Family=iMXRT1060;Core=CM7"
+      macros="DeviceName=MIMXRT1062;Family=iMXRT1060;Core=CM7;Loader=iMXRT1060"
       project_directory=""
       project_type="Executable"
       property_groups_file_path="$(TargetsDir)/iMXRText/propertyGroups.xml"
@@ -1218,7 +1218,6 @@
       target_match_partname_script="MatchPartName(&quot;$(Family)&quot;)"
       target_reset_script="Reset()"
       target_script_file="$(TargetsDir)/iMXRText/iMXRT_Target.js"
-      target_stop_script="OnTargetStop_11xx()"
       target_trace_initialize_script="EnableTrace(&quot;$(TraceInterfaceType)&quot;)" />
     <configuration
       Name="Flash"
@@ -1681,7 +1680,7 @@
       <file file_name="drivers/1180/fsl_ele_base_api.h" />
       <file file_name="drivers/fsl_flexspi.c" />
       <file file_name="drivers/fsl_flexspi.h" />
-      <file file_name="drivers/fsl_iomuxc.h" />
+      <file file_name="drivers/1180/fsl_iomuxc.h" />
       <file file_name="drivers/fsl_lpuart.c" />
       <file file_name="drivers/fsl_lpuart.h" />
       <file file_name="drivers/fsl_pdm.c" />
