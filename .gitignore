@@ -13,3 +13,5 @@
 out/
 bin/
 *.7z
+StartTest.bat
+*.renamed
