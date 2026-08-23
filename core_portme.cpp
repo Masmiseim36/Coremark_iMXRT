@@ -195,6 +195,12 @@ extern "C"
 		#else
 			#error "unknown core"
 		#endif
+		MyPrintf ("Compiled at " __DATE__ " - " __TIME__ "\r\n");
+		#if defined GCC_OPTIONS
+            MyPrintf ("\r\n");
+			MyPrintf (GCC_OPTIONS);
+            MyPrintf ("\r\n");
+		#endif
 
 		#if defined MIMXRT1166_cm7_SERIES || defined MIMXRT1165_cm7_SERIES || \
 			defined MIMXRT1173_cm7_SERIES || defined MIMXRT1175_cm7_SERIES || defined MIMXRT1176_cm7_SERIES
