@@ -11,11 +11,16 @@
 # captured by this script.
 #
 # Dual core devices (iMXRT1160 / iMXRT1170):
-#   The Cortex-M4 project is listed in "debug_dependent_projects" of the Cortex-M7 project. So
-#   CrossLoad downloads both cores when the M7 project is started, and the M7 application starts the
-#   M4 core (see portable_init in core_portme.cpp). Only the M7 project is therefore selected here.
-#   The debug session observes only the M7 core, so after the M7 has finished the script waits
-#   --secondary-wait seconds longer for the M4.
+#   The Cortex-M4 project is listed in "debug_dependent_projects" of the Cortex-M7 project. The IDE
+#   uses this to debug both cores. Newer CrossWorks versions (the ones which know the script method
+#   Debug.setdebugproject()) do the same in CrossLoad: one CrossLoad call downloads both images,
+#   wait_for_exit.js switches between the cores, starts both and waits for the breakpoint at the
+#   end of the benchmark on each core. This is detected automatically.
+#   CrossWorks 5.4.2 and older do not support this: CrossLoad downloads only the project given with
+#   -project, a debug session belongs to a single core, and the debug probe can be used by one
+#   CrossLoad process only. For these versions (or with --separate-sessions) the Cortex-M4 project
+#   is run first in a debug session of its own, and the Cortex-M7 project afterwards.
+#   In both cases every core appears as a separate line in the summary.
 #
 # Run "./StartTest.sh --help" for the usage.
 
@@ -56,10 +61,13 @@ Options:
   -i, --interface NAME       CrossLoad target interface             (default: CMSIS-DAP)
   -p, --probe SERIAL         serial number of the CMSIS-DAP probe   (default: first probe found)
   -c, --config NAME          build configuration                    (default: Release)
-  -t, --timeout SECONDS      max. time to wait for the benchmark    (default: 600)
-  -w, --secondary-wait SEC   extra wait time for a secondary core   (default: 20, 0 = none)
+  -t, --timeout SECONDS      safety limit per core and run; the end of the benchmark is
+                             detected by a breakpoint, this only stops a hung target
+                                                                    (default: 600)
   -P, --profiles LIST        comma separated profile labels         (default: all)
                              available: $ProfileLabels
+  -S, --separate-sessions    run every core of a dual core device in a debug session of its
+                             own, even if CrossLoad supports multi-core debugging
   -b, --build-only           build only, do not touch the target
   -e, --stop-on-error        stop at the first failing run          (default: continue)
   -n, --dry-run              only print the commands
@@ -101,9 +109,10 @@ TargetInterface="CMSIS-DAP"
 ProbeSerial=""
 BuildConfig="Release"
 WaitTimeoutSec=600
-SecondaryCoreWaitSec=20
 ProfileFilter=""
 SkipLoad=0
+SeparateSessions=0
+LoadAttempts=3
 StopOnError=0
 DryRun=0
 ListOnly=0
@@ -123,7 +132,7 @@ while [ $# -gt 0 ]; do
 
 	# Options that need a value
 	case "$Option" in
-		-s|--solution|-C|--crossworks-dir|-i|--interface|-p|--probe|-c|--config|-t|--timeout|-w|--secondary-wait|-P|--profiles)
+		-s|--solution|-C|--crossworks-dir|-i|--interface|-p|--probe|-c|--config|-t|--timeout|-P|--profiles)
 			if [ $HasValue -eq 0 ]; then
 				[ $# -ge 2 ] || Fail "Option '$Option' needs a value."
 				Value="$2"
@@ -142,11 +151,8 @@ while [ $# -gt 0 ]; do
 			[[ "$Value" =~ ^[0-9]+$ ]] && [ "$Value" -gt 0 ] || Fail "Invalid timeout '$Value'."
 			WaitTimeoutSec="$Value"
 			;;
-		-w|--secondary-wait)
-			[[ "$Value" =~ ^[0-9]+$ ]] || Fail "Invalid secondary wait time '$Value'."
-			SecondaryCoreWaitSec="$Value"
-			;;
 		-P|--profiles)         ProfileFilter="$Value" ;;
+		-S|--separate-sessions) SeparateSessions=1 ;;
 		-b|--build-only)       SkipLoad=1 ;;
 		-e|--stop-on-error)    StopOnError=1 ;;
 		-n|--dry-run)          DryRun=1 ;;
@@ -200,6 +206,12 @@ for File in "$SolutionFile" "$WaitScript"; do
 	[ -f "$File" ] || Fail "'$File' not found."
 done
 
+# Does CrossLoad support multi-core debugging (script method Debug.setdebugproject())?
+MultiCore=0
+if [ "$SeparateSessions" != 1 ] && [ -f "$Crossload" ] && grep -aq 'setdebugproject' "$Crossload"; then
+	MultiCore=1
+fi
+
 # Print (and, unless --dry-run is given, execute) a command
 Run ()
 {
@@ -215,9 +227,9 @@ Run ()
 # ---------------------------------------------------------------------------------------------
 # ProjectNames:    all projects of the solution
 # DepParent/Child: pairs of a project and a project that is listed in its debug_dependent_projects
-#                  (the secondary core of a dual core device). CrossLoad downloads such a project
-#                  together with its parent, so it is not started on its own. Projects which are only
-#                  listed in project_dependencies (build order) are still selectable on their own.
+#                  (the secondary core of a dual core device). Such a project is not selected on its
+#                  own, but run together with its parent (before it). Projects which are only listed
+#                  in project_dependencies (build order) are still selectable on their own.
 ProjectNames=()
 DepParent=()
 DepChild=()
@@ -359,6 +371,27 @@ PrintSummary ()
 
 trap 'echo; echo "Interrupted."; PrintSummary; exit 130' INT
 
+# RecordResult <run name> <state>
+# Stores and prints the result of a run. Returns 1 if the script has to stop (--stop-on-error).
+RecordResult ()
+{
+	ResultNames+=("$1")
+	ResultStates+=("$2")
+	ResultSeconds+=("$((SECONDS - StartSeconds))")
+	echo "$1: $2"
+	StartSeconds=$SECONDS
+
+	case "$2" in
+		FINISHED|BUILT|"DRY RUN") ;;
+		*)	if [ "$StopOnError" = 1 ]; then
+				PrintSummary
+				return 1
+			fi
+			;;
+	esac
+	return 0
+}
+
 # BuildProject <project> <optimization level> <link time optimization> <marker>
 # All properties are set as solution properties (-sproperty). A project property (-property) would
 # be overruled by the settings of the "Release" solution configuration and silently ignored.
@@ -376,46 +409,70 @@ BuildProject ()
 		"$SolutionFile"
 }
 
-# LoadAndWait <project> <number of secondary cores>
-# Sets LastState. Returns 0 if the benchmark has finished.
+# LoadAndWait <project> [secondary core project ...]
+# Downloads the project (and the given secondary core projects), runs all cores and waits until the
+# benchmark has finished on every core. With several cores one debug session controls them all, which
+# needs a CrossLoad with multi-core support (see MultiCore).
+# Sets the arrays LoadCores (project names) and LoadStates (FINISHED, TIMEOUT, ...), one entry per core.
+# Returns 0 if the benchmark has finished on all cores.
 LoadAndWait ()
 {
 	local Project="$1"
-	local SecondaryCount="$2"
+	local Core Names="" Line Name State Index Result=0
 	local CrossloadArgs=(-target "$TargetInterface")
 	[ -n "$ProbeSerial" ] && CrossloadArgs+=(-setprop "Use Serial Number=$ProbeSerial")
 	CrossloadArgs+=(-solution "$SolutionFile" -project "$Project" -config "$BuildConfig")
 
+	LoadCores=("$@")
+	LoadStates=()
+	for Core in "$@"; do
+		Names+="${Names:+;}${Core}_${BuildConfig}"	# name of the debug project
+	done
+
 	# The script gets its parameters through a generated header.
-	local SecondaryWaitMs=0
-	[ "$SecondaryCount" -gt 0 ] && SecondaryWaitMs=$((SecondaryCoreWaitSec * 1000))
 	mkdir -p "$(dirname "$RunScript")"
 	rm -f "$ResultFile"
 	{
 		printf 'var WaitTimeoutMs = %d;\n'   $((WaitTimeoutSec * 1000))
-		printf 'var SecondaryWaitMs = %d;\n' "$SecondaryWaitMs"
 		printf 'var ResultFile = "%s";\n'    "$(ToMixedPath "$ResultFile")"
+		printf 'var DebugProjects = "%s";\n' "$Names"
 		cat "$WaitScript"
 	} > "$RunScript"
 
-	# Secondary cores are downloaded by CrossLoad itself (debug_dependent_projects).
-	echo "Downloading $Project and waiting for the benchmark to finish"
+	echo "Downloading $* and waiting for the benchmark to finish"
 	# stdin is closed, so that CrossLoad cannot get stuck at its interactive prompt if the script fails.
-	if ! Run "$Crossload" "${CrossloadArgs[@]}" -debug -script "$(ToWindowsPath "$RunScript")" < /dev/null; then
-		LastState="LOAD FAILED"
-		return 1
-	fi
+	# "-break main" lets CrossLoad run the application up to main(), which gives the script a defined start.
+	# CrossLoad sometimes fails while it connects to the target (e.g. "Write word to address ...
+	# timed out" when the core is reset). This happens before the script is started, so the call is
+	# simply repeated.
+	local Attempt=1
+	until Run "$Crossload" "${CrossloadArgs[@]}" -debug -break main -script "$(ToWindowsPath "$RunScript")" < /dev/null; do
+		if [ $Attempt -ge $LoadAttempts ]; then
+			for Core in "$@"; do LoadStates+=("LOAD FAILED"); done
+			return 1
+		fi
+		Attempt=$((Attempt + 1))
+		echo "CrossLoad failed, trying again (attempt $Attempt of $LoadAttempts)"
+	done
 
 	if [ "$DryRun" = 1 ]; then
-		LastState="DRY RUN"
+		for Core in "$@"; do LoadStates+=("DRY RUN"); done
 		return 0
 	fi
-	if [ -f "$ResultFile" ]; then
-		LastState="$(tr -d '\r\n' < "$ResultFile")"
-	else
-		LastState="NO RESULT"
-	fi
-	[ "$LastState" = "FINISHED" ]
+
+	# The script writes one line "<debug project>|<state>" per core
+	for Index in "${!LoadCores[@]}"; do
+		State="NO RESULT"
+		if [ -f "$ResultFile" ]; then
+			while IFS='|' read -r Name Line; do
+				Line="${Line//[$'\r\n']/}"
+				[ "${Name//[$'\r\n']/}" = "${LoadCores[$Index]}_${BuildConfig}" ] && State="$Line"
+			done < "$ResultFile"
+		fi
+		LoadStates+=("$State")
+		[ "$State" = "FINISHED" ] || Result=1
+	done
+	return $Result
 }
 
 for Project in "${SelectedProjects[@]}"; do
@@ -435,27 +492,31 @@ for Project in "${SelectedProjects[@]}"; do
 		echo "$RunName: $Level, link time optimization: $Lto"
 		echo "=============================================================================="
 
+		# Building the main project also builds the secondary core projects (project_dependencies).
 		if ! BuildProject "$Project" "$Level" "$Lto" "$Marker"; then
-			LastState="BUILD FAILED"
+			RecordResult "$RunName" "BUILD FAILED" || exit 1
 		elif [ "$SkipLoad" = 1 ]; then
-			LastState="BUILT"
+			RecordResult "$RunName" "BUILT" || exit 1
 		else
-			LoadAndWait "$Project" "${#Secondaries[@]}"
+			if [ "$MultiCore" = 1 ] || [ ${#Secondaries[@]} -eq 0 ]; then
+				# One debug session for all cores
+				LoadAndWait "$Project" "${Secondaries[@]}"
+				Sessions=("${LoadCores[@]}")
+				SessionStates=("${LoadStates[@]}")
+			else
+				# One debug session per core: the secondary cores first, the main project last
+				Sessions=()
+				SessionStates=()
+				for Core in "${Secondaries[@]}" "$Project"; do
+					LoadAndWait "$Core"
+					Sessions+=("${LoadCores[@]}")
+					SessionStates+=("${LoadStates[@]}")
+				done
+			fi
+			for Index in "${!Sessions[@]}"; do
+				RecordResult "${Sessions[$Index]} [$Label]" "${SessionStates[$Index]}" || exit 1
+			done
 		fi
-
-		ResultNames+=("$RunName")
-		ResultStates+=("$LastState")
-		ResultSeconds+=("$((SECONDS - StartSeconds))")
-		echo "$RunName: $LastState"
-
-		case "$LastState" in
-			FINISHED|BUILT|"DRY RUN") ;;
-			*)	if [ "$StopOnError" = 1 ]; then
-					PrintSummary
-					exit 1
-				fi
-				;;
-		esac
 	done
 done
 
