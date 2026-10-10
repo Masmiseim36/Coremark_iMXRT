@@ -4,14 +4,16 @@
 //
 //     crossload ... -debug -break main -script wait_for_exit.js
 //
-// It lets the benchmark run on one or more cores and waits until the application has finished on
-// every core. Afterwards the debug session is ended, so that StartTest.sh can continue with the
-// next project / compiler profile.
+// It lets the benchmark run on all cores of the device and waits until it has finished on every
+// core. Afterwards the debug session is ended, so that StartTest.sh can continue with the next
+// project / compiler profile. A dual core device (iMXRT1160 / iMXRT1170) is debugged with a single
+// session: CrossLoad downloads the project given with -project and its "Debug Additional
+// Projects" (the other core), and the script switches between the cores.
 //
 // Sequence
 // --------
-// 1. CrossLoad downloads the application(s) and runs each core up to main() (option "-break main").
-//    That happens asynchronously to this script, so the script first waits until the core has stopped.
+// 1. CrossLoad runs every core up to main() (option "-break main"). That happens asynchronously
+//    to this script, so the script first waits until the core has stopped.
 // 2. A hardware breakpoint is set on "exit_loop", the endless loop of the startup code
 //    (thumb_crt0.s) which is reached when main() has returned. CoreMark has printed all results
 //    and "Coremark done" by then.
@@ -27,37 +29,30 @@
 //   ResultFile      - optional. The result is written to this file, because CrossLoad cannot hand
 //                     over an exit code from a script. One line per core: "<debug project>|<state>"
 //                     with the state FINISHED, TIMEOUT or ERROR: ...
-//   DebugProjects   - the debug projects ("<project>_<configuration>") of all cores, separated by
-//                     ";". Only if more than one is given, the script switches between them with
-//                     Debug.setdebugproject(). This needs a CrossWorks version which supports
-//                     multi-core debugging in CrossLoad (the Debug.setdebugproject() method).
 //
-// Notes on the CrossWorks script engine (verified with CrossWorks 5.4.2 and 5.5 nightly builds)
-// ---------------------------------------------------------------------------------------------
+// Notes on the CrossWorks script engine (CrossWorks 5.5 nightly build with multi-core support)
+// --------------------------------------------------------------------------------------------
 // - Only a subset of JavaScript is understood: no try/catch/throw, no "===" / "!==", no "continue"
 //   and no chained calls like new Date().getTime().
-// - Debug.breakexpr() has the signature (expression, hardware, count). This is NOT the order
-//   given in the CrossWorks documentation. With (expression, 0, true) the breakpoint is a software
-//   breakpoint with an ignore count of 1 and never stops the application. The function does not
-//   return a breakpoint number, so the result cannot be checked.
-// - The return value of Debug.wait() is not reliable (0 on a timeout, but also when the break was
-//   caused by a breakpoint without a number). Debug.stopped() is used instead.
-// - Debug.go() / Debug.evaluate() / Debug.where() fail with "not stopped" while the target runs.
-// - After Debug.setdebugproject() the newly selected core may still be running up to main():
-//   wait with Debug.wait() until Debug.stopped() is true before using it.
+// - Debug.breakexpr (expression, temporary, count, hardware) returns the breakpoint number.
+//   Debug.wait (ms) returns the number of the breakpoint that was hit, 0 on a timeout.
+// - Debug.go() / Debug.evaluate() / Debug.where() fail with "not stopped" while the core runs.
+// - After Debug.setdebugproject() the selected core may still be running up to main(): wait with
+//   Debug.wait() until Debug.stopped() is true before using it.
+// - Before the first Debug.setdebugproject() the current debug project is the last one of the
+//   list, not the one given with -project. The script therefore always selects a core explicitly.
 //
 // Debug API: CrossWorks script class "Debug" (ide_script_class_Debug.htm)
 
-var WaitTimeoutMs   = (typeof WaitTimeoutMs   == "undefined") ? 600000 : WaitTimeoutMs;
-var ResultFile      = (typeof ResultFile      == "undefined") ? ""     : ResultFile;
-var DebugProjects   = (typeof DebugProjects   == "undefined") ? ""     : DebugProjects;
+var WaitTimeoutMs = (typeof WaitTimeoutMs == "undefined") ? 600000 : WaitTimeoutMs;
+var ResultFile    = (typeof ResultFile    == "undefined") ? ""     : ResultFile;
 
 // Maximum time for a core to run up to main() after the download
 var StartupWaitMs = 15000;
 
-var Cores   = [];     // debug project names, "" for a single core without switching
-var States  = [];     // result of each core
-var Switch  = false;  // true if more than one core is controlled
+var Cores       = [];   // debug projects, one per core
+var States      = [];   // result of each core
+var Breakpoints = [];   // number of the breakpoint at the end of the benchmark of each core
 
 function now ()
 {
@@ -68,7 +63,7 @@ function now ()
 // Make core i the current one
 function select (i)
 {
-	if (Switch)
+	if (Cores.length > 1)
 		Debug.setdebugproject (Cores[i]);
 }
 
@@ -91,16 +86,14 @@ function main ()
 	var i;
 	var failed = false;
 
-	if (DebugProjects != "")
-		Cores = DebugProjects.split (";");
-	else
-		Cores = [""];
-	Switch = (Cores.length > 1);
+	Cores = Debug.getdebugprojects ();
+	for (i = 0; i < Cores.length; i++)
+		States[i] = "ERROR: not started because of another core";
 
-	// 1. Wait until every core has stopped at main()
+	// 1. Wait until every core has stopped at main(), then set the breakpoint at the end of the
+	//    benchmark. It is a hardware breakpoint, because exit_loop lives in the XiP flash.
 	for (i = 0; i < Cores.length; i++)
 	{
-		States[i] = "";
 		select (i);
 		Debug.wait (StartupWaitMs);
 		if (!Debug.stopped ())
@@ -109,24 +102,23 @@ function main ()
 			States[i] = "ERROR: the core did not stop at main() (is CrossLoad started with -break main?)";
 			failed = true;
 		}
+		else
+		{
+			Breakpoints[i] = Debug.breakexpr ("exit_loop", false, 0, true);
+			if (Breakpoints[i] == 0)
+			{
+				States[i] = "ERROR: the breakpoint at exit_loop could not be set";
+				failed = true;
+			}
+		}
 	}
 	if (failed)
 	{
-		for (i = 0; i < Cores.length; i++)
-			if (States[i] == "")
-				States[i] = "ERROR: not started because of another core";
 		finish ();
 		return;
 	}
 
-	// 2. Hardware breakpoint, because exit_loop lives in the XiP flash
-	for (i = 0; i < Cores.length; i++)
-	{
-		select (i);
-		Debug.breakexpr ("exit_loop", true, 0);
-	}
-
-	// 3. Start all cores, then wait for each of them
+	// 2. Start all cores, then wait for each of them
 	Debug.echo ("Waiting for CoreMark to finish (timeout " + (WaitTimeoutMs / 1000) + " s) ...");
 	var deadline = now () + WaitTimeoutMs;
 	for (i = 0; i < Cores.length; i++)
@@ -137,18 +129,17 @@ function main ()
 	for (i = 0; i < Cores.length; i++)
 	{
 		select (i);
-		var remaining = deadline - now ();
-		if (remaining < 1000)
-			remaining = 1000;
-		Debug.wait (remaining);
-		if (Debug.stopped ())
-			States[i] = "FINISHED";
-		else
+		var hit = Debug.wait (Math.max (deadline - now (), 1000));
+		if (!Debug.stopped ())
 		{
 			Debug.breaknow ();
 			Debug.wait (2000);
 			States[i] = "TIMEOUT";
 		}
+		else if (hit != Breakpoints[i])
+			States[i] = "ERROR: the core stopped for another reason than the end of the benchmark";
+		else
+			States[i] = "FINISHED";
 	}
 	finish ();
 }
