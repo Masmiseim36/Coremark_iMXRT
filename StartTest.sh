@@ -7,8 +7,9 @@
 #   2. downloads it to the target with CrossLoad,
 #   3. lets the benchmark run and waits until it has finished (wait_for_exit.js).
 # At the end a summary of all runs is printed.
-# The results of the benchmark itself are printed by the target via UART. They are not
-# captured by this script.
+# The target prints the results of the benchmark via UART. With --uart they are captured while
+# the benchmark runs and the score (CoreMark iterations per second) is shown in the summary. The
+# complete UART output of every run is saved in out/uart/.
 #
 # Dual core devices (iMXRT1160 / iMXRT1170):
 #   The Cortex-M4 project is listed in "debug_dependent_projects" ("Debug Additional Projects") of
@@ -62,6 +63,9 @@ Options:
                                                                     (default: 600)
   -P, --profiles LIST        comma separated profile labels         (default: all)
                              available: $ProfileLabels
+  -u, --uart PORT            serial port of the target console, e.g. COM3 or /dev/ttyACM0;
+                             the benchmark results are captured and shown in the summary
+                                                                    (default: no capture)
   -b, --build-only           build only, do not touch the target
   -e, --stop-on-error        stop at the first failing run          (default: continue)
   -n, --dry-run              only print the commands
@@ -76,6 +80,7 @@ Default CrossWorks directory: C:/Program Files/Rowley CrossWorks for ARM 5.5 (Wi
 Examples:
   $(basename "$0") Coremark_1060
   $(basename "$0") -P "O3,O2" -p 000123456789 Coremark_1160CM7 Coremark_1060
+  $(basename "$0") --uart COM3 -P O3 Coremark_1060
   $(basename "$0") --build-only all
 EOF
 }
@@ -109,6 +114,8 @@ StopOnError=0
 DryRun=0
 ListOnly=0
 LoadAttempts=3
+UartPort=""
+UartBaud=115200
 Arguments=()
 
 while [ $# -gt 0 ]; do
@@ -125,7 +132,7 @@ while [ $# -gt 0 ]; do
 
 	# Options that need a value
 	case "$Option" in
-		-s|--solution|-C|--crossworks-dir|-i|--interface|-p|--probe|-c|--config|-t|--timeout|-P|--profiles)
+		-s|--solution|-C|--crossworks-dir|-i|--interface|-p|--probe|-c|--config|-t|--timeout|-P|--profiles|-u|--uart)
 			if [ $HasValue -eq 0 ]; then
 				[ $# -ge 2 ] || Fail "Option '$Option' needs a value."
 				Value="$2"
@@ -145,6 +152,7 @@ while [ $# -gt 0 ]; do
 			WaitTimeoutSec="$Value"
 			;;
 		-P|--profiles)         ProfileFilter="$Value" ;;
+		-u|--uart)             UartPort="$Value" ;;
 		-b|--build-only)       SkipLoad=1 ;;
 		-e|--stop-on-error)    StopOnError=1 ;;
 		-n|--dry-run)          DryRun=1 ;;
@@ -192,6 +200,15 @@ fi
 for File in "$SolutionFile" "$WaitScript"; do
 	[ -f "$File" ] || Fail "'$File' not found."
 done
+
+# Serial port: under Windows (Git Bash / MSYS) COMn is the device /dev/ttyS(n-1)
+UartDevice="$UartPort"
+if [[ "$UartPort" =~ ^[Cc][Oo][Mm]([0-9]+)$ ]]; then
+	UartDevice="/dev/ttyS$((BASH_REMATCH[1] - 1))"
+fi
+if [ -n "$UartDevice" ] && [ "$SkipLoad" != 1 ] && [ "$DryRun" != 1 ]; then
+	[ -c "$UartDevice" ] || Fail "Serial port '$UartPort' ($UartDevice) not found."
+fi
 
 # Print (and, unless --dry-run is given, execute) a command
 Run ()
@@ -292,6 +309,7 @@ fi
 ResultNames=()
 ResultStates=()
 ResultSeconds=()
+ResultScores=()
 
 PrintSummary ()
 {
@@ -299,7 +317,7 @@ PrintSummary ()
 	echo ""
 	echo "================================ Summary ================================"
 	for Index in "${!ResultNames[@]}"; do
-		printf '%-42s %-28s %5s s\n' "${ResultNames[$Index]}" "${ResultStates[$Index]}" "${ResultSeconds[$Index]}"
+		printf '%-42s %-28s %5s s  %s\n' "${ResultNames[$Index]}" "${ResultStates[$Index]}" "${ResultSeconds[$Index]}" "${ResultScores[$Index]}"
 		case "${ResultStates[$Index]}" in
 			FINISHED|BUILT|"DRY RUN") ;;
 			*) Failed=1 ;;
@@ -311,13 +329,14 @@ PrintSummary ()
 
 trap 'echo; echo "Interrupted."; PrintSummary; exit 130' INT
 
-# RecordResult <run name> <state>
+# RecordResult <run name> <state> [score]
 # Stores and prints the result of a run. Exits if --stop-on-error is given and the run has failed.
 RecordResult ()
 {
 	ResultNames+=("$1")
 	ResultStates+=("$2")
 	ResultSeconds+=("$((SECONDS - StartSeconds))")
+	ResultScores+=("$3")
 	echo "$1: $2"
 	StartSeconds=$SECONDS
 
@@ -331,6 +350,73 @@ RecordResult ()
 	esac
 }
 
+# ---------------------------------------------------------------------------------------------
+# UART capture
+# ---------------------------------------------------------------------------------------------
+# The target prints the result of every core as a block of lines, which ends with "Coremark done -
+# M7" (or M4, M33). Both cores of a dual core device use the same UART, their blocks follow one
+# another. The cores are told apart by this name: the suffix CM<n> of the project name gives the
+# core (Coremark_1170CM4 -> M4), a project without this suffix runs on a Cortex-M7.
+declare -A UartScores
+UartPid=""
+UartLog=""
+
+# StartUart <log file>
+# Starts to write everything which the target sends to the log file. The serial port is opened by
+# the shell (file descriptor 9) and stays open, because the port settings are lost when it is closed.
+StartUart ()
+{
+	[ -n "$UartDevice" ] && [ "$DryRun" != 1 ] || return 0
+	UartLog="$1"
+	mkdir -p "$(dirname "$UartLog")"
+	if ! exec 9< "$UartDevice"; then
+		echo "Warning: cannot open $UartDevice, the results are not captured."
+		UartDevice=""
+		return 0
+	fi
+	stty "$UartBaud" cs8 -parenb -cstopb -echo -icanon -ixon -ixoff -icrnl -inlcr -opost clocal min 1 time 0 <&9
+	cat <&9 >> "$UartLog" &
+	UartPid=$!
+	# Discard what the driver had buffered before the port was opened
+	sleep 1
+	: > "$UartLog"
+}
+
+# StopUart: ends the capture and reads the scores from the log file into UartScores
+StopUart ()
+{
+	[ -n "$UartPid" ] || return 0
+	sleep 1		# the last characters of the target may still be on their way
+	kill "$UartPid"
+	wait "$UartPid" 2>/dev/null
+	exec 9<&-
+	UartPid=""
+
+	local Core Rate Valid
+	UartScores=()
+	while IFS='|' read -r Core Rate Valid; do
+		if [ -z "$Rate" ]; then
+			UartScores[$Core]="no result"
+		elif [ -z "$Valid" ]; then
+			UartScores[$Core]="$Rate it/s (NOT VALIDATED)"
+		else
+			UartScores[$Core]="$Rate it/s"
+		fi
+	done < <(tr -d '\r' < "$UartLog" | awk '
+		/CoreMark Size/                { Rate = ""; Valid = "" }
+		/^Iterations\/Sec/             { Rate = sprintf("%.2f", $3) }
+		/Correct operation validated/  { Valid = "yes" }
+		/^Coremark done - /            { print $NF "|" Rate "|" Valid }
+	')
+}
+
+# UartScoreOf <project>: the score of the core of the project, empty if the UART is not captured
+UartScoreOf ()
+{
+	local Core="M7"
+	[[ "$1" =~ CM([0-9]+)$ ]] && Core="M${BASH_REMATCH[1]}"
+	[ -n "$UartDevice" ] && [ -n "$UartLog" ] && echo "${UartScores[$Core]:-no result}"
+}
 # BuildProject <project> <optimization level> <link time optimization> <marker>
 # All properties are set as solution properties (-sproperty). A project property (-property) would
 # be overruled by the settings of the "Release" solution configuration and silently ignored.
@@ -368,6 +454,7 @@ LoadAndWait ()
 	} > "$RunScript"
 
 	echo "Downloading $Project and waiting for the benchmark to finish"
+	StartUart "$ScriptDir/out/uart/${Project}_${Label// /_}.log"
 	# stdin is closed, so that CrossLoad cannot get stuck at its interactive prompt if the script fails.
 	# "-break main" lets CrossLoad run the application up to main(), which gives the script a defined start.
 	# CrossLoad sometimes fails while it connects to the target (e.g. "Write word to address ...
@@ -377,6 +464,7 @@ LoadAndWait ()
 		[ $Attempt -gt 1 ] && echo "CrossLoad failed, trying again (attempt $Attempt of $LoadAttempts)"
 		Run "$Crossload" "${CrossloadArgs[@]}" -debug -break main -script "$(ToWindowsPath "$RunScript")" < /dev/null && break
 	done
+	StopUart
 	if [ $Attempt -gt $LoadAttempts ]; then
 		RecordResult "$Project [$Label]" "LOAD FAILED"
 	elif [ "$DryRun" = 1 ]; then
@@ -386,7 +474,7 @@ LoadAndWait ()
 	else
 		# The script writes one line "<debug project>|<state>" per core
 		while IFS='|' read -r Name State; do
-			RecordResult "${Name%_$BuildConfig} [$Label]" "${State%$'\r'}"
+			RecordResult "${Name%_$BuildConfig} [$Label]" "${State%$'\r'}" "$(UartScoreOf "${Name%_$BuildConfig}")"
 		done < "$ResultFile"
 	fi
 }
