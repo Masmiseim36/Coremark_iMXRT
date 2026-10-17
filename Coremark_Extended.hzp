@@ -1,5 +1,5 @@
 <!DOCTYPE CrossStudio_Project_File>
-<solution Name="Coremark iMXRT" target="8" version="2">
+<solution Name="Coremark iMXRT - extended" target="8" version="2">
   <configuration
     Name="Common"
     Platform="ARM"
@@ -66,24 +66,6 @@
       Name="Flash"
       arm_target_flash_loader_file_path="$(TargetsDir)/iMXRText/Loader2/Loader_$(Family)_$(Core).elf"
       arm_target_loader_parameter="5" />
-    <folder Name="component">
-      <file file_name="components/fsl_adapter_uart.h" />
-      <file file_name="components/fsl_component_serial_manager.h" />
-      <file file_name="components/fsl_component_serial_port_uart.h" />
-      <file file_name="components/fsl_debug_console.c" />
-      <file file_name="components/fsl_debug_console.h" />
-      <file file_name="components/fsl_str.c" />
-      <file file_name="components/fsl_str.h" />
-      <file file_name="components/generic_list.c" />
-      <file file_name="components/generic_list.h" />
-      <file file_name="components/lpuart_adapter.c" />
-      <file file_name="components/serial_manager.c" />
-      <file file_name="components/serial_manager.h" />
-      <file file_name="components/serial_port_internal.h" />
-      <file file_name="components/serial_port_uart.c" />
-      <file file_name="components/serial_port_uart.h" />
-      <file file_name="components/uart.h" />
-    </folder>
     <folder Name="coremark">
       <file file_name="core_list_join.c" />
       <file file_name="core_main.c" />
@@ -195,24 +177,6 @@
       Name="Flash"
       arm_target_flash_loader_file_path="$(TargetsDir)/iMXRText/Loader2/Loader_$(Family)_$(Core).elf"
       arm_target_loader_parameter="5" />
-    <folder Name="component">
-      <file file_name="components/fsl_adapter_uart.h" />
-      <file file_name="components/fsl_component_serial_manager.h" />
-      <file file_name="components/fsl_component_serial_port_uart.h" />
-      <file file_name="components/fsl_debug_console.c" />
-      <file file_name="components/fsl_debug_console.h" />
-      <file file_name="components/fsl_str.c" />
-      <file file_name="components/fsl_str.h" />
-      <file file_name="components/generic_list.c" />
-      <file file_name="components/generic_list.h" />
-      <file file_name="components/lpuart_adapter.c" />
-      <file file_name="components/serial_manager.c" />
-      <file file_name="components/serial_manager.h" />
-      <file file_name="components/serial_port_internal.h" />
-      <file file_name="components/serial_port_uart.c" />
-      <file file_name="components/serial_port_uart.h" />
-      <file file_name="components/uart.h" />
-    </folder>
     <folder Name="coremark">
       <file file_name="core_list_join.c" />
       <file file_name="core_main.c" />
@@ -322,24 +286,6 @@
       Name="Flash"
       arm_target_flash_loader_file_path="$(TargetsDir)/iMXRText/Loader2/Loader_$(Family)_$(Core).elf"
       arm_target_loader_parameter="5" />
-    <folder Name="component">
-      <file file_name="components/fsl_adapter_uart.h" />
-      <file file_name="components/fsl_component_serial_manager.h" />
-      <file file_name="components/fsl_component_serial_port_uart.h" />
-      <file file_name="components/fsl_debug_console.c" />
-      <file file_name="components/fsl_debug_console.h" />
-      <file file_name="components/fsl_str.c" />
-      <file file_name="components/fsl_str.h" />
-      <file file_name="components/generic_list.c" />
-      <file file_name="components/generic_list.h" />
-      <file file_name="components/lpuart_adapter.c" />
-      <file file_name="components/serial_manager.c" />
-      <file file_name="components/serial_manager.h" />
-      <file file_name="components/serial_port_internal.h" />
-      <file file_name="components/serial_port_uart.c" />
-      <file file_name="components/serial_port_uart.h" />
-      <file file_name="components/uart.h" />
-    </folder>
     <folder Name="coremark">
       <file file_name="core_list_join.c" />
       <file file_name="core_main.c" />
@@ -434,7 +380,7 @@
       linker_memory_map_file="$(TargetsDir)/iMXRText/devices/$(Family)/MemoryMap_MIMXRT102x.xml"
       linker_section_placement_file="$(TargetsDir)/iMXRText/placement_flexspi.xml"
       linker_section_placement_macros=""
-      macros="DeviceName=MIMXRT1024;Family=iMXRT1020;Core=CM7"
+      macros="DeviceName=MIMXRT1024;Family=iMXRT1020;Core=CM7;Loader=iMXRT1024"
       project_directory=""
       project_type="Executable"
       property_groups_file_path="$(TargetsDir)/iMXRText/propertyGroups.xml"
@@ -447,26 +393,8 @@
       target_trace_initialize_script="EnableTrace(&quot;$(TraceInterfaceType)&quot;)" />
     <configuration
       Name="Flash"
-      arm_target_flash_loader_file_path="$(TargetsDir)/iMXRText/Loader2/Loader_$(Family)_$(Core).elf"
+      arm_target_flash_loader_file_path="$(TargetsDir)/iMXRText/Loader2/Loader_$(Loader)_$(Core).elf"
       arm_target_loader_parameter="5" />
-    <folder Name="component">
-      <file file_name="components/fsl_adapter_uart.h" />
-      <file file_name="components/fsl_component_serial_manager.h" />
-      <file file_name="components/fsl_component_serial_port_uart.h" />
-      <file file_name="components/fsl_debug_console.c" />
-      <file file_name="components/fsl_debug_console.h" />
-      <file file_name="components/fsl_str.c" />
-      <file file_name="components/fsl_str.h" />
-      <file file_name="components/generic_list.c" />
-      <file file_name="components/generic_list.h" />
-      <file file_name="components/lpuart_adapter.c" />
-      <file file_name="components/serial_manager.c" />
-      <file file_name="components/serial_manager.h" />
-      <file file_name="components/serial_port_internal.h" />
-      <file file_name="components/serial_port_uart.c" />
-      <file file_name="components/serial_port_uart.h" />
-      <file file_name="components/uart.h" />
-    </folder>
     <folder Name="coremark">
       <file file_name="core_list_join.c" />
       <file file_name="core_main.c" />
@@ -580,24 +508,6 @@
       Name="Flash"
       arm_target_flash_loader_file_path="$(TargetsDir)/iMXRText/Loader2/Loader_$(Family)_$(Core).elf"
       arm_target_loader_parameter="5" />
-    <folder Name="component">
-      <file file_name="components/fsl_adapter_uart.h" />
-      <file file_name="components/fsl_component_serial_manager.h" />
-      <file file_name="components/fsl_component_serial_port_uart.h" />
-      <file file_name="components/fsl_debug_console.c" />
-      <file file_name="components/fsl_debug_console.h" />
-      <file file_name="components/fsl_str.c" />
-      <file file_name="components/fsl_str.h" />
-      <file file_name="components/generic_list.c" />
-      <file file_name="components/generic_list.h" />
-      <file file_name="components/lpuart_adapter.c" />
-      <file file_name="components/serial_manager.c" />
-      <file file_name="components/serial_manager.h" />
-      <file file_name="components/serial_port_internal.h" />
-      <file file_name="components/serial_port_uart.c" />
-      <file file_name="components/serial_port_uart.h" />
-      <file file_name="components/uart.h" />
-    </folder>
     <folder Name="coremark">
       <file file_name="core_list_join.c" />
       <file file_name="core_main.c" />
@@ -707,24 +617,6 @@
       Name="Flash"
       arm_target_flash_loader_file_path="$(TargetsDir)/iMXRText/Loader2/Loader_$(Family)_$(Core).elf"
       arm_target_loader_parameter="1" />
-    <folder Name="component">
-      <file file_name="components/fsl_adapter_uart.h" />
-      <file file_name="components/fsl_component_serial_manager.h" />
-      <file file_name="components/fsl_component_serial_port_uart.h" />
-      <file file_name="components/fsl_debug_console.c" />
-      <file file_name="components/fsl_debug_console.h" />
-      <file file_name="components/fsl_str.c" />
-      <file file_name="components/fsl_str.h" />
-      <file file_name="components/generic_list.c" />
-      <file file_name="components/generic_list.h" />
-      <file file_name="components/lpuart_adapter.c" />
-      <file file_name="components/serial_manager.c" />
-      <file file_name="components/serial_manager.h" />
-      <file file_name="components/serial_port_internal.h" />
-      <file file_name="components/serial_port_uart.c" />
-      <file file_name="components/serial_port_uart.h" />
-      <file file_name="components/uart.h" />
-    </folder>
     <folder Name="coremark">
       <file file_name="core_list_join.c" />
       <file file_name="core_main.c" />
@@ -819,7 +711,7 @@
       linker_memory_map_file="$(TargetsDir)/iMXRText/devices/$(Family)/MemoryMap_MIMXRT106x.xml"
       linker_section_placement_file="$(TargetsDir)/iMXRText/placement_flexspi.xml"
       linker_section_placement_macros="FLASH_NAME=FlexSPI"
-      macros="DeviceName=MIMXRT1062;Family=iMXRT1060;Core=CM7"
+      macros="DeviceName=MIMXRT1062;Family=iMXRT1060;Core=CM7;Loader=iMXRT1060"
       project_directory=""
       project_type="Executable"
       property_groups_file_path="$(TargetsDir)/iMXRText/propertyGroups.xml"
@@ -834,24 +726,6 @@
       Name="Flash"
       arm_target_flash_loader_file_path="$(TargetsDir)/iMXRText/Loader2/Loader_$(Family)_$(Core).elf"
       arm_target_loader_parameter="5" />
-    <folder Name="component">
-      <file file_name="components/fsl_adapter_uart.h" />
-      <file file_name="components/fsl_component_serial_manager.h" />
-      <file file_name="components/fsl_component_serial_port_uart.h" />
-      <file file_name="components/fsl_debug_console.c" />
-      <file file_name="components/fsl_debug_console.h" />
-      <file file_name="components/fsl_str.c" />
-      <file file_name="components/fsl_str.h" />
-      <file file_name="components/generic_list.c" />
-      <file file_name="components/generic_list.h" />
-      <file file_name="components/lpuart_adapter.c" />
-      <file file_name="components/serial_manager.c" />
-      <file file_name="components/serial_manager.h" />
-      <file file_name="components/serial_port_internal.h" />
-      <file file_name="components/serial_port_uart.c" />
-      <file file_name="components/serial_port_uart.h" />
-      <file file_name="components/uart.h" />
-    </folder>
     <folder Name="coremark">
       <file file_name="core_list_join.c" />
       <file file_name="core_main.c" />
@@ -961,24 +835,6 @@
       Name="Flash"
       arm_target_flash_loader_file_path="$(TargetsDir)/iMXRText/Loader2/Loader_$(Family)_$(Core).elf"
       arm_target_loader_parameter="80" />
-    <folder Name="component">
-      <file file_name="components/fsl_adapter_uart.h" />
-      <file file_name="components/fsl_component_serial_manager.h" />
-      <file file_name="components/fsl_component_serial_port_uart.h" />
-      <file file_name="components/fsl_debug_console.c" />
-      <file file_name="components/fsl_debug_console.h" />
-      <file file_name="components/fsl_str.c" />
-      <file file_name="components/fsl_str.h" />
-      <file file_name="components/generic_list.c" />
-      <file file_name="components/generic_list.h" />
-      <file file_name="components/lpuart_adapter.c" />
-      <file file_name="components/serial_manager.c" />
-      <file file_name="components/serial_manager.h" />
-      <file file_name="components/serial_port_internal.h" />
-      <file file_name="components/serial_port_uart.c" />
-      <file file_name="components/serial_port_uart.h" />
-      <file file_name="components/uart.h" />
-    </folder>
     <folder Name="coremark">
       <file file_name="core_list_join.c" />
       <file file_name="core_main.c" />
@@ -1095,24 +951,6 @@
       Name="Flash"
       arm_target_flash_loader_file_path="$(TargetsDir)/iMXRText/Loader2/Loader_$(Family)_$(Core).elf"
       arm_target_loader_parameter="5" />
-    <folder Name="component">
-      <file file_name="components/fsl_adapter_uart.h" />
-      <file file_name="components/fsl_component_serial_manager.h" />
-      <file file_name="components/fsl_component_serial_port_uart.h" />
-      <file file_name="components/fsl_debug_console.c" />
-      <file file_name="components/fsl_debug_console.h" />
-      <file file_name="components/fsl_str.c" />
-      <file file_name="components/fsl_str.h" />
-      <file file_name="components/generic_list.c" />
-      <file file_name="components/generic_list.h" />
-      <file file_name="components/lpuart_adapter.c" />
-      <file file_name="components/serial_manager.c" />
-      <file file_name="components/serial_manager.h" />
-      <file file_name="components/serial_port_internal.h" />
-      <file file_name="components/serial_port_uart.c" />
-      <file file_name="components/serial_port_uart.h" />
-      <file file_name="components/uart.h" />
-    </folder>
     <folder Name="coremark">
       <file file_name="core_list_join.c" />
       <file file_name="core_main.c" />
@@ -1124,8 +962,8 @@
       <file file_name="coremark.h" />
     </folder>
     <folder Name="drivers">
-      <file file_name="drivers/1160/fsl_anatop_ai.c" />
-      <file file_name="drivers/1160/fsl_anatop_ai.h" />
+      <file file_name="drivers/fsl_anatop_ai.c" />
+      <file file_name="drivers/fsl_anatop_ai.h" />
       <file file_name="drivers/1160/cm4/fsl_cache.c" />
       <file file_name="drivers/1160/cm4/fsl_cache.h" />
       <file file_name="drivers/1160/fsl_clock.c" />
@@ -1218,30 +1056,11 @@
       target_match_partname_script="MatchPartName(&quot;$(Family)&quot;)"
       target_reset_script="Reset()"
       target_script_file="$(TargetsDir)/iMXRText/iMXRT_Target.js"
-      target_stop_script="OnTargetStop_11xx()"
       target_trace_initialize_script="EnableTrace(&quot;$(TraceInterfaceType)&quot;)" />
     <configuration
       Name="Flash"
       arm_target_flash_loader_file_path="$(TargetsDir)/iMXRText/Loader2/Loader_$(Family)_$(Core).elf"
       arm_target_loader_parameter="5" />
-    <folder Name="component">
-      <file file_name="components/fsl_adapter_uart.h" />
-      <file file_name="components/fsl_component_serial_manager.h" />
-      <file file_name="components/fsl_component_serial_port_uart.h" />
-      <file file_name="components/fsl_debug_console.c" />
-      <file file_name="components/fsl_debug_console.h" />
-      <file file_name="components/fsl_str.c" />
-      <file file_name="components/fsl_str.h" />
-      <file file_name="components/generic_list.c" />
-      <file file_name="components/generic_list.h" />
-      <file file_name="components/lpuart_adapter.c" />
-      <file file_name="components/serial_manager.c" />
-      <file file_name="components/serial_manager.h" />
-      <file file_name="components/serial_port_internal.h" />
-      <file file_name="components/serial_port_uart.c" />
-      <file file_name="components/serial_port_uart.h" />
-      <file file_name="components/uart.h" />
-    </folder>
     <folder Name="coremark">
       <file file_name="core_list_join.c" />
       <file file_name="core_main.c" />
@@ -1253,8 +1072,8 @@
       <file file_name="coremark.h" />
     </folder>
     <folder Name="drivers">
-      <file file_name="drivers/1160/fsl_anatop_ai.c" />
-      <file file_name="drivers/1160/fsl_anatop_ai.h" />
+      <file file_name="drivers/fsl_anatop_ai.c" />
+      <file file_name="drivers/fsl_anatop_ai.h" />
       <file file_name="drivers/1160/cm7/fsl_cache.c" />
       <file file_name="drivers/1160/cm7/fsl_cache.h" />
       <file file_name="drivers/1160/fsl_clock.c" />
@@ -1365,24 +1184,6 @@
       Name="Flash"
       arm_target_flash_loader_file_path="$(TargetsDir)/iMXRText/Loader2/Loader_$(Family)_$(Core).elf"
       arm_target_loader_parameter="5" />
-    <folder Name="component">
-      <file file_name="components/fsl_adapter_uart.h" />
-      <file file_name="components/fsl_component_serial_manager.h" />
-      <file file_name="components/fsl_component_serial_port_uart.h" />
-      <file file_name="components/fsl_debug_console.c" />
-      <file file_name="components/fsl_debug_console.h" />
-      <file file_name="components/fsl_str.c" />
-      <file file_name="components/fsl_str.h" />
-      <file file_name="components/generic_list.c" />
-      <file file_name="components/generic_list.h" />
-      <file file_name="components/lpuart_adapter.c" />
-      <file file_name="components/serial_manager.c" />
-      <file file_name="components/serial_manager.h" />
-      <file file_name="components/serial_port_internal.h" />
-      <file file_name="components/serial_port_uart.c" />
-      <file file_name="components/serial_port_uart.h" />
-      <file file_name="components/uart.h" />
-    </folder>
     <folder Name="coremark">
       <file file_name="core_list_join.c" />
       <file file_name="core_main.c" />
@@ -1394,8 +1195,8 @@
       <file file_name="coremark.h" />
     </folder>
     <folder Name="drivers">
-      <file file_name="drivers/1170/fsl_anatop_ai.c" />
-      <file file_name="drivers/1170/fsl_anatop_ai.h" />
+      <file file_name="drivers/fsl_anatop_ai.c" />
+      <file file_name="drivers/fsl_anatop_ai.h" />
       <file file_name="drivers/1170/cm4/fsl_cache.c" />
       <file file_name="drivers/1170/cm4/fsl_cache.h" />
       <file file_name="drivers/1170/fsl_clock.c" />
@@ -1495,24 +1296,6 @@
       Name="Flash"
       arm_target_flash_loader_file_path="$(TargetsDir)/iMXRText/Loader2/Loader_$(Family)_$(Core).elf"
       arm_target_loader_parameter="5" />
-    <folder Name="component">
-      <file file_name="components/fsl_adapter_uart.h" />
-      <file file_name="components/fsl_component_serial_manager.h" />
-      <file file_name="components/fsl_component_serial_port_uart.h" />
-      <file file_name="components/fsl_debug_console.c" />
-      <file file_name="components/fsl_debug_console.h" />
-      <file file_name="components/fsl_str.c" />
-      <file file_name="components/fsl_str.h" />
-      <file file_name="components/generic_list.c" />
-      <file file_name="components/generic_list.h" />
-      <file file_name="components/lpuart_adapter.c" />
-      <file file_name="components/serial_manager.c" />
-      <file file_name="components/serial_manager.h" />
-      <file file_name="components/serial_port_internal.h" />
-      <file file_name="components/serial_port_uart.c" />
-      <file file_name="components/serial_port_uart.h" />
-      <file file_name="components/uart.h" />
-    </folder>
     <folder Name="coremark">
       <file file_name="core_list_join.c" />
       <file file_name="core_main.c" />
@@ -1524,8 +1307,8 @@
       <file file_name="coremark.h" />
     </folder>
     <folder Name="drivers">
-      <file file_name="drivers/1170/fsl_anatop_ai.c" />
-      <file file_name="drivers/1170/fsl_anatop_ai.h" />
+      <file file_name="drivers/fsl_anatop_ai.c" />
+      <file file_name="drivers/fsl_anatop_ai.h" />
       <file file_name="drivers/1170/cm7/fsl_cache.c" />
       <file file_name="drivers/1170/cm7/fsl_cache.h" />
       <file file_name="drivers/1170/fsl_clock.c" />
@@ -1640,24 +1423,6 @@
       Name="Flash"
       arm_target_flash_loader_file_path="$(TargetsDir)/iMXRText/Loader2/Loader_$(Family)_$(Core).elf"
       arm_target_loader_parameter="5" />
-    <folder Name="component">
-      <file file_name="components/fsl_adapter_uart.h" />
-      <file file_name="components/fsl_component_serial_manager.h" />
-      <file file_name="components/fsl_component_serial_port_uart.h" />
-      <file file_name="components/fsl_debug_console.c" />
-      <file file_name="components/fsl_debug_console.h" />
-      <file file_name="components/fsl_str.c" />
-      <file file_name="components/fsl_str.h" />
-      <file file_name="components/generic_list.c" />
-      <file file_name="components/generic_list.h" />
-      <file file_name="components/lpuart_adapter.c" />
-      <file file_name="components/serial_manager.c" />
-      <file file_name="components/serial_manager.h" />
-      <file file_name="components/serial_port_internal.h" />
-      <file file_name="components/serial_port_uart.c" />
-      <file file_name="components/serial_port_uart.h" />
-      <file file_name="components/uart.h" />
-    </folder>
     <folder Name="coremark">
       <file file_name="core_list_join.c" />
       <file file_name="core_main.c" />
@@ -1681,7 +1446,7 @@
       <file file_name="drivers/1180/fsl_ele_base_api.h" />
       <file file_name="drivers/fsl_flexspi.c" />
       <file file_name="drivers/fsl_flexspi.h" />
-      <file file_name="drivers/fsl_iomuxc.h" />
+      <file file_name="drivers/1180/fsl_iomuxc.h" />
       <file file_name="drivers/fsl_lpuart.c" />
       <file file_name="drivers/fsl_lpuart.h" />
       <file file_name="drivers/fsl_pdm.c" />
@@ -1794,24 +1559,6 @@
       Name="Flash"
       arm_target_flash_loader_file_path="$(TargetsDir)/iMXRText/Loader2/Loader_$(Family)_$(Core).elf"
       arm_target_loader_parameter="5" />
-    <folder Name="component">
-      <file file_name="components/fsl_adapter_uart.h" />
-      <file file_name="components/fsl_component_serial_manager.h" />
-      <file file_name="components/fsl_component_serial_port_uart.h" />
-      <file file_name="components/fsl_debug_console.c" />
-      <file file_name="components/fsl_debug_console.h" />
-      <file file_name="components/fsl_str.c" />
-      <file file_name="components/fsl_str.h" />
-      <file file_name="components/generic_list.c" />
-      <file file_name="components/generic_list.h" />
-      <file file_name="components/lpuart_adapter.c" />
-      <file file_name="components/serial_manager.c" />
-      <file file_name="components/serial_manager.h" />
-      <file file_name="components/serial_port_internal.h" />
-      <file file_name="components/serial_port_uart.c" />
-      <file file_name="components/serial_port_uart.h" />
-      <file file_name="components/uart.h" />
-    </folder>
     <folder Name="coremark">
       <file file_name="core_list_join.c" />
       <file file_name="core_main.c" />
@@ -1936,24 +1683,6 @@
       Name="Flash"
       arm_target_flash_loader_file_path="$(TargetsDir)/iMXRText/Loader2/Loader_$(Family)_$(Core).elf"
       arm_target_loader_parameter="80" />
-    <folder Name="component">
-      <file file_name="components/fsl_adapter_uart.h" />
-      <file file_name="components/fsl_component_serial_manager.h" />
-      <file file_name="components/fsl_component_serial_port_uart.h" />
-      <file file_name="components/fsl_debug_console.c" />
-      <file file_name="components/fsl_debug_console.h" />
-      <file file_name="components/fsl_str.c" />
-      <file file_name="components/fsl_str.h" />
-      <file file_name="components/generic_list.c" />
-      <file file_name="components/generic_list.h" />
-      <file file_name="components/lpuart_adapter.c" />
-      <file file_name="components/serial_manager.c" />
-      <file file_name="components/serial_manager.h" />
-      <file file_name="components/serial_port_internal.h" />
-      <file file_name="components/serial_port_uart.c" />
-      <file file_name="components/serial_port_uart.h" />
-      <file file_name="components/uart.h" />
-    </folder>
     <folder Name="coremark">
       <file file_name="core_list_join.c" />
       <file file_name="core_main.c" />
@@ -2089,24 +1818,6 @@
       Name="Flash"
       arm_target_flash_loader_file_path="$(TargetsDir)/iMXRText/Loader2/Loader_$(Family)_M33.elf"
       arm_target_loader_parameter="2" />
-    <folder Name="component">
-      <file file_name="components/fsl_adapter_uart.h" />
-      <file file_name="components/fsl_component_serial_manager.h" />
-      <file file_name="components/fsl_component_serial_port_uart.h" />
-      <file file_name="components/fsl_debug_console.c" />
-      <file file_name="components/fsl_debug_console.h" />
-      <file file_name="components/fsl_str.c" />
-      <file file_name="components/fsl_str.h" />
-      <file file_name="components/generic_list.c" />
-      <file file_name="components/generic_list.h" />
-      <file file_name="components/serial_manager.c" />
-      <file file_name="components/serial_manager.h" />
-      <file file_name="components/serial_port_internal.h" />
-      <file file_name="components/serial_port_uart.c" />
-      <file file_name="components/serial_port_uart.h" />
-      <file file_name="components/uart.h" />
-      <file file_name="components/usart_adapter.c" />
-    </folder>
     <folder Name="coremark">
       <file file_name="core_list_join.c" />
       <file file_name="core_main.c" />

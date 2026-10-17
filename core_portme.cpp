@@ -103,10 +103,9 @@ extern "C"
 	void portable_init (core_portable *p, int *argc, char *argv[])
 	{
 		// Initialize board hardware.
-		BOARD_ConfigMPU        ();
-		BOARD_InitPins         ();
-		BOARD_BootClockRUN     ();
-//		BOARD_InitDebugConsole ();
+		BOARD_ConfigMPU       ();
+		BOARD_InitPins        ();
+		BOARD_BootClockRUN    ();
 		SystemCoreClockUpdate ();
 
 		#if defined LPUART_BASE_PTRS
@@ -186,14 +185,12 @@ extern "C"
 
 		InitializeSystemTick (1);
 
-		#if __CORTEX_M == 4
-			MyPrintf ("Hello Coremark on M4 core\r\n");
-		#elif __CORTEX_M == 7
-			MyPrintf ("Hello Coremark on M7 core\r\n");
-		#elif __CORTEX_M == 33
-			MyPrintf ("Hello Coremark on M33 core :-)\r\n");
-		#else
-			#error "unknown core"
+		MyPrintf ("Hello Coremark on M%d core\r\n", __CORTEX_M);
+		MyPrintf ("Compiled at " __DATE__ " - " __TIME__ "\r\n");
+		#if defined GCC_OPTIONS
+			MyPrintf ("\r\n");
+			MyPrintf (GCC_OPTIONS);
+			MyPrintf ("\r\n");
 		#endif
 
 		#if defined MIMXRT1166_cm7_SERIES || defined MIMXRT1165_cm7_SERIES || \
@@ -282,15 +279,7 @@ extern "C"
 	void portable_fini (core_portable *p)
 	{
 		p->portable_id=0;
-		#if __CORTEX_M == 7
-			MyPrintf ("Coremark done - M7\r\n");
-		#elif __CORTEX_M == 4
-			MyPrintf ("Coremark done - M4\r\n");
-		#elif __CORTEX_M == 33
-			MyPrintf ("Coremark done - M33\r\n");
-		#else
-			#error "unknown core"
-		#endif
+		MyPrintf ("Coremark done - M%d\r\n", __CORTEX_M);
 	}
 
 
