@@ -1,12 +1,12 @@
 /*
  * Copyright (c) 2016, Freescale Semiconductor, Inc.
- * Copyright 2016-2019 NXP
+ * Copyright 2016-2019, 2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
-#ifndef _FSL_FLEXCOMM_H_
-#define _FSL_FLEXCOMM_H_
+#ifndef FSL_FLEXCOMM_H_
+#define FSL_FLEXCOMM_H_
 
 #include "fsl_common.h"
 
@@ -16,10 +16,10 @@
  */
 
 /*! @name Driver version */
-/*@{*/
-/*! @brief FlexCOMM driver version 2.0.2. */
-#define FSL_FLEXCOMM_DRIVER_VERSION (MAKE_VERSION(2, 0, 2))
-/*@}*/
+/*! @{ */
+/*! @brief FlexCOMM driver version 2.0.3. */
+#define FSL_FLEXCOMM_DRIVER_VERSION (MAKE_VERSION(2, 0, 3))
+/*! @} */
 
 /*! @brief FLEXCOMM peripheral modes. */
 typedef enum
@@ -30,6 +30,9 @@ typedef enum
     FLEXCOMM_PERIPH_I2C,    /*!< I2C Peripheral */
     FLEXCOMM_PERIPH_I2S_TX, /*!< I2S TX Peripheral */
     FLEXCOMM_PERIPH_I2S_RX, /*!< I2S RX Peripheral */
+#if defined(FSL_FEATURE_FLEXCOMM_HAS_QSPI_FLR)
+    FLEXCOMM_QSPI_FLR = 0x7u /*!< QSPI Follower Peripheral */
+#endif
 } FLEXCOMM_PERIPH_T;
 
 /*! @brief Typedef for interrupt handler. */
@@ -55,10 +58,13 @@ status_t FLEXCOMM_Init(void *base, FLEXCOMM_PERIPH_T periph);
  * mode */
 void FLEXCOMM_SetIRQHandler(void *base, flexcomm_irq_handler_t handler, void *flexcommHandle);
 
+/*! @brief Common IRQ handler for all FLEXCOMM instances. */
+void FLEXCOMM_DriverIRQHandler(uint32_t instance);
+
 #if defined(__cplusplus)
 }
 #endif
 
-/*@}*/
+/*! @} */
 
-#endif /* _FSL_FLEXCOMM_H_*/
+#endif /* FSL_FLEXCOMM_H_*/

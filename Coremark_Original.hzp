@@ -48,39 +48,26 @@
       default_const_section=".rodata_tcm"
       default_data_section=".data_tcm"
       default_zeroed_section=".bss_tcm"
-      link_symbol_definitions="__NCACHE_REGION_START=__NCACHE_REGION_segment_start__;__NCACHE_REGION_SIZE=__NCACHE_REGION_segment_size__;__base_NCACHE_REGION=__NCACHE_REGION_segment_start__;__top_NCACHE_REGION=__NCACHE_REGION_segment_end__"
-      linker_memory_map_file="$(TargetsDir)/iMXRT/iMXRT_MemoryMap.xml"
-      linker_memory_map_macros="OCRAMSIZE=0x10000;DTCMSIZE=0x8000;ITCMSIZE=0x8000"
+      linker_memory_map_file="$(TargetsDir)/iMXRT/MIMXRT1011_MemoryMap.xml"
       linker_section_placement_file="$(TargetsDir)/iMXRT/flexspi_placement.xml"
       linker_section_placement_macros=""
-      macros="DeviceStartFile=$(TargetsDir)/iMXRT/startup_MIMXRT1011.s;DeviceSystemFile=$(TargetsDir)/iMXRT/devices/MIMXRT1011/system_MIMXRT1011.c;;QSPI=MIMXRT1011_QuadSPI_4KB_SEC;DeviceFamily=MIMXRT1011"
+      macros="DeviceStartFile=$(TargetsDir)/iMXRT/startup_MIMXRT1011.s;DeviceSystemFile=$(TargetsDir)/iMXRT/devices/RT1010/MIMXRT1011/system_MIMXRT1011.c;QSPI=MIMXRT1011_QuadSPI_4KB_SEC;DeviceFamily=RT1010/MIMXRT1011"
       project_directory=""
       project_type="Executable"
       property_groups_file_path="$(TargetsDir)/iMXRT/propertyGroups.xml"
+      target_connect_script="Connect()"
+      target_get_partname_script="GetPartName()"
+      target_match_partname_script="MatchPartName(&quot;$(Target)&quot;)"
       target_reset_script="Reset()"
       target_script_file="$(TargetsDir)/iMXRT/iMXRT_Target.js" />
     <configuration
       Name="Flash"
       arm_target_flash_loader_file_path="$(TargetsDir)/iMXRT/Loader/$(QSPI)_Loader.elf"
+      arm_target_loader_can_lock_all="No"
+      arm_target_loader_can_lock_range="No"
+      arm_target_loader_can_unlock_all="No"
+      arm_target_loader_can_unlock_range="No"
       arm_target_loader_parameter="24000000" />
-    <folder Name="component">
-      <file file_name="components/fsl_adapter_uart.h" />
-      <file file_name="components/fsl_component_serial_manager.h" />
-      <file file_name="components/fsl_component_serial_port_uart.h" />
-      <file file_name="components/fsl_debug_console.c" />
-      <file file_name="components/fsl_debug_console.h" />
-      <file file_name="components/fsl_str.c" />
-      <file file_name="components/fsl_str.h" />
-      <file file_name="components/generic_list.c" />
-      <file file_name="components/generic_list.h" />
-      <file file_name="components/lpuart_adapter.c" />
-      <file file_name="components/serial_manager.c" />
-      <file file_name="components/serial_manager.h" />
-      <file file_name="components/serial_port_internal.h" />
-      <file file_name="components/serial_port_uart.c" />
-      <file file_name="components/serial_port_uart.h" />
-      <file file_name="components/uart.h" />
-    </folder>
     <folder Name="coremark">
       <file file_name="core_list_join.c" />
       <file file_name="core_main.c" />
@@ -164,39 +151,26 @@
       default_const_section=".rodata_tcm"
       default_data_section=".data_tcm"
       default_zeroed_section=".bss_tcm"
-      link_symbol_definitions="__NCACHE_REGION_START=__NCACHE_REGION_segment_start__;__NCACHE_REGION_SIZE=__NCACHE_REGION_segment_size__;__base_NCACHE_REGION=__NCACHE_REGION_segment_start__;__top_NCACHE_REGION=__NCACHE_REGION_segment_end__"
-      linker_memory_map_file="$(TargetsDir)/iMXRT/iMXRT_MemoryMap.xml"
-      linker_memory_map_macros="OCRAMSIZE=0x20000;DTCMSIZE=0x10000;ITCMSIZE=0x10000"
+      linker_memory_map_file="$(TargetsDir)/iMXRT/MIMXRT1015_MemoryMap.xml"
       linker_section_placement_file="$(TargetsDir)/iMXRT/flexspi_placement.xml"
       linker_section_placement_macros=""
-      macros="DeviceStartFile=$(TargetsDir)/iMXRT/startup_MIMXRT1015.s;DeviceSystemFile=$(TargetsDir)/iMXRT/devices/MIMXRT1015/system_MIMXRT1015.c;;QSPI=MIMXRT1015_QuadSPI_4KB_SEC;DeviceFamily=MIMXRT1015"
+      macros="DeviceStartFile=$(TargetsDir)/iMXRT/startup_MIMXRT1015.s;DeviceSystemFile=$(TargetsDir)/iMXRT/devices/RT1015/MIMXRT1015/system_MIMXRT1015.c;QSPI=MIMXRT1015_QuadSPI_4KB_SEC;DeviceFamily=RT1015/MIMXRT1015"
       project_directory=""
       project_type="Executable"
       property_groups_file_path="$(TargetsDir)/iMXRT/propertyGroups.xml"
+      target_connect_script="Connect()"
+      target_get_partname_script="GetPartName()"
+      target_match_partname_script="MatchPartName(&quot;$(Target)&quot;)"
       target_reset_script="Reset()"
       target_script_file="$(TargetsDir)/iMXRT/iMXRT_Target.js" />
     <configuration
       Name="Flash"
       arm_target_flash_loader_file_path="$(TargetsDir)/iMXRT/Loader/$(QSPI)_Loader.elf"
+      arm_target_loader_can_lock_all="No"
+      arm_target_loader_can_lock_range="No"
+      arm_target_loader_can_unlock_all="No"
+      arm_target_loader_can_unlock_range="No"
       arm_target_loader_parameter="24000000" />
-    <folder Name="component">
-      <file file_name="components/fsl_adapter_uart.h" />
-      <file file_name="components/fsl_component_serial_manager.h" />
-      <file file_name="components/fsl_component_serial_port_uart.h" />
-      <file file_name="components/fsl_debug_console.c" />
-      <file file_name="components/fsl_debug_console.h" />
-      <file file_name="components/fsl_str.c" />
-      <file file_name="components/fsl_str.h" />
-      <file file_name="components/generic_list.c" />
-      <file file_name="components/generic_list.h" />
-      <file file_name="components/lpuart_adapter.c" />
-      <file file_name="components/serial_manager.c" />
-      <file file_name="components/serial_manager.h" />
-      <file file_name="components/serial_port_internal.h" />
-      <file file_name="components/serial_port_uart.c" />
-      <file file_name="components/serial_port_uart.h" />
-      <file file_name="components/uart.h" />
-    </folder>
     <folder Name="coremark">
       <file file_name="core_list_join.c" />
       <file file_name="core_main.c" />
@@ -278,39 +252,26 @@
       default_const_section=".rodata_tcm"
       default_data_section=".data_tcm"
       default_zeroed_section=".bss_tcm"
-      link_symbol_definitions="__NCACHE_REGION_START=__NCACHE_REGION_segment_start__;__NCACHE_REGION_SIZE=__NCACHE_REGION_segment_size__;__base_NCACHE_REGION=__NCACHE_REGION_segment_start__;__top_NCACHE_REGION=__NCACHE_REGION_segment_end__"
-      linker_memory_map_file="$(TargetsDir)/iMXRT/iMXRT_MemoryMap.xml"
-      linker_memory_map_macros="OCRAMSIZE=0x20000;DTCMSIZE=0x10000;ITCMSIZE=0x10000"
+      linker_memory_map_file="$(TargetsDir)/iMXRT/MIMXRT1021_MemoryMap.xml"
       linker_section_placement_file="$(TargetsDir)/iMXRT/flexspi_placement.xml"
       linker_section_placement_macros=""
-      macros="DeviceStartFile=$(TargetsDir)/iMXRT/startup_MIMXRT1021.s;DeviceSystemFile=$(TargetsDir)/iMXRT/devices/MIMXRT1021/system_MIMXRT1021.c;;QSPI=MIMXRT1021_QuadSPI_4KB_SEC;DeviceFamily=MIMXRT1021"
+      macros="DeviceStartFile=$(TargetsDir)/iMXRT/startup_MIMXRT1021.s;DeviceSystemFile=$(TargetsDir)/iMXRT/devices/RT1020/MIMXRT1021/system_MIMXRT1021.c;QSPI=MIMXRT1021_QuadSPI_4KB_SEC;DeviceFamily=RT1020/MIMXRT1021"
       project_directory=""
       project_type="Executable"
       property_groups_file_path="$(TargetsDir)/iMXRT/propertyGroups.xml"
+      target_connect_script="Connect()"
+      target_get_partname_script="GetPartName()"
+      target_match_partname_script="MatchPartName(&quot;$(Target)&quot;)"
       target_reset_script="Reset()"
       target_script_file="$(TargetsDir)/iMXRT/iMXRT_Target.js" />
     <configuration
       Name="Flash"
       arm_target_flash_loader_file_path="$(TargetsDir)/iMXRT/Loader/$(QSPI)_Loader.elf"
+      arm_target_loader_can_lock_all="No"
+      arm_target_loader_can_lock_range="No"
+      arm_target_loader_can_unlock_all="No"
+      arm_target_loader_can_unlock_range="No"
       arm_target_loader_parameter="24000000" />
-    <folder Name="component">
-      <file file_name="components/fsl_adapter_uart.h" />
-      <file file_name="components/fsl_component_serial_manager.h" />
-      <file file_name="components/fsl_component_serial_port_uart.h" />
-      <file file_name="components/fsl_debug_console.c" />
-      <file file_name="components/fsl_debug_console.h" />
-      <file file_name="components/fsl_str.c" />
-      <file file_name="components/fsl_str.h" />
-      <file file_name="components/generic_list.c" />
-      <file file_name="components/generic_list.h" />
-      <file file_name="components/lpuart_adapter.c" />
-      <file file_name="components/serial_manager.c" />
-      <file file_name="components/serial_manager.h" />
-      <file file_name="components/serial_port_internal.h" />
-      <file file_name="components/serial_port_uart.c" />
-      <file file_name="components/serial_port_uart.h" />
-      <file file_name="components/uart.h" />
-    </folder>
     <folder Name="coremark">
       <file file_name="core_list_join.c" />
       <file file_name="core_main.c" />
@@ -392,39 +353,26 @@
       default_const_section=".rodata_tcm"
       default_data_section=".data_tcm"
       default_zeroed_section=".bss_tcm"
-      link_symbol_definitions="__NCACHE_REGION_START=__NCACHE_REGION_segment_start__;__NCACHE_REGION_SIZE=__NCACHE_REGION_segment_size__;__base_NCACHE_REGION=__NCACHE_REGION_segment_start__;__top_NCACHE_REGION=__NCACHE_REGION_segment_end__"
-      linker_memory_map_file="$(TargetsDir)/iMXRT/iMXRT_MemoryMap.xml"
-      linker_memory_map_macros="OCRAMSIZE=0x20000;DTCMSIZE=0x10000;ITCMSIZE=0x10000"
+      linker_memory_map_file="$(TargetsDir)/iMXRT/MIMXRT1024_MemoryMap.xml"
       linker_section_placement_file="$(TargetsDir)/iMXRT/flexspi_placement.xml"
       linker_section_placement_macros=""
-      macros="DeviceStartFile=$(TargetsDir)/iMXRT/startup_MIMXRT1024.s;DeviceSystemFile=$(TargetsDir)/iMXRT/devices/MIMXRT1024/system_MIMXRT1024.c;;QSPI=MIMXRT1024_QuadSPI_4KB_SEC;DeviceFamily=MIMXRT1024"
+      macros="DeviceStartFile=$(TargetsDir)/iMXRT/startup_MIMXRT1024.s;DeviceSystemFile=$(TargetsDir)/iMXRT/devices/RT1020/MIMXRT1024/system_MIMXRT1024.c;QSPI=MIMXRT1024_QuadSPI_4KB_SEC;DeviceFamily=RT1020/MIMXRT1024"
       project_directory=""
       project_type="Executable"
       property_groups_file_path="$(TargetsDir)/iMXRT/propertyGroups.xml"
+      target_connect_script="Connect()"
+      target_get_partname_script="GetPartName()"
+      target_match_partname_script="MatchPartName(&quot;$(Target)&quot;)"
       target_reset_script="Reset()"
       target_script_file="$(TargetsDir)/iMXRT/iMXRT_Target.js" />
     <configuration
       Name="Flash"
       arm_target_flash_loader_file_path="$(TargetsDir)/iMXRT/Loader/$(QSPI)_Loader.elf"
+      arm_target_loader_can_lock_all="No"
+      arm_target_loader_can_lock_range="No"
+      arm_target_loader_can_unlock_all="No"
+      arm_target_loader_can_unlock_range="No"
       arm_target_loader_parameter="24000000" />
-    <folder Name="component">
-      <file file_name="components/fsl_adapter_uart.h" />
-      <file file_name="components/fsl_component_serial_manager.h" />
-      <file file_name="components/fsl_component_serial_port_uart.h" />
-      <file file_name="components/fsl_debug_console.c" />
-      <file file_name="components/fsl_debug_console.h" />
-      <file file_name="components/fsl_str.c" />
-      <file file_name="components/fsl_str.h" />
-      <file file_name="components/generic_list.c" />
-      <file file_name="components/generic_list.h" />
-      <file file_name="components/lpuart_adapter.c" />
-      <file file_name="components/serial_manager.c" />
-      <file file_name="components/serial_manager.h" />
-      <file file_name="components/serial_port_internal.h" />
-      <file file_name="components/serial_port_uart.c" />
-      <file file_name="components/serial_port_uart.h" />
-      <file file_name="components/uart.h" />
-    </folder>
     <folder Name="coremark">
       <file file_name="core_list_join.c" />
       <file file_name="core_main.c" />
@@ -491,7 +439,7 @@
     <configuration
       CMSIS_CORE="Yes"
       Name="Common"
-      Placement="FlexSPI (QuadSPI)"
+      Placement="FlexSPI (QuadSPI, No DCD)"
       Target="MIMXRT1042XJM5B"
       arm_architecture="v7EM"
       arm_core_type="Cortex-M7"
@@ -510,39 +458,26 @@
       default_const_section=".rodata_tcm"
       default_data_section=".data_tcm"
       default_zeroed_section=".bss_tcm"
-      link_symbol_definitions="__NCACHE_REGION_START=__NCACHE_REGION_segment_start__;__NCACHE_REGION_SIZE=__NCACHE_REGION_segment_size__;__base_NCACHE_REGION=__NCACHE_REGION_segment_start__;__top_NCACHE_REGION=__NCACHE_REGION_segment_end__"
-      linker_memory_map_file="$(TargetsDir)/iMXRT/iMXRT_MemoryMap.xml"
-      linker_memory_map_macros="OCRAMSIZE=0x40000;DTCMSIZE=0x20000;ITCMSIZE=0x20000"
+      linker_memory_map_file="$(TargetsDir)/iMXRT/MIMXRT1042_MemoryMap.xml"
       linker_section_placement_file="$(TargetsDir)/iMXRT/flexspi_placement.xml"
       linker_section_placement_macros=""
-      macros="DeviceStartFile=$(TargetsDir)/iMXRT/startup_MIMXRT1042.s;DeviceSystemFile=$(TargetsDir)/iMXRT/devices/MIMXRT1042/system_MIMXRT1042.c;;QSPI=MIMXRT104x_FlexSPI_NOR_API;DeviceFamily=MIMXRT1042"
+      macros="DeviceStartFile=$(TargetsDir)/iMXRT/startup_MIMXRT1042.s;DeviceSystemFile=$(TargetsDir)/iMXRT/devices/RT1040/MIMXRT1042/system_MIMXRT1042.c;QSPI=MIMXRT104x_FlexSPI_NOR_API;DeviceFamily=RT1040/MIMXRT1042"
       project_directory=""
       project_type="Executable"
       property_groups_file_path="$(TargetsDir)/iMXRT/propertyGroups.xml"
+      target_connect_script="Connect()"
+      target_get_partname_script="GetPartName()"
+      target_match_partname_script="MatchPartName(&quot;$(Target)&quot;)"
       target_reset_script="Reset()"
       target_script_file="$(TargetsDir)/iMXRT/iMXRT_Target.js" />
     <configuration
       Name="Flash"
       arm_target_flash_loader_file_path="$(TargetsDir)/iMXRT/Loader/$(QSPI)_Loader.elf"
+      arm_target_loader_can_lock_all="No"
+      arm_target_loader_can_lock_range="No"
+      arm_target_loader_can_unlock_all="No"
+      arm_target_loader_can_unlock_range="No"
       arm_target_loader_parameter="24000000" />
-    <folder Name="component">
-      <file file_name="components/fsl_adapter_uart.h" />
-      <file file_name="components/fsl_component_serial_manager.h" />
-      <file file_name="components/fsl_component_serial_port_uart.h" />
-      <file file_name="components/fsl_debug_console.c" />
-      <file file_name="components/fsl_debug_console.h" />
-      <file file_name="components/fsl_str.c" />
-      <file file_name="components/fsl_str.h" />
-      <file file_name="components/generic_list.c" />
-      <file file_name="components/generic_list.h" />
-      <file file_name="components/lpuart_adapter.c" />
-      <file file_name="components/serial_manager.c" />
-      <file file_name="components/serial_manager.h" />
-      <file file_name="components/serial_port_internal.h" />
-      <file file_name="components/serial_port_uart.c" />
-      <file file_name="components/serial_port_uart.h" />
-      <file file_name="components/uart.h" />
-    </folder>
     <folder Name="coremark">
       <file file_name="core_list_join.c" />
       <file file_name="core_main.c" />
@@ -624,39 +559,26 @@
       default_const_section=".rodata_tcm"
       default_data_section=".data_tcm"
       default_zeroed_section=".bss_tcm"
-      link_symbol_definitions="__NCACHE_REGION_START=__NCACHE_REGION_segment_start__;__NCACHE_REGION_SIZE=__NCACHE_REGION_segment_size__;__base_NCACHE_REGION=__NCACHE_REGION_segment_start__;__top_NCACHE_REGION=__NCACHE_REGION_segment_end__"
-      linker_memory_map_file="$(TargetsDir)/iMXRT/iMXRT_MemoryMap.xml"
-      linker_memory_map_macros="OCRAMSIZE=0x20000;DTCMSIZE=0x10000;ITCMSIZE=0x10000"
+      linker_memory_map_file="$(TargetsDir)/iMXRT/MIMXRT1052_MemoryMap.xml"
       linker_section_placement_file="$(TargetsDir)/iMXRT/flexspi_placement.xml"
       linker_section_placement_macros=""
-      macros="DeviceStartFile=$(TargetsDir)/iMXRT/startup_MIMXRT1052.s;DeviceSystemFile=$(TargetsDir)/iMXRT/devices/MIMXRT1052/system_MIMXRT1052.c;HYPER=MIMXRT105x_HYPER_256KB_SEC;QSPI=MIMXRT105x_QuadSPI_4KB_SEC;DeviceFamily=MIMXRT1052"
+      macros="DeviceStartFile=$(TargetsDir)/iMXRT/startup_MIMXRT1052.s;DeviceSystemFile=$(TargetsDir)/iMXRT/devices/RT1050/MIMXRT1052/system_MIMXRT1052.c;HYPER=MIMXRT105x_HYPER_256KB_SEC;QSPI=MIMXRT105x_QuadSPI_4KB_SEC;DeviceFamily=RT1050/MIMXRT1052"
       project_directory=""
       project_type="Executable"
       property_groups_file_path="$(TargetsDir)/iMXRT/propertyGroups.xml"
+      target_connect_script="Connect()"
+      target_get_partname_script="GetPartName()"
+      target_match_partname_script="MatchPartName(&quot;$(Target)&quot;)"
       target_reset_script="Reset()"
       target_script_file="$(TargetsDir)/iMXRT/iMXRT_Target.js" />
     <configuration
       Name="Flash"
       arm_target_flash_loader_file_path="$(TargetsDir)/iMXRT/Loader/$(HYPER)_Loader.elf"
+      arm_target_loader_can_lock_all="No"
+      arm_target_loader_can_lock_range="No"
+      arm_target_loader_can_unlock_all="No"
+      arm_target_loader_can_unlock_range="No"
       arm_target_loader_parameter="24000000" />
-    <folder Name="component">
-      <file file_name="components/fsl_adapter_uart.h" />
-      <file file_name="components/fsl_component_serial_manager.h" />
-      <file file_name="components/fsl_component_serial_port_uart.h" />
-      <file file_name="components/fsl_debug_console.c" />
-      <file file_name="components/fsl_debug_console.h" />
-      <file file_name="components/fsl_str.c" />
-      <file file_name="components/fsl_str.h" />
-      <file file_name="components/generic_list.c" />
-      <file file_name="components/generic_list.h" />
-      <file file_name="components/lpuart_adapter.c" />
-      <file file_name="components/serial_manager.c" />
-      <file file_name="components/serial_manager.h" />
-      <file file_name="components/serial_port_internal.h" />
-      <file file_name="components/serial_port_uart.c" />
-      <file file_name="components/serial_port_uart.h" />
-      <file file_name="components/uart.h" />
-    </folder>
     <folder Name="coremark">
       <file file_name="core_list_join.c" />
       <file file_name="core_main.c" />
@@ -738,39 +660,26 @@
       default_const_section=".rodata_tcm"
       default_data_section=".data_tcm"
       default_zeroed_section=".bss_tcm"
-      link_symbol_definitions="__NCACHE_REGION_START=__NCACHE_REGION_segment_start__;__NCACHE_REGION_SIZE=__NCACHE_REGION_segment_size__;__base_NCACHE_REGION=__NCACHE_REGION_segment_start__;__top_NCACHE_REGION=__NCACHE_REGION_segment_end__"
-      linker_memory_map_file="$(TargetsDir)/iMXRT/iMXRT_MemoryMap.xml"
-      linker_memory_map_macros="OCRAMSIZE=0x10000;DTCMSIZE=0x8000;ITCMSIZE=0x8000"
+      linker_memory_map_file="$(TargetsDir)/iMXRT/MIMXRT1062_MemoryMap.xml"
       linker_section_placement_file="$(TargetsDir)/iMXRT/flexspi_placement.xml"
       linker_section_placement_macros=""
-      macros="DeviceStartFile=$(TargetsDir)/iMXRT/startup_MIMXRT1062.s;DeviceSystemFile=$(TargetsDir)/iMXRT/devices/MIMXRT1062/system_MIMXRT1062.c;;QSPI=MIMXRT106x_FlexSPI_NOR_API;DeviceFamily=MIMXRT1062"
+      macros="DeviceStartFile=$(TargetsDir)/iMXRT/startup_MIMXRT1062.s;DeviceSystemFile=$(TargetsDir)/iMXRT/devices/RT1060/MIMXRT1062/system_MIMXRT1062.c;QSPI=MIMXRT106x_FlexSPI_NOR_API;DeviceFamily=RT1060/MIMXRT1062"
       project_directory=""
       project_type="Executable"
       property_groups_file_path="$(TargetsDir)/iMXRT/propertyGroups.xml"
+      target_connect_script="Connect()"
+      target_get_partname_script="GetPartName()"
+      target_match_partname_script="MatchPartName(&quot;$(Target)&quot;)"
       target_reset_script="Reset()"
       target_script_file="$(TargetsDir)/iMXRT/iMXRT_Target.js" />
     <configuration
       Name="Flash"
       arm_target_flash_loader_file_path="$(TargetsDir)/iMXRT/Loader/$(QSPI)_Loader.elf"
+      arm_target_loader_can_lock_all="No"
+      arm_target_loader_can_lock_range="No"
+      arm_target_loader_can_unlock_all="No"
+      arm_target_loader_can_unlock_range="No"
       arm_target_loader_parameter="24000000" />
-    <folder Name="component">
-      <file file_name="components/fsl_adapter_uart.h" />
-      <file file_name="components/fsl_component_serial_manager.h" />
-      <file file_name="components/fsl_component_serial_port_uart.h" />
-      <file file_name="components/fsl_debug_console.c" />
-      <file file_name="components/fsl_debug_console.h" />
-      <file file_name="components/fsl_str.c" />
-      <file file_name="components/fsl_str.h" />
-      <file file_name="components/generic_list.c" />
-      <file file_name="components/generic_list.h" />
-      <file file_name="components/lpuart_adapter.c" />
-      <file file_name="components/serial_manager.c" />
-      <file file_name="components/serial_manager.h" />
-      <file file_name="components/serial_port_internal.h" />
-      <file file_name="components/serial_port_uart.c" />
-      <file file_name="components/serial_port_uart.h" />
-      <file file_name="components/uart.h" />
-    </folder>
     <folder Name="coremark">
       <file file_name="core_list_join.c" />
       <file file_name="core_main.c" />
@@ -852,39 +761,26 @@
       default_const_section=".rodata_tcm"
       default_data_section=".data_tcm"
       default_zeroed_section=".bss_tcm"
-      link_symbol_definitions="__NCACHE_REGION_START=__NCACHE_REGION_segment_start__;__NCACHE_REGION_SIZE=__NCACHE_REGION_segment_size__;__base_NCACHE_REGION=__NCACHE_REGION_segment_start__;__top_NCACHE_REGION=__NCACHE_REGION_segment_end__"
-      linker_memory_map_file="$(TargetsDir)/iMXRT/iMXRT_MemoryMap.xml"
-      linker_memory_map_macros="OCRAMSIZE=0x10000;DTCMSIZE=0x8000;ITCMSIZE=0x8000"
+      linker_memory_map_file="$(TargetsDir)/iMXRT/MIMXRT1064_MemoryMap.xml"
       linker_section_placement_file="$(TargetsDir)/iMXRT/flexspi_placement.xml"
       linker_section_placement_macros="FLASH_NAME=FlexSPI2"
-      macros="DeviceStartFile=$(TargetsDir)/iMXRT/startup_MIMXRT1064.s;DeviceSystemFile=$(TargetsDir)/iMXRT/devices/MIMXRT1064/system_MIMXRT1064.c;;QSPI=MIMXRT1064_FlexSPI_NOR_API;DeviceFamily=MIMXRT1064"
+      macros="DeviceStartFile=$(TargetsDir)/iMXRT/startup_MIMXRT1064.s;DeviceSystemFile=$(TargetsDir)/iMXRT/devices/RT1060/MIMXRT1064/system_MIMXRT1064.c;QSPI=MIMXRT1064_FlexSPI_NOR_API;DeviceFamily=RT1064/MIMXRT1064"
       project_directory=""
       project_type="Executable"
       property_groups_file_path="$(TargetsDir)/iMXRT/propertyGroups.xml"
+      target_connect_script="Connect()"
+      target_get_partname_script="GetPartName()"
+      target_match_partname_script="MatchPartName(&quot;$(Target)&quot;)"
       target_reset_script="Reset()"
       target_script_file="$(TargetsDir)/iMXRT/iMXRT_Target.js" />
     <configuration
       Name="Flash"
       arm_target_flash_loader_file_path="$(TargetsDir)/iMXRT/Loader/$(QSPI)_Loader.elf"
+      arm_target_loader_can_lock_all="No"
+      arm_target_loader_can_lock_range="No"
+      arm_target_loader_can_unlock_all="No"
+      arm_target_loader_can_unlock_range="No"
       arm_target_loader_parameter="24000000" />
-    <folder Name="component">
-      <file file_name="components/fsl_adapter_uart.h" />
-      <file file_name="components/fsl_component_serial_manager.h" />
-      <file file_name="components/fsl_component_serial_port_uart.h" />
-      <file file_name="components/fsl_debug_console.c" />
-      <file file_name="components/fsl_debug_console.h" />
-      <file file_name="components/fsl_str.c" />
-      <file file_name="components/fsl_str.h" />
-      <file file_name="components/generic_list.c" />
-      <file file_name="components/generic_list.h" />
-      <file file_name="components/lpuart_adapter.c" />
-      <file file_name="components/serial_manager.c" />
-      <file file_name="components/serial_manager.h" />
-      <file file_name="components/serial_port_internal.h" />
-      <file file_name="components/serial_port_uart.c" />
-      <file file_name="components/serial_port_uart.h" />
-      <file file_name="components/uart.h" />
-    </folder>
     <folder Name="coremark">
       <file file_name="core_list_join.c" />
       <file file_name="core_main.c" />
@@ -972,41 +868,28 @@
       default_const_section=".rodata_tcm"
       default_data_section=".data_tcm"
       default_zeroed_section=".bss_tcm"
-      linker_memory_map_file="$(TargetsDir)/iMXRT/iMXRT11_cm4_MemoryMap.xml"
-      linker_memory_map_macros="SRAMSIZE=0x10000;OCRAMSIZE=0x10000;OCRAM1SIZE=0x10000;OCRAM2SIZE=0x10000"
+      linker_memory_map_file="$(TargetsDir)/iMXRT/MIMXRT1166_cm4_MemoryMap.xml"
+      linker_memory_map_macros="FlexSPISTART=0x08010000;FlexSPISIZE=0x10000"
       linker_section_placement_file="$(TargetsDir)/iMXRT/flexspi_placement.xml"
       linker_section_placement_macros="FILLSIZE=0x400"
-      macros="DeviceStartFile=$(TargetsDir)/iMXRT/startup_MIMXRT1166_cm4.s;DeviceSystemFile=$(TargetsDir)/iMXRT/devices/MIMXRT1166/system_MIMXRT1166_cm4.c;HYPER=MIMXRT116x_FlexSPI_NOR_API_M4;QSPI=MIMXRT116x_FlexSPI_NOR_API_M4;DeviceFamily=MIMXRT1166"
+      macros="DeviceStartFile=$(TargetsDir)/iMXRT/startup_MIMXRT1166_cm4.s;DeviceSystemFile=$(TargetsDir)/iMXRT/devices/RT1160/MIMXRT1166/system_MIMXRT1166_cm4.c;HYPER=MIMXRT116x_FlexSPI_NOR_API_M4;QSPI=MIMXRT116x_FlexSPI_NOR_API_M4;DeviceFamily=RT1160/MIMXRT1166"
       project_directory=""
       project_type="Executable"
       property_groups_file_path="$(TargetsDir)/iMXRT/propertyGroups.xml"
-      target_get_partname_script="EnableCM4()"
-      target_reset_script="ResetCM4()"
-      target_script_file="$(TargetsDir)/iMXRT/iMXRT_Target.js" />
+      target_connect_script="Connect()"
+      target_get_partname_script="GetPartName()"
+      target_match_partname_script="MatchPartName(&quot;$(Target)&quot;)"
+      target_reset_script="Reset()"
+      target_script_file="$(TargetsDir)/iMXRT/iMXRT_Target.js"
+      target_trace_initialize_script="EnableTrace(&quot;$(TraceInterfaceType)&quot;)" />
     <configuration
       Name="Flash"
       arm_target_flash_loader_file_path="$(TargetsDir)/iMXRT/Loader/$(QSPI)_Loader.elf"
-      arm_target_loader_parameter="24000000"
-      target_loader_reset_script=""
-      target_reset_script="" />
-    <folder Name="component">
-      <file file_name="components/fsl_adapter_uart.h" />
-      <file file_name="components/fsl_component_serial_manager.h" />
-      <file file_name="components/fsl_component_serial_port_uart.h" />
-      <file file_name="components/fsl_debug_console.c" />
-      <file file_name="components/fsl_debug_console.h" />
-      <file file_name="components/fsl_str.c" />
-      <file file_name="components/fsl_str.h" />
-      <file file_name="components/generic_list.c" />
-      <file file_name="components/generic_list.h" />
-      <file file_name="components/lpuart_adapter.c" />
-      <file file_name="components/serial_manager.c" />
-      <file file_name="components/serial_manager.h" />
-      <file file_name="components/serial_port_internal.h" />
-      <file file_name="components/serial_port_uart.c" />
-      <file file_name="components/serial_port_uart.h" />
-      <file file_name="components/uart.h" />
-    </folder>
+      arm_target_loader_can_lock_all="No"
+      arm_target_loader_can_lock_range="No"
+      arm_target_loader_can_unlock_all="No"
+      arm_target_loader_can_unlock_range="No"
+      arm_target_loader_parameter="24000000" />
     <folder Name="coremark">
       <file file_name="core_list_join.c" />
       <file file_name="core_main.c" />
@@ -1018,10 +901,10 @@
       <file file_name="coremark.h" />
     </folder>
     <folder Name="drivers">
+      <file file_name="drivers/fsl_anatop_ai.c" />
+      <file file_name="drivers/fsl_anatop_ai.h" />
       <file file_name="drivers/1160/cm4/fsl_cache.c" />
       <file file_name="drivers/1160/cm4/fsl_cache.h" />
-      <file file_name="drivers/1160/fsl_anatop_ai.c" />
-      <file file_name="drivers/1160/fsl_anatop_ai.h" />
       <file file_name="drivers/1160/fsl_clock.c" />
       <file file_name="drivers/1160/fsl_clock.h" />
       <file file_name="drivers/fsl_common.c" />
@@ -1088,42 +971,29 @@
       default_const_section=".rodata_tcm"
       default_data_section=".data_tcm"
       default_zeroed_section=".bss_tcm"
-      linker_memory_map_file="$(TargetsDir)/iMXRT/iMXRT11_cm7_MemoryMap.xml"
-      linker_memory_map_macros="SRAMSIZE=0x10000;OCRAMSIZE=0x10000;OCRAM1SIZE=0x10000;OCRAM2SIZE=0x10000"
+      linker_memory_map_file="$(TargetsDir)/iMXRT/MIMXRT1166_cm7_MemoryMap.xml"
+      linker_memory_map_macros="FlexSPISIZE=0x00010000;RAM_NAME=OCRAM1"
       linker_section_placement_file="$(TargetsDir)/iMXRT/flexspi_placement.xml"
       linker_section_placement_macros="FILLSIZE=0x400"
-      macros="DeviceStartFile=$(TargetsDir)/iMXRT/startup_MIMXRT1166_cm7.s;DeviceSystemFile=$(TargetsDir)/iMXRT/devices/MIMXRT1166/system_MIMXRT1166_cm7.c;HYPER=MIMXRT116x_FlexSPI_NOR_API_M7;QSPI=MIMXRT116x_FlexSPI_NOR_API_M7;DeviceFamily=MIMXRT1166"
+      macros="DeviceStartFile=$(TargetsDir)/iMXRT/startup_MIMXRT1166_cm7.s;DeviceSystemFile=$(TargetsDir)/iMXRT/devices/RT1160/MIMXRT1166/system_MIMXRT1166_cm7.c;HYPER=MIMXRT116x_FlexSPI_NOR_API_M7;QSPI=MIMXRT116x_FlexSPI_NOR_API_M7;DeviceFamily=RT1160/MIMXRT1166"
       project_dependencies="Coremark_1160CM4"
       project_directory=""
       project_type="Executable"
       property_groups_file_path="$(TargetsDir)/iMXRT/propertyGroups.xml"
-      target_get_partname_script=""
+      target_connect_script="Connect()"
+      target_get_partname_script="GetPartName()"
+      target_match_partname_script="MatchPartName(&quot;$(Target)&quot;)"
       target_reset_script="Reset()"
-      target_script_file="$(TargetsDir)/iMXRT/iMXRT_Target.js" />
+      target_script_file="$(TargetsDir)/iMXRT/iMXRT_Target.js"
+      target_trace_initialize_script="EnableTrace(&quot;$(TraceInterfaceType)&quot;)" />
     <configuration
       Name="Flash"
       arm_target_flash_loader_file_path="$(TargetsDir)/iMXRT/Loader/$(QSPI)_Loader.elf"
-      arm_target_loader_parameter="24000000"
-      target_loader_reset_script=""
-      target_reset_script="Reset2()" />
-    <folder Name="component">
-      <file file_name="components/fsl_adapter_uart.h" />
-      <file file_name="components/fsl_component_serial_manager.h" />
-      <file file_name="components/fsl_component_serial_port_uart.h" />
-      <file file_name="components/fsl_debug_console.c" />
-      <file file_name="components/fsl_debug_console.h" />
-      <file file_name="components/fsl_str.c" />
-      <file file_name="components/fsl_str.h" />
-      <file file_name="components/generic_list.c" />
-      <file file_name="components/generic_list.h" />
-      <file file_name="components/lpuart_adapter.c" />
-      <file file_name="components/serial_manager.c" />
-      <file file_name="components/serial_manager.h" />
-      <file file_name="components/serial_port_internal.h" />
-      <file file_name="components/serial_port_uart.c" />
-      <file file_name="components/serial_port_uart.h" />
-      <file file_name="components/uart.h" />
-    </folder>
+      arm_target_loader_can_lock_all="No"
+      arm_target_loader_can_lock_range="No"
+      arm_target_loader_can_unlock_all="No"
+      arm_target_loader_can_unlock_range="No"
+      arm_target_loader_parameter="24000000" />
     <folder Name="coremark">
       <file file_name="core_list_join.c" />
       <file file_name="core_main.c" />
@@ -1135,10 +1005,10 @@
       <file file_name="coremark.h" />
     </folder>
     <folder Name="drivers">
+      <file file_name="drivers/fsl_anatop_ai.c" />
+      <file file_name="drivers/fsl_anatop_ai.h" />
       <file file_name="drivers/1160/cm7/fsl_cache.c" />
       <file file_name="drivers/1160/cm7/fsl_cache.h" />
-      <file file_name="drivers/1160/fsl_anatop_ai.c" />
-      <file file_name="drivers/1160/fsl_anatop_ai.h" />
       <file file_name="drivers/1160/fsl_clock.c" />
       <file file_name="drivers/1160/fsl_clock.h" />
       <file file_name="drivers/fsl_common.c" />
@@ -1212,41 +1082,28 @@
       default_const_section=".rodata_tcm"
       default_data_section=".data_tcm"
       default_zeroed_section=".bss_tcm"
-      linker_memory_map_file="$(TargetsDir)/iMXRT/iMXRT11_cm4_MemoryMap.xml"
-      linker_memory_map_macros="OCRAMSTART=0x202C0000;OCRAMSIZE=0x00080000;ITCMSTART=0x1FFE0000;FlexSPISTART=0x08010000;FlexSPI2START=0x60000000;FlexSPISIZE=0x00010000;FlexSPILoadOffset=0"
+      linker_memory_map_file="$(TargetsDir)/iMXRT/MIMXRT1176_cm4_MemoryMap.xml"
+      linker_memory_map_macros="FlexSPISTART=0x08010000;FlexSPISIZE=0x10000"
       linker_section_placement_file="$(TargetsDir)/iMXRT/flexspi_placement.xml"
-      linker_section_placement_macros="FILLSIZE=0x400"
-      macros="DeviceStartFile=$(TargetsDir)/iMXRT/startup_MIMXRT1176_cm4.s;DeviceSystemFile=$(TargetsDir)/iMXRT/devices/MIMXRT1176/system_MIMXRT1176_cm4.c;HYPER=MIMXRT117x_FlexSPI_NOR_API_M4;QSPI=MIMXRT117x_FlexSPI_NOR_API_M4;DeviceFamily=MIMXRT1176"
+      linker_section_placement_macros="FILLSIZE=0x400;RAM_NAME=OCRAM2"
+      macros="DeviceStartFile=$(TargetsDir)/iMXRT/startup_MIMXRT1176_cm4.s;DeviceSystemFile=$(TargetsDir)/iMXRT/devices/RT1170/MIMXRT1176/system_MIMXRT1176_cm4.c;HYPER=MIMXRT117x_FlexSPI_NOR_API_M4;QSPI=MIMXRT117x_FlexSPI_NOR_API_M4;DeviceFamily=RT1170/MIMXRT1176"
       project_directory=""
       project_type="Executable"
       property_groups_file_path="$(TargetsDir)/iMXRT/propertyGroups.xml"
-      target_get_partname_script="EnableCM4()"
-      target_reset_script="Reset2"
-      target_script_file="$(TargetsDir)/iMXRT/iMXRT_Target.js" />
+      target_connect_script="Connect()"
+      target_get_partname_script="GetPartName()"
+      target_match_partname_script="MatchPartName(&quot;$(Target)&quot;)"
+      target_reset_script="Reset()"
+      target_script_file="$(TargetsDir)/iMXRT/iMXRT_Target.js"
+      target_trace_initialize_script="EnableTrace(&quot;$(TraceInterfaceType)&quot;)" />
     <configuration
       Name="Flash"
       arm_target_flash_loader_file_path="$(TargetsDir)/iMXRT/Loader/$(QSPI)_Loader.elf"
-      arm_target_loader_parameter="24000000"
-      target_loader_reset_script=""
-      target_reset_script="" />
-    <folder Name="component">
-      <file file_name="components/fsl_adapter_uart.h" />
-      <file file_name="components/fsl_component_serial_manager.h" />
-      <file file_name="components/fsl_component_serial_port_uart.h" />
-      <file file_name="components/fsl_debug_console.c" />
-      <file file_name="components/fsl_debug_console.h" />
-      <file file_name="components/fsl_str.c" />
-      <file file_name="components/fsl_str.h" />
-      <file file_name="components/generic_list.c" />
-      <file file_name="components/generic_list.h" />
-      <file file_name="components/lpuart_adapter.c" />
-      <file file_name="components/serial_manager.c" />
-      <file file_name="components/serial_manager.h" />
-      <file file_name="components/serial_port_internal.h" />
-      <file file_name="components/serial_port_uart.c" />
-      <file file_name="components/serial_port_uart.h" />
-      <file file_name="components/uart.h" />
-    </folder>
+      arm_target_loader_can_lock_all="No"
+      arm_target_loader_can_lock_range="No"
+      arm_target_loader_can_unlock_all="No"
+      arm_target_loader_can_unlock_range="No"
+      arm_target_loader_parameter="24000000" />
     <folder Name="coremark">
       <file file_name="core_list_join.c" />
       <file file_name="core_main.c" />
@@ -1258,10 +1115,10 @@
       <file file_name="coremark.h" />
     </folder>
     <folder Name="drivers">
+      <file file_name="drivers/fsl_anatop_ai.c" />
+      <file file_name="drivers/fsl_anatop_ai.h" />
       <file file_name="drivers/1170/cm4/fsl_cache.c" />
       <file file_name="drivers/1170/cm4/fsl_cache.h" />
-      <file file_name="drivers/1170/fsl_anatop_ai.c" />
-      <file file_name="drivers/1170/fsl_anatop_ai.h" />
       <file file_name="drivers/1170/fsl_clock.c" />
       <file file_name="drivers/1170/fsl_clock.h" />
       <file file_name="drivers/fsl_common.c" />
@@ -1328,42 +1185,29 @@
       default_const_section=".rodata_tcm"
       default_data_section=".data_tcm"
       default_zeroed_section=".bss_tcm"
-      linker_memory_map_file="$(TargetsDir)/iMXRT/iMXRT11_cm7_MemoryMap.xml"
-      linker_memory_map_macros="OCRAMSTART=0x20240000;OCRAMSIZE=0x00080000;DTCMSIZE=0x40000;ITCMSIZE=0x40000;FlexSPISTART=0x30000000;FlexSPI2START=0x60000000;FlexSPISIZE=0x00010000"
+      linker_memory_map_file="$(TargetsDir)/iMXRT/MIMXRT1176_cm7_MemoryMap.xml"
+      linker_memory_map_macros="FlexSPISIZE=0x00010000;RAM_NAME=OCRAM1"
       linker_section_placement_file="$(TargetsDir)/iMXRT/flexspi_placement.xml"
       linker_section_placement_macros="FILLSIZE=0x400"
-      macros="DeviceStartFile=$(TargetsDir)/iMXRT/startup_MIMXRT1176_cm7.s;DeviceSystemFile=$(TargetsDir)/iMXRT/devices/MIMXRT1176/system_MIMXRT1176_cm7.c;HYPER=MIMXRT117x_FlexSPI_NOR_API_M7;QSPI=MIMXRT117x_FlexSPI_NOR_API_M7;DeviceFamily=MIMXRT1176"
+      macros="DeviceStartFile=$(TargetsDir)/iMXRT/startup_MIMXRT1176_cm7.s;DeviceSystemFile=$(TargetsDir)/iMXRT/devices/RT1170/MIMXRT1176/system_MIMXRT1176_cm7.c;HYPER=MIMXRT117x_FlexSPI_NOR_API_M7;QSPI=MIMXRT117x_FlexSPI_NOR_API_M7;DeviceFamily=RT1170/MIMXRT1176"
       project_dependencies="Coremark_1170CM4"
       project_directory=""
       project_type="Executable"
       property_groups_file_path="$(TargetsDir)/iMXRT/propertyGroups.xml"
-      target_get_partname_script=""
+      target_connect_script="Connect()"
+      target_get_partname_script="GetPartName()"
+      target_match_partname_script="MatchPartName(&quot;$(Target)&quot;)"
       target_reset_script="Reset()"
-      target_script_file="$(TargetsDir)/iMXRT/iMXRT_Target.js" />
+      target_script_file="$(TargetsDir)/iMXRT/iMXRT_Target.js"
+      target_trace_initialize_script="EnableTrace(&quot;$(TraceInterfaceType)&quot;)" />
     <configuration
       Name="Flash"
       arm_target_flash_loader_file_path="$(TargetsDir)/iMXRT/Loader/$(QSPI)_Loader.elf"
-      arm_target_loader_parameter="24000000"
-      target_loader_reset_script=""
-      target_reset_script="Reset2()" />
-    <folder Name="component">
-      <file file_name="components/fsl_adapter_uart.h" />
-      <file file_name="components/fsl_component_serial_manager.h" />
-      <file file_name="components/fsl_component_serial_port_uart.h" />
-      <file file_name="components/fsl_debug_console.c" />
-      <file file_name="components/fsl_debug_console.h" />
-      <file file_name="components/fsl_str.c" />
-      <file file_name="components/fsl_str.h" />
-      <file file_name="components/generic_list.c" />
-      <file file_name="components/generic_list.h" />
-      <file file_name="components/lpuart_adapter.c" />
-      <file file_name="components/serial_manager.c" />
-      <file file_name="components/serial_manager.h" />
-      <file file_name="components/serial_port_internal.h" />
-      <file file_name="components/serial_port_uart.c" />
-      <file file_name="components/serial_port_uart.h" />
-      <file file_name="components/uart.h" />
-    </folder>
+      arm_target_loader_can_lock_all="No"
+      arm_target_loader_can_lock_range="No"
+      arm_target_loader_can_unlock_all="No"
+      arm_target_loader_can_unlock_range="No"
+      arm_target_loader_parameter="24000000" />
     <folder Name="coremark">
       <file file_name="core_list_join.c" />
       <file file_name="core_main.c" />
@@ -1375,10 +1219,10 @@
       <file file_name="coremark.h" />
     </folder>
     <folder Name="drivers">
+      <file file_name="drivers/fsl_anatop_ai.c" />
+      <file file_name="drivers/fsl_anatop_ai.h" />
       <file file_name="drivers/1170/cm7/fsl_cache.c" />
       <file file_name="drivers/1170/cm7/fsl_cache.h" />
-      <file file_name="drivers/1170/fsl_anatop_ai.c" />
-      <file file_name="drivers/1170/fsl_anatop_ai.h" />
       <file file_name="drivers/1170/fsl_clock.c" />
       <file file_name="drivers/1170/fsl_clock.h" />
       <file file_name="drivers/fsl_common.c" />

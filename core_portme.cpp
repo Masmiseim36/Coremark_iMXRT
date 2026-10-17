@@ -103,10 +103,9 @@ extern "C"
 	void portable_init (core_portable *p, int *argc, char *argv[])
 	{
 		// Initialize board hardware.
-		BOARD_ConfigMPU        ();
-		BOARD_InitPins         ();
-		BOARD_BootClockRUN     ();
-//		BOARD_InitDebugConsole ();
+		BOARD_ConfigMPU       ();
+		BOARD_InitPins        ();
+		BOARD_BootClockRUN    ();
 		SystemCoreClockUpdate ();
 
 		#if defined LPUART_BASE_PTRS
@@ -163,13 +162,13 @@ extern "C"
 			config.enableRx     = true;
 			[[maybe_unused]] status_t status = LPUART_Init (uart[BOARD_DEBUG_UART_INSTANCE], &config, ClockFrequency);
 		#elif defined USART_BASE_PTRS
-			const clock_frg_clk_config_t ClockConfig = 
+			const clock_frg_clk_config_t clockConfig
 			{
 				0, _clock_frg_clk_config::kCLOCK_FrgPllDiv, 255, 0
 			};
 
-			CLOCK_SetFRGClock (&ClockConfig);
-			const clock_attach_id_t Clock[] = {kFRG_to_FLEXCOMM0, kFRG_to_FLEXCOMM1, kFRG_to_FLEXCOMM2, kFRG_to_FLEXCOMM3, kFRG_to_FLEXCOMM4, kFRG_to_FLEXCOMM5, kFRG_to_FLEXCOMM6, kFRG_to_FLEXCOMM7};
+			CLOCK_SetFRGClock (&clockConfig);
+			static constexpr clock_attach_id_t Clock[] = {kFRG_to_FLEXCOMM0, kFRG_to_FLEXCOMM1, kFRG_to_FLEXCOMM2, kFRG_to_FLEXCOMM3, kFRG_to_FLEXCOMM4, kFRG_to_FLEXCOMM5, kFRG_to_FLEXCOMM6, kFRG_to_FLEXCOMM7};
 			CLOCK_AttachClk   (Clock[BOARD_DEBUG_UART_INSTANCE]);
 
 
@@ -186,14 +185,12 @@ extern "C"
 
 		InitializeSystemTick (1);
 
-		#if __CORTEX_M == 4
-			MyPrintf ("Hello Coremark on M4 core\r\n");
-		#elif __CORTEX_M == 7
-			MyPrintf ("Hello Coremark on M7 core\r\n");
-		#elif __CORTEX_M == 33
-			MyPrintf ("Hello Coremark on M33 core :-)\r\n");
-		#else
-			#error "unknown core"
+		MyPrintf ("Hello Coremark on M%d core\r\n", __CORTEX_M);
+		MyPrintf ("Compiled at " __DATE__ " - " __TIME__ "\r\n");
+		#if defined GCC_OPTIONS
+			MyPrintf ("\r\n");
+			MyPrintf (GCC_OPTIONS);
+			MyPrintf ("\r\n");
 		#endif
 
 		#if defined MIMXRT1166_cm7_SERIES || defined MIMXRT1165_cm7_SERIES || \
@@ -282,15 +279,7 @@ extern "C"
 	void portable_fini (core_portable *p)
 	{
 		p->portable_id=0;
-		#if __CORTEX_M == 7
-			MyPrintf ("Coremark done - M7\r\n");
-		#elif __CORTEX_M == 4
-			MyPrintf ("Coremark done - M4\r\n");
-		#elif __CORTEX_M == 33
-			MyPrintf ("Coremark done - M33\r\n");
-		#else
-			#error "unknown core"
-		#endif
+		MyPrintf ("Coremark done - M%d\r\n", __CORTEX_M);
 	}
 
 

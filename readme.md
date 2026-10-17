@@ -25,11 +25,8 @@ Before building and running the Coremark benchmark, ensure you have the followin
 
 ## How to get started
 This project contains three solution files. Use [Coremark.hzp](Coremark.hzp) to open the project in Crossworks. This solution links to the other two solutions, you do not have to open them individually.
-- [Coremark_Original.hzp](Coremark_Original.hzp) uses Rowley’s original CPU support package. Unfortunately, this package has a few weaknesses
-  - It contains outdated CMSIS headers, meaning the iMXRT1040 project cannot compile
-  - Dual-core applications do not work
-  - There is no support for the iMXRT1180
-- [Coremark_Extended.hzp](Coremark_Extended.hzp) uses a customised and extended version of the [CPU support package](https://github.com/Masmiseim36/iMXRT), which makes it incompatible with the original version. You must install it manually in Crossworks. The weaknesses described above have been resolved in this package
+- [Coremark_Original.hzp](Coremark_Original.hzp) uses Rowley’s original CPU support package. Unfortunately.
+- [Coremark_Extended.hzp](Coremark_Extended.hzp) uses a customised and extended version of the [CPU support package](https://github.com/Masmiseim36/iMXRT), which makes it incompatible with the original version. You must install it manually in Crossworks.
 
 Both solution files contain separate projects for the various derivatives of the iMXRT family which can be run on the respective evaluation boards. For iMXRT1160/1170, the projects for the M7 core must be active so that the projects for both cores can be loaded onto the CPU and debugged there. Unfortunately, the multicore functionality does not yet work for the iMXRT1180.
 

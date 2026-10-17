@@ -1,7 +1,5 @@
 /*
- * Copyright 2018-2019 NXP
- * All rights reserved.
- *
+ * Copyright 2018-2019, 2023 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -23,9 +21,11 @@
 
 /*! @brief The UART to use for debug messages. */
 #define BOARD_DEBUG_UART_TYPE     kSerialPort_Uart
+#define BOARD_DEBUG_UART_BASEADDR (uint32_t) USART0
 #define BOARD_DEBUG_UART_INSTANCE 0U
 #define BOARD_DEBUG_UART_CLK_FREQ CLOCK_GetFlexCommClkFreq(0U)
-#define BOARD_DEBUG_UART_FRG_CLK (&(const clock_frg_clk_config_t){0, kCLOCK_FrgPllDiv, 255, 0}) /*!< Select FRG0 mux as frg_pll */
+#define BOARD_DEBUG_UART_FRG_CLK \
+    (&(const clock_frg_clk_config_t){0, kCLOCK_FrgPllDiv, 255, 0}) /*!< Select FRG0 mux as frg_pll */
 #define BOARD_DEBUG_UART_CLK_ATTACH kFRG_to_FLEXCOMM0
 #define BOARD_DEBUG_UART_RST        kFC0_RST_SHIFT_RSTn
 #define BOARD_DEBUG_UART_CLKSRC     kCLOCK_Flexcomm0
@@ -41,7 +41,7 @@
 #define BOARD_ENABLE_PSRAM_CACHE 1
 #endif
 
-#if BOARD_I3C_CODEC
+#if BOARD_I3C_CODEC && (defined(SDK_I3C_BASED_COMPONENT_USED) && SDK_I3C_BASED_COMPONENT_USED)
 #define BOARD_CODEC_I2C_BASEADDR   I3C
 #define BOARD_CODEC_I2C_CLOCK_FREQ CLOCK_GetI3cClkFreq()
 #define BOARD_CODEC_I2C_INSTANCE   0
@@ -217,6 +217,7 @@
 #define BOARD_LCD_DC_GPIO_PORT 1U
 #define BOARD_LCD_DC_GPIO_PIN  7U
 
+#define BOARD_BT_UART_BASEADDR USART4
 #define BOARD_BT_UART_INSTANCE 4
 #define BOARD_BT_UART_BAUDRATE 3000000
 #define BOARD_BT_UART_CLK_FREQ CLOCK_GetFlexCommClkFreq(4U)
@@ -260,9 +261,9 @@ extern "C" {
  * API
  ******************************************************************************/
 
- inline void BOARD_ConfigMPU (void)
- {
- }
+inline void BOARD_ConfigMPU (void)
+{
+}
 
 void BOARD_InitDebugConsole(void);
 status_t BOARD_InitPsRam(void);
@@ -289,7 +290,7 @@ status_t BOARD_I2C_Receive(I2C_Type *base,
                            uint8_t *rxBuff,
                            uint8_t rxBuffSize);
 #endif
-#if defined BOARD_USE_CODEC
+#if defined(SDK_I3C_BASED_COMPONENT_USED) && SDK_I3C_BASED_COMPONENT_USED
 void BOARD_I3C_Init(I3C_Type *base, uint32_t clkSrc_Hz);
 status_t BOARD_I3C_Send(I3C_Type *base,
                         uint8_t deviceAddress,
@@ -303,6 +304,8 @@ status_t BOARD_I3C_Receive(I3C_Type *base,
                            uint8_t subaddressSize,
                            uint8_t *rxBuff,
                            uint8_t rxBuffSize);
+#endif
+#if defined BOARD_USE_CODEC
 void BOARD_Codec_I2C_Init(void);
 status_t BOARD_Codec_I2C_Send(
     uint8_t deviceAddress, uint32_t subAddress, uint8_t subAddressSize, const uint8_t *txBuff, uint8_t txBuffSize);

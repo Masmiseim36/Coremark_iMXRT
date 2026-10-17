@@ -6,7 +6,6 @@
  */
 
 #include "fsl_common.h"
-#include "fsl_debug_console.h"
 #include "board.h"
 #if defined(SDK_I2C_BASED_COMPONENT_USED) && SDK_I2C_BASED_COMPONENT_USED
 #include "fsl_lpi2c.h"
@@ -37,13 +36,6 @@
 uint32_t BOARD_DebugConsoleSrcFreq(void)
 {
     return CLOCK_GetRootClockFreq(BOARD_DEBUG_UART_CLK_ROOT);
-}
-
-/* Initialize debug console. */
-void BOARD_InitDebugConsole(void)
-{
-    uint32_t uartClkSrcFreq = BOARD_DebugConsoleSrcFreq();
-    DbgConsole_Init(BOARD_DEBUG_UART_INSTANCE, BOARD_DEBUG_UART_BAUDRATE, BOARD_DEBUG_UART_TYPE, uartClkSrcFreq);
 }
 
 #if defined(SDK_I2C_BASED_COMPONENT_USED) && SDK_I2C_BASED_COMPONENT_USED

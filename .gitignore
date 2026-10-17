@@ -9,3 +9,7 @@
 *.bin
 *.asm
 *_lto.txt
+# Build output and local files
+out/
+bin/
+*.7z

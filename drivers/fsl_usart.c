@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2016, Freescale Semiconductor, Inc.
- * Copyright 2016-2020 NXP
+ * Copyright 2016-2023, 2026 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -58,7 +58,7 @@ uint32_t USART_GetInstance(USART_Type *base)
 
     for (i = 0; i < (uint32_t)FSL_FEATURE_SOC_USART_COUNT; i++)
     {
-        if ((uint32_t)base == s_usartBaseAddrs[i])
+        if (MSDK_REG_NONSECURE_ADDR((uint32_t)base) == MSDK_REG_NONSECURE_ADDR(s_usartBaseAddrs[i]))
         {
             break;
         }
@@ -229,19 +229,24 @@ status_t USART_Init(USART_Type *base, const usart_config_t *config, uint32_t src
         /* enable trigger interrupt */
         base->FIFOTRIG |= USART_FIFOTRIG_RXLVLENA_MASK;
     }
+#if defined(FSL_FEATURE_USART_HAS_FIFORXTIMEOUTCFG) && FSL_FEATURE_USART_HAS_FIFORXTIMEOUTCFG
+    USART_SetRxTimeoutConfig(base, &(config->rxTimeout));
+#endif
     /* setup configuration and enable USART */
     base->CFG = USART_CFG_PARITYSEL(config->parityMode) | USART_CFG_STOPLEN(config->stopBitCount) |
                 USART_CFG_DATALEN(config->bitCountPerChar) | USART_CFG_LOOP(config->loopback) |
                 USART_CFG_SYNCEN((uint32_t)config->syncMode >> 1) | USART_CFG_SYNCMST((uint8_t)config->syncMode) |
                 USART_CFG_CLKPOL(config->clockPolarity) | USART_CFG_MODE32K(config->enableMode32k) |
-                USART_CFG_CTSEN(config->enableHardwareFlowControl) | USART_CFG_ENABLE_MASK;
+                USART_CFG_CTSEN(config->enableHardwareFlowControl) | USART_CFG_ENABLE_MASK |
+                USART_CFG_OESEL(config->enable485ControlOutput) | USART_CFG_OEPOL(config->enableActiveHighRts) |
+                USART_CFG_OETA(config->extendRtsOutput);
 
     /* Setup baudrate */
     if (config->enableMode32k)
     {
         if ((9600U % config->baudRate_Bps) == 0U)
         {
-            base->BRG = 9600U / config->baudRate_Bps;
+            base->BRG = 9600U / config->baudRate_Bps - 1U;
         }
         else
         {
@@ -273,14 +278,27 @@ void USART_Deinit(USART_Type *base)
 {
     /* Check arguments */
     assert(NULL != base);
-    while (0U == (base->STAT & USART_STAT_TXIDLE_MASK))
+
+    /* Don't wait for TX idle when peripheral is disabled. */
+    if ((base->CFG & (USART_CFG_ENABLE_MASK)) != 0U)
     {
+#if UART_RETRY_TIMES
+        uint32_t waitTimes = UART_RETRY_TIMES;
+        while ((0U == (base->STAT & USART_STAT_TXIDLE_MASK)) && (--waitTimes != 0U))
+#else
+        while (0U == (base->STAT & USART_STAT_TXIDLE_MASK))
+#endif
+        {
+        }
     }
     /* Disable interrupts, disable dma requests, disable peripheral */
     base->FIFOINTENCLR = USART_FIFOINTENCLR_TXERR_MASK | USART_FIFOINTENCLR_RXERR_MASK | USART_FIFOINTENCLR_TXLVL_MASK |
                          USART_FIFOINTENCLR_RXLVL_MASK;
     base->FIFOCFG &= ~(USART_FIFOCFG_DMATX_MASK | USART_FIFOCFG_DMARX_MASK);
     base->CFG &= ~(USART_CFG_ENABLE_MASK);
+#if defined(FSL_FEATURE_USART_HAS_FIFORXTIMEOUTCFG) && FSL_FEATURE_USART_HAS_FIFORXTIMEOUTCFG
+    base->FIFORXTIMEOUTCFG = 0U;
+#endif
 }
 
 /*!
@@ -321,7 +339,87 @@ void USART_GetDefaultConfig(usart_config_t *config)
     config->enableContinuousSCLK      = false;
     config->clockPolarity             = kUSART_RxSampleOnFallingEdge;
     config->enableHardwareFlowControl = false;
+    config->enable485ControlOutput    = false;
+    config->enableActiveHighRts       = false;
+    config->extendRtsOutput           = false;
+#if defined(FSL_FEATURE_USART_HAS_FIFORXTIMEOUTCFG) && FSL_FEATURE_USART_HAS_FIFORXTIMEOUTCFG
+    config->rxTimeout.enable                = false;
+    config->rxTimeout.resetCounterOnEmpty   = true;
+    config->rxTimeout.resetCounterOnReceive = true;
+    config->rxTimeout.counter               = 0U;
+    config->rxTimeout.prescaler             = 0U;
+#endif
 }
+#if defined(FSL_FEATURE_USART_HAS_FIFORXTIMEOUTCFG) && FSL_FEATURE_USART_HAS_FIFORXTIMEOUTCFG
+/*!
+ * brief Calculate the USART instance RX timeout prescaler and counter.
+ *
+ * This function for calculate the USART RXFIFO timeout config. This function is used to calculate
+ * suitable prescaler and counter for target_us.
+ * Example below shows how to use this API to configure USART.
+ * code
+ *   usart_config_t config;
+ *   config.rxWatermark                     = kUSART_RxFifo2;
+ *   config.rxTimeout.enable                = true;
+ *   config.rxTimeout.resetCounterOnEmpty   = true;
+ *   config.rxTimeout.resetCounterOnReceive = true;
+ *   USART_CalcTimeoutConfig(200, &config.rxTimeout.prescaler, &config.rxTimeout.counter,
+ *                                    CLOCK_GetFreq(kCLOCK_BusClk));
+ * endcode
+ * param target_us  Time for rx timeout unit us.
+ * param rxTimeoutPrescaler The prescaler to be setted after function.
+ * param rxTimeoutcounter The counter to be setted after function.
+ * param srcClock_Hz The clockSrc for rx timeout.
+ */
+void USART_CalcTimeoutConfig(uint32_t target_us,
+                             uint8_t *rxTimeoutPrescaler,
+                             uint32_t *rxTimeoutcounter,
+                             uint32_t srcClock_Hz)
+{
+    uint32_t counter   = 0U;
+    uint32_t perscalar = 0U, calculate_us = 0U, us_diff = 0U, min_diff = 0xffffffffUL;
+    /* find the suitable value */
+    for (perscalar = 0U; perscalar < 256U; perscalar++)
+    {
+        counter      =  target_us * (srcClock_Hz / 1000000UL) / (16U * (perscalar + 1U));
+        calculate_us = 16U * (perscalar + 1U) * counter / (srcClock_Hz / 1000000UL);
+        us_diff      = (calculate_us > target_us) ? (calculate_us - target_us) : (target_us - calculate_us);
+        if (us_diff == 0U)
+        {
+            *rxTimeoutPrescaler = (uint8_t)perscalar;
+            *rxTimeoutcounter   = counter;
+            break;
+        }
+        else
+        {
+            if (min_diff > us_diff)
+            {
+                min_diff            = us_diff;
+                *rxTimeoutPrescaler = (uint8_t)perscalar;
+                *rxTimeoutcounter   = counter;
+            }
+        }
+    }
+}
+/*!
+ * brief Sets the USART instance RX timeout config.
+ *
+ * This function configures the USART RXFIFO timeout config. This function is used to config
+ * the USART RXFIFO timeout config after the USART module is initialized by the USART_Init.
+ *
+ * param base USART peripheral base address.
+ * param config pointer to receive timeout configuration structure.
+ */
+void USART_SetRxTimeoutConfig(USART_Type *base, const usart_rx_timeout_config *config)
+{
+    base->FIFORXTIMEOUTCFG = 0U;
+    base->FIFORXTIMEOUTCFG = USART_FIFORXTIMEOUTCFG_RXTIMEOUT_COW((config->resetCounterOnReceive) ? 0U : 1U) |
+                             USART_FIFORXTIMEOUTCFG_RXTIMEOUT_COE((config->resetCounterOnEmpty) ? 0U : 1U) |
+                             USART_FIFORXTIMEOUTCFG_RXTIMEOUT_EN(config->enable) |
+                             USART_FIFORXTIMEOUTCFG_RXTIMEOUT_VALUE(config->counter) |
+                             USART_FIFORXTIMEOUTCFG_RXTIMEOUT_PRESCALER(config->prescaler);
+}
+#endif
 
 /*!
  * brief Sets the USART instance baud rate.
@@ -342,7 +440,7 @@ void USART_GetDefaultConfig(usart_config_t *config)
 status_t USART_SetBaudRate(USART_Type *base, uint32_t baudrate_Bps, uint32_t srcClock_Hz)
 {
     uint32_t best_diff = (uint32_t)-1, best_osrval = 0xf, best_brgval = (uint32_t)-1;
-    uint32_t osrval, brgval, diff, baudrate;
+    uint32_t osrval, brgval, diff, baudrate, allowed_error;
 
     /* check arguments */
     assert(!((NULL == base) || (0U == baudrate_Bps) || (0U == srcClock_Hz)));
@@ -362,12 +460,21 @@ status_t USART_SetBaudRate(USART_Type *base, uint32_t baudrate_Bps, uint32_t src
     }
     else
     {
-        /*
-         * Smaller values of OSR can make the sampling position within a data bit less accurate and may
-         * potentially cause more noise errors or incorrect data.
-         */
-        for (osrval = best_osrval; osrval >= 8U; osrval--)
+        /* Actual baud rate must be within 3% of desired baud rate based on the calculated OSR and BRG value */
+        allowed_error = ((baudrate_Bps / 100U) * 3U);
+
+        for (osrval = best_osrval; osrval >= 4U; osrval--)
         {
+            /* 
+             * Smaller values of OSR can make the sampling position within a data bit less accurate and may
+             * potentially cause more noise errors or incorrect data.
+             * Break if the best baudrate's diff is in the allowed error range and the osrval is below 8,
+             * only use lower osrval if the baudrate cannot be obtained with an osrval of 8 or above. */
+            if ((osrval <= 8U) && (best_diff <= allowed_error))
+            {
+                break;
+            }
+
             brgval = (((srcClock_Hz * 10U) / ((osrval + 1U) * baudrate_Bps)) - 5U) / 10U;
             if (brgval > 0xFFFFU)
             {
@@ -387,7 +494,7 @@ status_t USART_SetBaudRate(USART_Type *base, uint32_t baudrate_Bps, uint32_t src
          * based on the best calculated OSR and BRG value */
         baudrate = srcClock_Hz / ((best_osrval + 1U) * (best_brgval + 1U));
         diff     = (baudrate_Bps < baudrate) ? (baudrate - baudrate_Bps) : (baudrate_Bps - baudrate);
-        if (diff > ((baudrate_Bps / 100U) * 3U))
+        if (diff > allowed_error)
         {
             return kStatus_USART_BaudrateNotSupport;
         }
@@ -708,13 +815,9 @@ status_t USART_TransferCreateHandle(USART_Type *base,
  * all data is written to the TX register in the IRQ handler, the USART driver calls the callback
  * function and passes the ref kStatus_USART_TxIdle as status parameter.
  *
- * note The kStatus_USART_TxIdle is passed to the upper layer when all data is written
- * to the TX register. However it does not ensure that all data are sent out. Before disabling the TX,
- * check the kUSART_TransmissionCompleteFlag to ensure that the TX is finished.
- *
  * param base USART peripheral base address.
  * param handle USART handle pointer.
- * param xfer USART transfer structure. See  #usart_transfer_t.
+ * param xfer USART transfer structure. See #usart_transfer_t.
  * retval kStatus_Success Successfully start the data transmission.
  * retval kStatus_USART_TxBusy Previous transmission still not finished, data not all written to TX register yet.
  * retval kStatus_InvalidArgument Invalid argument.
@@ -728,30 +831,33 @@ status_t USART_TransferSendNonBlocking(USART_Type *base, usart_handle_t *handle,
         return kStatus_InvalidArgument;
     }
     /* Check xfer members */
-    assert(!((0U == xfer->dataSize) || (NULL == xfer->data)));
-    if ((0U == xfer->dataSize) || (NULL == xfer->data))
+    assert(!((0U == xfer->dataSize) || (NULL == xfer->txData)));
+    if ((0U == xfer->dataSize) || (NULL == xfer->txData))
     {
         return kStatus_InvalidArgument;
     }
 
+    uint32_t globalMask = DisableGlobalIRQ();
+
     /* Return error if current TX busy. */
     if ((uint8_t)kUSART_TxBusy == handle->txState)
     {
+        EnableGlobalIRQ(globalMask);
         return kStatus_USART_TxBusy;
     }
     else
     {
-        /* Disable IRQ when configuring transfer handle, in case interrupt occurs during the process and messes up the
-         * handle value. */
-        uint32_t interruptMask = USART_GetEnabledInterrupts(base);
-        USART_DisableInterrupts(base, interruptMask);
-        handle->txData        = xfer->data;
+        handle->txState       = (uint8_t)kUSART_TxBusy;
+        uint32_t usartMask = USART_GetEnabledInterrupts(base);
+        USART_DisableInterrupts(base, usartMask);
+        EnableGlobalIRQ(globalMask);
+
+        handle->txData        = xfer->txData;
         handle->txDataSize    = xfer->dataSize;
         handle->txDataSizeAll = xfer->dataSize;
-        handle->txState       = (uint8_t)kUSART_TxBusy;
-        /* Enable transmiter interrupt and the previously disabled interrupt. */
-        USART_EnableInterrupts(base, interruptMask | (uint32_t)kUSART_TxLevelInterruptEnable);
+        USART_EnableInterrupts(base, usartMask | (uint32_t)kUSART_TxLevelInterruptEnable);
     }
+
     return kStatus_Success;
 }
 
@@ -843,7 +949,6 @@ status_t USART_TransferReceiveNonBlocking(USART_Type *base,
     size_t bytesToReceive;
     /* How many bytes currently have received. */
     size_t bytesCurrentReceived;
-    uint32_t interruptMask = 0U;
 
     /* Check arguments */
     assert(!((NULL == base) || (NULL == handle) || (NULL == xfer)));
@@ -852,8 +957,8 @@ status_t USART_TransferReceiveNonBlocking(USART_Type *base,
         return kStatus_InvalidArgument;
     }
     /* Check xfer members */
-    assert(!((0U == xfer->dataSize) || (NULL == xfer->data)));
-    if ((0U == xfer->dataSize) || (NULL == xfer->data))
+    assert(!((0U == xfer->dataSize) || (NULL == xfer->rxData)));
+    if ((0U == xfer->dataSize) || (NULL == xfer->rxData))
     {
         return kStatus_InvalidArgument;
     }
@@ -863,6 +968,8 @@ status_t USART_TransferReceiveNonBlocking(USART_Type *base,
     {
         base->CTL |= (uint32_t)USART_CTL_ADDRDET_MASK;
     }
+
+    uint32_t globalMask = DisableGlobalIRQ();
 
     /* How to get data:
        1. If RX ring buffer is not enabled, then save xfer->data and xfer->dataSize
@@ -875,19 +982,21 @@ status_t USART_TransferReceiveNonBlocking(USART_Type *base,
           to this empty space and trigger callback when finished. */
     if ((uint8_t)kUSART_RxBusy == handle->rxState)
     {
+        EnableGlobalIRQ(globalMask);
         return kStatus_USART_RxBusy;
     }
     else
     {
+        handle->rxState       = (uint8_t)kUSART_RxBusy;
+        uint32_t usartMask = USART_GetEnabledInterrupts(base);
+        USART_DisableInterrupts(base, usartMask);
+        EnableGlobalIRQ(globalMask);
+
         bytesToReceive       = xfer->dataSize;
         bytesCurrentReceived = 0U;
         /* If RX ring buffer is used. */
         if (handle->rxRingBuffer != NULL)
         {
-            /* Disable IRQ, protect ring buffer. */
-            interruptMask = USART_GetEnabledInterrupts(base);
-            USART_DisableInterrupts(base, interruptMask);
-
             /* How many bytes in RX ring buffer currently. */
             bytesToCopy = USART_TransferGetRxRingBufferLength(handle);
             if (bytesToCopy != 0U)
@@ -897,7 +1006,7 @@ status_t USART_TransferReceiveNonBlocking(USART_Type *base,
                 /* Copy data from ring buffer to user memory. */
                 for (i = 0U; i < bytesToCopy; i++)
                 {
-                    xfer->data[bytesCurrentReceived++] = handle->rxRingBuffer[handle->rxRingBufferTail];
+                    xfer->rxData[bytesCurrentReceived++] = handle->rxRingBuffer[handle->rxRingBufferTail];
                     /* Wrap to 0. Not use modulo (%) because it might be large and slow. */
                     if ((size_t)handle->rxRingBufferTail + 1U == handle->rxRingBufferSize)
                     {
@@ -913,45 +1022,45 @@ status_t USART_TransferReceiveNonBlocking(USART_Type *base,
             if (bytesToReceive != 0U)
             {
                 /* No data in ring buffer, save the request to UART handle. */
-                handle->rxData        = xfer->data + bytesCurrentReceived;
+                handle->rxData        = xfer->rxData + bytesCurrentReceived;
                 handle->rxDataSize    = bytesToReceive;
-                handle->rxDataSizeAll = bytesToReceive;
-                handle->rxState       = (uint8_t)kUSART_RxBusy;
+                handle->rxDataSizeAll = xfer->dataSize;
             }
-            /* Re-enable IRQ. */
-            USART_EnableInterrupts(base, interruptMask);
-            /* Call user callback since all data are received. */
-            if (0U == bytesToReceive)
+            else
             {
-                if (handle->callback != NULL)
-                {
-                    handle->callback(base, handle, kStatus_USART_RxIdle, handle->userData);
-                }
+                handle->rxState = (uint8_t)kUSART_RxIdle;
             }
         }
         /* Ring buffer not used. */
         else
         {
-            /* Disable IRQ when configuring transfer handle, in case interrupt occurs during the process and messes up
-             * the handle value. */
-            interruptMask = USART_GetEnabledInterrupts(base);
-            USART_DisableInterrupts(base, interruptMask);
-            handle->rxData        = xfer->data + bytesCurrentReceived;
+            handle->rxData        = xfer->rxData + bytesCurrentReceived;
             handle->rxDataSize    = bytesToReceive;
             handle->rxDataSizeAll = bytesToReceive;
-            handle->rxState       = (uint8_t)kUSART_RxBusy;
 
             /* Enable RX interrupt. */
             base->FIFOINTENSET = USART_FIFOINTENSET_RXLVL_MASK;
-            /* Re-enable IRQ. */
-            USART_EnableInterrupts(base, interruptMask);
         }
+
+        /* Re-enable USART IRQ. */
+        USART_EnableInterrupts(base, usartMask);
+
         /* Return the how many bytes have read. */
         if (receivedBytes != NULL)
         {
             *receivedBytes = bytesCurrentReceived;
         }
+
+        /* When using ring buffer and we received everything, call user callback. */
+        if (handle->rxRingBuffer != NULL && bytesToReceive == 0U)
+        {
+            if (handle->callback != NULL)
+            {
+                handle->callback(base, handle, kStatus_USART_RxIdle, handle->userData);
+            }
+        }
     }
+
     return kStatus_Success;
 }
 
@@ -1037,6 +1146,56 @@ void USART_TransferHandleIRQ(USART_Type *base, usart_handle_t *handle)
         if (handle->callback != NULL)
         {
             handle->callback(base, handle, kStatus_USART_RxError, handle->userData);
+        }
+    }
+    /* TX under run, happens when slave is in synchronous mode and the data is not written in tx register in time. */
+    if ((base->FIFOSTAT & USART_FIFOSTAT_TXERR_MASK) != 0U)
+    {
+        /* Clear tx error state. */
+        base->FIFOSTAT |= USART_FIFOSTAT_TXERR_MASK;
+        /* Trigger callback. */
+        if (handle->callback != NULL)
+        {
+            handle->callback(base, handle, kStatus_USART_TxError, handle->userData);
+        }
+    }
+    /* If noise error. */
+    if ((base->STAT & USART_STAT_RXNOISEINT_MASK) != 0U)
+    {
+        /* Clear rx error state. */
+        base->STAT |= USART_STAT_RXNOISEINT_MASK;
+        /* clear rxFIFO */
+        base->FIFOCFG |= USART_FIFOCFG_EMPTYRX_MASK;
+        /* Trigger callback. */
+        if (handle->callback != NULL)
+        {
+            handle->callback(base, handle, kStatus_USART_NoiseError, handle->userData);
+        }
+    }
+    /* If framing error. */
+    if ((base->STAT & USART_STAT_FRAMERRINT_MASK) != 0U)
+    {
+        /* Clear rx error state. */
+        base->STAT |= USART_STAT_FRAMERRINT_MASK;
+        /* clear rxFIFO */
+        base->FIFOCFG |= USART_FIFOCFG_EMPTYRX_MASK;
+        /* Trigger callback. */
+        if (handle->callback != NULL)
+        {
+            handle->callback(base, handle, kStatus_USART_FramingError, handle->userData);
+        }
+    }
+    /* If parity error. */
+    if ((base->STAT & USART_STAT_PARITYERRINT_MASK) != 0U)
+    {
+        /* Clear rx error state. */
+        base->STAT |= USART_STAT_PARITYERRINT_MASK;
+        /* clear rxFIFO */
+        base->FIFOCFG |= USART_FIFOCFG_EMPTYRX_MASK;
+        /* Trigger callback. */
+        if (handle->callback != NULL)
+        {
+            handle->callback(base, handle, kStatus_USART_ParityError, handle->userData);
         }
     }
     while ((receiveEnabled && ((base->FIFOSTAT & USART_FIFOSTAT_RXNOTEMPTY_MASK) != 0U)) ||
@@ -1137,6 +1296,16 @@ void USART_TransferHandleIRQ(USART_Type *base, usart_handle_t *handle)
         if (handle->callback != NULL)
         {
             handle->callback(base, handle, kStatus_USART_TxIdle, handle->userData);
+        }
+    }
+
+    /* rx start and the interrupt is enabled. */
+    if ((0U != (base->INTENSET & USART_INTENSET_STARTEN_MASK)) && (0U != (base->INTSTAT & USART_INTENSET_STARTEN_MASK)))
+    {
+        /* Trigger callback. */
+        if (handle->callback != NULL)
+        {
+            handle->callback(base, handle, kStatus_USART_RxStart, handle->userData);
         }
     }
 
