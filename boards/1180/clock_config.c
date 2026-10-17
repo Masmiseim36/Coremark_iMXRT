@@ -441,7 +441,11 @@ void BOARD_BootClockRUN(void)
 
     /* Call function BOARD_FlexspiClockSafeConfig() to move FlexSPI clock to a stable clock source to avoid
        instruction/data fetch issue when updating PLL if XIP(execute code on FLEXSPI memory). */
+    /* Changing the FlexSPI1 clock deinitializes the flash. The CM7 is started by the CM33, which already configured
+       FlexSPI1 and may run XiP from it at the same time. */
+#if (__CORTEX_M == 33)
     BOARD_FlexspiClockSafeConfig();
+#endif
 
     /* Init Arm Pll. */
     CLOCK_InitArmPll(&armPllConfig_BOARD_BootClockRUN);
@@ -595,7 +599,9 @@ void BOARD_BootClockRUN(void)
     CLOCK_SetRootClock(kCLOCK_Root_Gpt2, &rootCfg);
 
     /* Configure FLEXSPI1 using SYS_PLL3_PFD0_CLK */
+#if (__CORTEX_M == 33)
     BOARD_SetFlexspiClock(FLEXSPI1, kCLOCK_FLEXSPI1_ClockRoot_MuxSysPll3Pfd0, 3U);
+#endif
 
     /* Configure FLEXSPI2 using SYS_PLL3_PFD2_CLK */
 #ifndef USE_HYPERRAM
