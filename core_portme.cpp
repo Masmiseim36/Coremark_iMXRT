@@ -27,6 +27,10 @@ limitations under the License. */
 #else
 	#error "unknown serial port driver"
 #endif
+#include "fsl_common.h"
+#if (defined(MIMXRT118C_cm33_SERIES) || defined(MIMXRT1185_cm33_SERIES) || defined(MIMXRT1186_cm33_SERIES) || defined(MIMXRT1187_cm33_SERIES) || defined(MIMXRT1189_cm33_SERIES))
+	#include "fsl_ele_base_api.h"
+#endif
 
 extern "C"
 {
@@ -98,6 +102,74 @@ extern "C"
 		static USART_Type * const uart [] = USART_BASE_PTRS;
 	#else
 		#error "unknown serial port driver"
+	#endif
+
+	#if (defined(MIMXRT118C_cm33_SERIES) || defined(MIMXRT1185_cm33_SERIES) || defined(MIMXRT1186_cm33_SERIES) || defined(MIMXRT1187_cm33_SERIES) || defined(MIMXRT1189_cm33_SERIES))
+		// Step 8 of the CM7 kick-off: ensure execution access of the CM7 to its image in the flash.
+		// The CM7 runs XiP from the same flash as the CM33. After boot the TRDC denies the CM7 the access, the first vector
+		// fetch ends with a bus error (CM7 CFSR.IBUSERR, HardFault).
+		// - FlexSPI2 is checked by the memory region checker MRC_A1 of TRDC1 (AON domain, ELE RDC ID 0x74).
+		//   FlexSPI1 is checked by the memory region checker MRC_W1 of TRDC2 (WAKEUP domain, ELE RDC ID 0x78).
+		// - The TRDCs are owned by the ELE after boot and have to be released to the CM33 before they can be written.
+		//   A repeated release request (e.g. after a debugger reset without power cycle) may be refused by the ELE.
+		//   TRDC3 (MEGA) must be released before TRDC2 (WAKEUP), otherwise the release of TRDC3 fails.
+		// - The CM7 has the domain ID 4 (TRDC2 MDAC_W0/W1).
+		// - Although the CM7 uses the non-secure address 0x04xxxxxx, its accesses arrive as secure privileged at the TRDC
+		//   (MRC_A1 error capture: EDID 4, EATR "secure privileged data"). The region must therefore have NSE = 0.
+		// - If several regions of a domain hit, a denying region wins. So the CM7 gets exactly one valid region.
+		// - The MRC only sees accesses to its FlexSPI, therefore the region can cover the whole address range.
+		static void GrantCm7FlashAccess ()
+		{
+			#if defined XIP_BOOT_FLEXSPI1
+				TRDC_Type *const trdc               = TRDC2;
+				static constexpr uint32_t EleRdcId  = 0x78;
+				static constexpr char     MrcName[] = "TRDC2 MRC_W1";
+			#elif defined XIP_BOOT_FLEXSPI2
+				TRDC_Type *const trdc               = TRDC1;
+				static constexpr uint32_t EleRdcId  = 0x74;
+				static constexpr char     MrcName[] = "TRDC1 MRC_A1";
+			#else
+				#error "Only Boot from FlexSPI"
+			#endif
+			static constexpr uint32_t EleCoreCm33Id = 0x01;
+			static constexpr uint32_t FlexSpiMrcIdx = 1;
+			static constexpr uint32_t MrcRegions    = 8;
+			static constexpr uint32_t MrcAccessSets = 8;
+
+			if (ELE_BaseAPI_ReleaseRDC (MU_RT_S3MUA, EleRdcId, EleCoreCm33Id) != kStatus_Success)
+			{
+				MyPrintf ("CM7 kick-off: %s not released by the ELE\r\n", MrcName);
+				return;
+			}
+
+			auto &mrc = trdc->MRC_INDEX[FlexSpiMrcIdx];
+
+			// Use the highest access control policy which is not locked
+			uint32_t accessSet = MrcAccessSets;
+			while ((accessSet > 0) && ((mrc.MRC_GLBAC[accessSet - 1] & TRDC_MRC_GLBAC_LK_MASK) != 0UL))
+			{
+				accessSet--;
+			}
+
+			if (accessSet == 0)
+			{
+				MyPrintf ("CM7 kick-off: all access control policies of %s are locked\r\n", MrcName);
+				return;
+			}
+
+			accessSet--;
+			mrc.MRC_GLBAC[accessSet] = TRDC_MRC_GLBAC_NUX_MASK | TRDC_MRC_GLBAC_NUW_MASK | TRDC_MRC_GLBAC_NUR_MASK |
+									   TRDC_MRC_GLBAC_NPX_MASK | TRDC_MRC_GLBAC_NPW_MASK | TRDC_MRC_GLBAC_NPR_MASK |
+									   TRDC_MRC_GLBAC_SUX_MASK | TRDC_MRC_GLBAC_SUW_MASK | TRDC_MRC_GLBAC_SUR_MASK |
+									   TRDC_MRC_GLBAC_SPX_MASK | TRDC_MRC_GLBAC_SPW_MASK | TRDC_MRC_GLBAC_SPR_MASK;
+
+			for (uint32_t region = 0; region < MrcRegions; region++)
+			{
+				mrc.MRC_DOM4_RGD_W[region][1] = 0;
+			}
+			mrc.MRC_DOM4_RGD_W[0][0] = TRDC_MRC_DOM0_RGD_W_MRACSEL(accessSet);
+			mrc.MRC_DOM4_RGD_W[0][1] = TRDC_MRC_DOM0_RGD_W_END_ADDR_MASK | TRDC_MRC_DOM0_RGD_W_NSE(0) | TRDC_MRC_DOM0_RGD_W_VLD(1);
+		}
 	#endif
 
 	void portable_init (core_portable *p, int *argc, char *argv[])
@@ -197,80 +269,138 @@ extern "C"
 			defined MIMXRT1173_cm7_SERIES || defined MIMXRT1175_cm7_SERIES || defined MIMXRT1176_cm7_SERIES
 			// start the M4 core
 			extern uint32_t __FlexSPI_segment_end__;
-			uint32_t bootAddress = (uint32_t)&__FlexSPI_segment_end__;
+			const uint32_t bootAddress = (uint32_t)&__FlexSPI_segment_end__;
 			IOMUXC_LPSR_GPR->GPR0 = IOMUXC_LPSR_GPR_GPR0_CM4_INIT_VTOR_LOW ((uint32_t)bootAddress >> 3);
 			IOMUXC_LPSR_GPR->GPR1 = IOMUXC_LPSR_GPR_GPR1_CM4_INIT_VTOR_HIGH((uint32_t)bootAddress >> 16);
 			SRC->SCR |= SRC_SCR_BT_RELEASE_M4_MASK;
-		#elif defined MIMXRT1189_cm33_SERIES || defined MIMXRT1187_cm33_SERIES
-#if 0
+		#elif (defined(MIMXRT118C_cm33_SERIES) || defined(MIMXRT1185_cm33_SERIES) || defined(MIMXRT1186_cm33_SERIES) || defined(MIMXRT1187_cm33_SERIES) || defined(MIMXRT1189_cm33_SERIES))
 			// Start the M7 core
-			// Compare Chapter 12.10 "Cortex-M7 kick-off procedure"
-//			extern uint32_t __ITCM_M7_segment_start__ [];
+			// Compare Chapter 12.10 "Cortex-M7 kick-off procedure" of the reference manual
 
-			// Enable clock
-//			ANADIG_OSC->OSC_RC24M_CTRL = 0x007901F2;
-//			ANADIG_OSC->OSC_24M_CTRL   = 0x40000014;
-//			CCM->CLOCK_ROOT[1].CONTROL = 0x000; // Use OSC_RC_24M as clock source
-
-			PHY_LDO->CTRL0.RW          = PHY_LDO_CTRL0_LINREG_OUTPUT_TRG(0x10) | PHY_LDO_CTRL0_LINREG_ILIMIT_EN_MASK | PHY_LDO_CTRL0_LINREG_EN_MASK;
-			ANADIG_PLL->ARM_PLL_CTRL   = ANADIG_PLL_ARM_PLL_CTRL_ARM_PLL_GATE_MASK | ANADIG_PLL_ARM_PLL_CTRL_POWERUP_MASK | ANADIG_PLL_ARM_PLL_CTRL_DIV_SELECT(0x84);
-			ANADIG_PLL->ARM_PLL_CTRL   = ANADIG_PLL_ARM_PLL_CTRL_ENABLE_CLK_MASK | ANADIG_PLL_ARM_PLL_CTRL_POWERUP_MASK | ANADIG_PLL_ARM_PLL_CTRL_DIV_SELECT(0x84);
-			DCDC->REG3                 = DCDC_REG3_REG_FBK_SEL(2) | DCDC_REG3_DISABLE_IDLE_SKIP_MASK | DCDC_REG3_DISABLE_PULSE_SKIP_MASK;
-			DCDC->TRG_SW_0             = DCDC_TRG_SW_0_VDD1P0CTRL_LP_TRG(0x10) | DCDC_TRG_SW_0_VDD1P8CTRL_TRG(0xC) | DCDC_TRG_SW_0_VDD1P0CTRL_TRG(0x14);
-
-			// Set Initial VTOR
-			extern uint32_t __FlexSPI_segment_end__[];
-			const uint32_t bootaddr = (reinterpret_cast<uint32_t>(__FlexSPI_segment_end__) - 0x10000000);
-			BLK_CTRL_S_AONMIX->M7_CFG = bootaddr | BLK_CTRL_S_AONMIX_M7_CFG_WAIT(1);
-
-			// Release Cortex-M7 reset 
-			SRC_GENERAL_REG_NS->SCR = SRC_GENERAL_SCR_BT_RELEASE_M7(1);
-			SRC_GENERAL_REG->SCR    = SRC_GENERAL_SCR_BT_RELEASE_M7_MASK;
-
-			auto InitM7Mem = [](uint32_t targetAddr)
+			// Step 1: After POR the CM7 is held in reset and CPUWAIT is set.
+			// The debugger script (Release_118x_M7) already performs the kick-off and finally clears CPUWAIT.
+			// SRC_GENERAL_REG->SCR is no indicator: with fuse POR_PRELOAD_CM7_TCM_ECC the ROM already releases the CM7 reset.
+			if ((BLK_CTRL_S_AONMIX->M7_CFG & BLK_CTRL_S_AONMIX_M7_CFG_WAIT_MASK) == 0UL)
 			{
-				DMA4->TCD[0].SADDR          = 0x20484000;
-				DMA4->TCD[0].DADDR          = targetAddr;
-				DMA4->TCD[0].NBYTES_MLOFFNO = 0x20000;
-				DMA4->TCD[0].CITER_ELINKNO  = 0x1;
-				DMA4->TCD[0].BITER_ELINKNO  = 0x1;
-				DMA4->TCD[0].ATTR           = 0x303;
-				DMA4->TCD[0].SOFF           = 0;
-				DMA4->TCD[0].DOFF           = 0x8;
-				DMA4->TCD[0].CH_CSR         = 0x7;
-				DMA4->TCD[0].CSR            = 0x8;
-				DMA4->TCD[0].CSR            = 0x9;
+				// The debugger script doesn't configure the TRDC
+				GrantCm7FlashAccess ();
+			}
+			else
+			{
+				const uint32_t coreClockFreq = CLOCK_GetCpuClkFreq ();
 
-				DMA4->TCD[0].CH_CSR = 0x40000006;
+				// Preparation: core voltage and CM7 clock
+				// DCDC_SetVDD1P0BuckModeTargetVoltage(DCDC, kDCDC_1P0Target1P1V);
+				DCDC->REG3                 = DCDC_REG3_REG_FBK_SEL(2) | DCDC_REG3_DISABLE_IDLE_SKIP_MASK | DCDC_REG3_DISABLE_PULSE_SKIP_MASK;
+				DCDC->TRG_SW_0             = DCDC_TRG_SW_0_VDD1P0CTRL_LP_TRG(0x10) | DCDC_TRG_SW_0_VDD1P8CTRL_TRG(0xC) | DCDC_TRG_SW_0_VDD1P0CTRL_TRG(0x14);
 
-				while ((DMA4->TCD[0].CH_CSR & DMA4_CH_CSR_DONE_MASK) == 0UL)
+				// M7 clock from the ARM PLL, which is already configured by BOARD_BootClockRUN.
+				// Unlike the debugger script, don't switch the M33 clock root to RC24M: running XiP from FlexSPI2 requires
+				// the M33 clock root to be higher than 1/4 of the FlexSPI2 clock root.
+				CCM->CLOCK_ROOT[kCLOCK_Root_M7].CONTROL = CCM_CLOCK_ROOT_CONTROL_MUX(kCLOCK_M7_ClockRoot_MuxArmPllOut) | CCM_CLOCK_ROOT_CONTROL_DIV(1);
+				CCM->LPCG[kCLOCK_M7].DIRECT             = CCM_LPCG_DIRECT_ON_MASK;
+				SDK_DelayAtLeastUs (10, coreClockFreq);
+
+				// Step 2: Set initial VTOR (address >> 7)
+				// The CM7 image follows directly the CM33 image in the flash. __FlexSPIx_segment_end__ is the secure CM33 address,
+				// the CM7 sees the flash at the non-secure address.
+				static constexpr uint32_t SecureAdressOffset = 0x10000000;
+				#if defined XIP_BOOT_FLEXSPI1
+					extern uint32_t __FlexSPI_segment_end__[];
+					const uint32_t *const cm7Vectors = __FlexSPI_segment_end__;
+				#elif defined XIP_BOOT_FLEXSPI2
+					extern uint32_t __FlexSPI2_segment_end__[];
+					const uint32_t *const cm7Vectors = __FlexSPI2_segment_end__;
+				#else
+					#error "Only Boot from FlexSPI"
+				#endif
+				const uint32_t bootaddr = (reinterpret_cast<uint32_t>(cm7Vectors) - SecureAdressOffset) >> 7;
+				BLK_CTRL_S_AONMIX->M7_CFG = BLK_CTRL_S_AONMIX_M7_CFG_INITVTOR(bootaddr) | BLK_CTRL_S_AONMIX_M7_CFG_WAIT(1);
+
+				// Step 3: The default TCM size (256 KB ITCM, 256 KB DTCM) is used
+
+				// Step 4: Release Cortex-M7 reset
+				SRC_GENERAL_REG->SCR = SRC_GENERAL_SCR_BT_RELEASE_M7_MASK;
+
+				// Step 5: Initialize the TCM ECC by 64-bit writes. The written data is irrelevant.
+				// The source must be reachable by the eDMA4. The stack is located in the M33 System TCM at its CPU-local
+				// address 0x30000000, which ends with a source bus error. The DMA reads the M33 System TCM via its bus alias.
+				uint32_t dmaError = 0;
+				auto InitM7Mem = [&dmaError](uint32_t targetAddr)
 				{
+					static constexpr uint32_t M33SysTcmBusAlias = 0x20200000;
+					DMA4->TCD[0].SADDR          = M33SysTcmBusAlias;
+					DMA4->TCD[0].DADDR          = targetAddr;
+					DMA4->TCD[0].NBYTES_MLOFFNO = DMA4_NBYTES_MLOFFNO_NBYTES(0x20000); // Number of Bytes to transfer per service request
+					DMA4->TCD[0].CITER_ELINKNO  = DMA4_CITER_ELINKNO_CITER(0x1);       // Current Major Iteration Count
+					DMA4->TCD[0].BITER_ELINKNO  = DMA4_BITER_ELINKNO_BITER(0x1);       // Starting Major Iteration Count
+					DMA4->TCD[0].ATTR           = DMA4_ATTR_SSIZE(3) | DMA4_ATTR_DSIZE(3); // 0x303 - Source Size and and destinatiuon offset ==> 64-Bit
+					DMA4->TCD[0].SOFF           = DMA4_SOFF_SOFF(0);   // 0x0 . Source Offset => 0
+					DMA4->TCD[0].DOFF           = DMA4_DOFF_DOFF(0x8); // Destination Offset 8-Bytes
+					DMA4->TCD[0].CH_CSR         = DMA4_CH_CSR_EEI_MASK | DMA4_CH_CSR_EARQ_MASK | DMA4_CH_CSR_ERQ_MASK; // 0x7;
+					DMA4->TCD[0].CSR            = DMA4_CSR_DREQ_MASK;  // 0x8
+					DMA4->TCD[0].CSR            = DMA4_CSR_DREQ_MASK | DMA4_CSR_START_MASK; // 0x9
+
+					while (((DMA4->TCD[0].CH_CSR & DMA4_CH_CSR_DONE_MASK) == 0UL) && ((DMA4->TCD[0].CH_ES & DMA4_CH_ES_ERR_MASK) == 0UL))
+					{
+					}
+
+					dmaError |= DMA4->TCD[0].CH_ES;
+					DMA4->TCD[0].CH_ES  = DMA4_CH_ES_ERR_MASK;
+					DMA4->TCD[0].CH_CSR = DMA4_CH_CSR_DONE_MASK | DMA4_CH_CSR_EEI_MASK | DMA4_CH_CSR_EARQ_MASK; // 0x40000006;
+				};
+
+				InitM7Mem (0x303C0000); // M7 ITCM
+				InitM7Mem (0x303E0000);
+				InitM7Mem (0x30400000); // M7 DTCM
+				InitM7Mem (0x30420000);
+				SDK_DelayAtLeastUs (200, coreClockFreq);
+
+				if (dmaError != 0UL)
+				{
+					MyPrintf ("CM7 kick-off: TCM initialization failed, DMA4 CH_ES 0x%X\r\n", dmaError);
 				}
 
-				DMA4->TCD[0].CH_CSR = (1UL << DMA4_CH_CSR_DONE_SHIFT);
-			};
+				// With fuse POR_PRELOAD_CM7_TCM_ECC programmed the ROM already powered up the CM7, its VTOR is fixed to 0 and
+				// INITVTOR is ignored. The initial SP and reset vector at ITCM address 0 let the CM7 start in both cases.
+				// The CM7 startup code sets VTOR to its own vector table.
+				volatile uint32_t *const itcmAlias = reinterpret_cast<volatile uint32_t *>(0x303C0000);
+				itcmAlias[0] = cm7Vectors[0];
+				itcmAlias[1] = cm7Vectors[1];
+				__DSB();
 
-			InitM7Mem (0x303C0000);
-			InitM7Mem (0x303C0000);
-			InitM7Mem (0x30400000);
-			InitM7Mem (0x30420000);
+				// Step 6 and 7: The CM7 image is already located in the flash, it isn't authenticated by the ELE
 
-			// Trigger S401
-//			while ((MU_RT_S3MUA->TSR & MU_TSR_TE0_MASK) == 0)
-//				; // Wait TR empty
-			MU_RT_S3MUA->TR[0] = 0x17d20106;
-//			while ((MU_RT_S3MUA->RSR & MU_RSR_RF0_MASK) == 0)
-//				; // Wait RR Full
-//			while ((MU_RT_S3MUA->RSR & MU_RSR_RF1_MASK) == 0)
-//				; // Wait RR Full
+				// Step 8: Check TRDC configuration
+				GrantCm7FlashAccess ();
 
-			// Response from ELE must be always read 
-			[[maybe_unused]]volatile uint32_t result1 = MU_RT_S3MUA->RR[0];
-			[[maybe_unused]]volatile uint32_t result2 = MU_RT_S3MUA->RR[1];
+				// Step 9: Send "Enable APC request" to the ELE
+				while ((MU_RT_S3MUA->TSR & MU_TSR_TE0_MASK) == 0)
+					; // Wait TR empty
+				MU_RT_S3MUA->TR[0] = 0x17d20106;
+				while ((MU_RT_S3MUA->RSR & MU_RSR_RF0_MASK) == 0)
+					; // Wait RR Full
+				while ((MU_RT_S3MUA->RSR & MU_RSR_RF1_MASK) == 0)
+					; // Wait RR Full
 
-			// Deassert Wait
-			BLK_CTRL_S_AONMIX->M7_CFG = bootaddr;
-#endif
+				// The response from the ELE must always be read
+				static constexpr uint32_t EleApcResponseHeader = 0xE1D20206;
+				static constexpr uint32_t EleResponseSuccess   = 0xD6;
+				const uint32_t eleResponse = MU_RT_S3MUA->RR[0];
+				const uint32_t eleStatus   = MU_RT_S3MUA->RR[1];
+				if ((eleResponse != EleApcResponseHeader) || (eleStatus != EleResponseSuccess))
+				{
+					MyPrintf ("CM7 kick-off: ELE APC response 0x%X 0x%X\r\n", eleResponse, eleStatus);
+				}
+
+				// Step 10-12: Gate off CM7 clock, deassert CPUWAIT, gate on CM7 clock
+				CCM->LPCG[kCLOCK_M7].DIRECT = 0;
+				while ((CCM->LPCG[kCLOCK_M7].STATUS0 & CCM_LPCG_STATUS0_ON_MASK) != 0UL)
+				{
+				}
+				BLK_CTRL_S_AONMIX->M7_CFG   = BLK_CTRL_S_AONMIX_M7_CFG_INITVTOR(bootaddr);
+				CCM->LPCG[kCLOCK_M7].DIRECT = CCM_LPCG_DIRECT_ON_MASK;
+			}
 		#endif
 	}
 
