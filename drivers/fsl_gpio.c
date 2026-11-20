@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2016, Freescale Semiconductor, Inc.
- * Copyright 2016-2017, 2020-2021 NXP
+ * Copyright (c) 2015, Freescale Semiconductor, Inc.
+ * Copyright 2016-2019, 2024-2025 NXP
  * All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
@@ -8,30 +8,77 @@
 
 #include "fsl_gpio.h"
 
+/*
+ * $Coverage Justification Reference$
+ *
+ * $Justification gpio_c_ref_1$
+ * The peripheral base address is always valid and checked by assert.
+ *
+ */
+
+/*******************************************************************************
+ * Definitions
+ ******************************************************************************/
 /* Component ID definition, used by tools. */
 #ifndef FSL_COMPONENT_ID
-#define FSL_COMPONENT_ID "platform.drivers.igpio"
+#define FSL_COMPONENT_ID "platform.drivers.gpio"
+#endif
+
+#if defined(GPIO_RSTS)
+#define GPIO_RESETS_ARRAY GPIO_RSTS
+#endif
+
+#if defined(GPIO_CLOCKS)
+#define GPIO_CLOCKS_ARRAY GPIO_CLOCKS
 #endif
 
 /*******************************************************************************
  * Variables
  ******************************************************************************/
 
-#if !(defined(FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL) && FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL)
-/* Array of GPIO peripheral base address. */
+#if !(defined(FSL_FEATURE_PORT_HAS_NO_INTERRUPT) && FSL_FEATURE_PORT_HAS_NO_INTERRUPT) && \
+    defined(FSL_FEATURE_SOC_PORT_COUNT)
+static PORT_Type *const s_portBases[] = PORT_BASE_PTRS;
+static GPIO_Type *const s_gpioBases[] = GPIO_BASE_PTRS;
+#else
+#if defined(GPIO_RESETS_ARRAY) || \
+    !(defined(FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL) && FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL)
 static GPIO_Type *const s_gpioBases[] = GPIO_BASE_PTRS;
 #endif
+#endif
+
+
+#if !(defined(FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL) && FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL) && \
+    defined(GPIO_CLOCKS_ARRAY)
+/*! @brief Array to map FGPIO instance number to clock name. */
+static const clock_ip_name_t s_gpioClockName[] = GPIO_CLOCKS_ARRAY;
+#endif /* FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL */
+
+#if defined(FSL_FEATURE_SOC_FGPIO_COUNT) && FSL_FEATURE_SOC_FGPIO_COUNT
+
+#if defined(FSL_FEATURE_PCC_HAS_FGPIO_CLOCK_GATE_CONTROL) && FSL_FEATURE_PCC_HAS_FGPIO_CLOCK_GATE_CONTROL
 
 #if !(defined(FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL) && FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL)
-/* Array of GPIO clock name. */
-static const clock_ip_name_t s_gpioClock[] = GPIO_CLOCKS;
+/*! @brief Array to map FGPIO instance number to clock name. */
+static const clock_ip_name_t s_fgpioClockName[] = FGPIO_CLOCKS;
 #endif /* FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL */
+
+#endif /* FSL_FEATURE_PCC_HAS_FGPIO_CLOCK_GATE_CONTROL */
+
+#endif /* FSL_FEATURE_SOC_FGPIO_COUNT */
+
+#if defined(GPIO_RESETS_ARRAY)
+/* Reset array */
+static const reset_ip_name_t s_gpioResets[] = GPIO_RESETS_ARRAY;
+#endif
 
 /*******************************************************************************
  * Prototypes
  ******************************************************************************/
-
-#if !(defined(FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL) && FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL)
+#if !(defined(FSL_FEATURE_PORT_HAS_NO_INTERRUPT) && FSL_FEATURE_PORT_HAS_NO_INTERRUPT) && \
+    defined(FSL_FEATURE_SOC_PORT_COUNT) || defined(GPIO_RESETS_ARRAY) || \
+    (!(defined(FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL) && FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL) && \
+    defined(GPIO_CLOCKS_ARRAY))
 /*!
  * @brief Gets the GPIO instance according to the GPIO base
  *
@@ -39,19 +86,36 @@ static const clock_ip_name_t s_gpioClock[] = GPIO_CLOCKS;
  * @retval GPIO instance
  */
 static uint32_t GPIO_GetInstance(GPIO_Type *base);
+#endif
 
+/*!
+ * @brief Enable/disable GPIO port clock.
+ *
+ * @param base   GPIO peripheral base pointer.
+ * @param enable True means enable GPIO port clock, false means disable.
+ */
+static void GPIO_PortClockEnable(GPIO_Type *base, bool enable);
 /*******************************************************************************
  * Code
  ******************************************************************************/
-
+#if !(defined(FSL_FEATURE_PORT_HAS_NO_INTERRUPT) && FSL_FEATURE_PORT_HAS_NO_INTERRUPT) && \
+    defined(FSL_FEATURE_SOC_PORT_COUNT) || defined(GPIO_RESETS_ARRAY) || \
+    (!(defined(FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL) && FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL) && \
+    defined(GPIO_CLOCKS_ARRAY))
+     
 static uint32_t GPIO_GetInstance(GPIO_Type *base)
 {
     uint32_t instance;
 
     /* Find the instance index from base address mappings. */
-    for (instance = 0U; instance < ARRAY_SIZE(s_gpioBases); instance++)
+    /*
+     * $Branch Coverage Justification$
+     * (instance >= ARRAY_SIZE(s_gpioBases)) not covered.
+     * $ref gpio_c_ref_1$.
+     */
+    for (instance = 0; instance < ARRAY_SIZE(s_gpioBases); instance++) /* GCOVR_EXCL_BR_LINE */
     {
-        if (s_gpioBases[instance] == base)
+        if (MSDK_REG_SECURE_ADDR(s_gpioBases[instance]) == MSDK_REG_SECURE_ADDR(base))
         {
             break;
         }
@@ -63,121 +127,408 @@ static uint32_t GPIO_GetInstance(GPIO_Type *base)
 }
 #endif
 
-/*!
- * brief Initializes the GPIO peripheral according to the specified
- *        parameters in the initConfig.
- *
- * param base GPIO base pointer.
- * param pin Specifies the pin number
- * param initConfig pointer to a ref gpio_pin_config_t structure that
- *        contains the configuration information.
- */
-void GPIO_PinInit(GPIO_Type *base, uint32_t pin, const gpio_pin_config_t *Config)
+static void GPIO_PortClockEnable(GPIO_Type *base, bool enable)
 {
-#if !(defined(FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL) && FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL)
-    /* Enable GPIO clock. */
+#if !(defined(FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL) && FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL)&& \
+    defined(GPIO_CLOCKS_ARRAY)
     uint32_t instance = GPIO_GetInstance(base);
 
-    /* If The clock IP is valid, enable the clock gate. */
-    if ((instance < ARRAY_SIZE(s_gpioClock)) && (kCLOCK_IpInvalid != s_gpioClock[instance]))
+    /* Ensure the instance index is within bounds of the s_gpioClockName array */
+    assert(instance < ARRAY_SIZE(s_gpioClockName));
+
+    if (enable)
     {
-        (void)CLOCK_EnableClock(s_gpioClock[instance]);
+        CLOCK_EnableClock(s_gpioClockName[instance]);
+    }
+    else
+    {
+        CLOCK_DisableClock(s_gpioClockName[instance]);
     }
 #endif /* FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL */
-
-    /* Register reset to default value */
-    base->IMR &= ~(1UL << pin);
-
-    /* Configure GPIO pin direction */
-    if (Config->direction == kGPIO_DigitalInput)
-    {
-        base->GDIR &= ~(1UL << pin);
-    }
-    else
-    {
-        GPIO_PinWrite(base, pin, Config->outputLogic);
-        base->GDIR |= (1UL << pin);
-    }
-
-    /* Configure GPIO pin interrupt mode */
-    GPIO_SetPinInterruptConfig(base, pin, Config->interruptMode);
 }
 
 /*!
- * brief Sets the output level of the individual GPIO pin to logic 1 or 0.
+ * brief Initializes the GPIO peripheral.
  *
- * param base GPIO base pointer.
- * param pin GPIO port pin number.
- * param output GPIOpin output logic level.
- *        - 0: corresponding pin output low-logic level.
- *        - 1: corresponding pin output high-logic level.
+ * This function ungates the GPIO clock.
+ *
+ * param base   GPIO peripheral base pointer.
  */
-void GPIO_PinWrite(GPIO_Type *base, uint32_t pin, uint8_t output)
+void GPIO_PortInit(GPIO_Type *base)
 {
-    assert(pin < 32U);
-    if (output == 0U)
-    {
-#if (defined(FSL_FEATURE_IGPIO_HAS_DR_CLEAR) && FSL_FEATURE_IGPIO_HAS_DR_CLEAR)
-        base->DR_CLEAR = (1UL << pin);
-#else
-        base->DR &= ~(1UL << pin); /* Set pin output to low level.*/
+    GPIO_PortClockEnable(base, true);
+
+#if defined(GPIO_RESETS_ARRAY)
+    /* Reset the GPIO module */
+    RESET_ReleasePeripheralReset(s_gpioResets[GPIO_GetInstance(base)]);
 #endif
-    }
-    else
-    {
-#if (defined(FSL_FEATURE_IGPIO_HAS_DR_SET) && FSL_FEATURE_IGPIO_HAS_DR_SET)
-        base->DR_SET = (1UL << pin);
-#else
-        base->DR |= (1UL << pin);  /* Set pin output to high level.*/
-#endif
-    }
+}
+
+
+/*!
+ * brief Deinitializes the GPIO peripheral.
+ *
+ * param base   GPIO peripheral base pointer.
+ */
+void GPIO_PortDenit(GPIO_Type *base)
+{
+    GPIO_PortClockEnable(base, false);
 }
 
 /*!
- * brief Sets the current pin interrupt mode.
+ * brief Initializes a GPIO pin used by the board.
  *
- * param base GPIO base pointer.
- * param pin GPIO port pin number.
- * param pininterruptMode pointer to a ref gpio_interrupt_mode_t structure
- *        that contains the interrupt mode information.
+ * To initialize the GPIO, define a pin configuration, as either input or output, in the user file.
+ * Then, call the GPIO_PinInit() function.
+ *
+ * This is an example to define an input pin or an output pin configuration.
+ * code
+ * Define a digital input pin configuration,
+ * gpio_pin_config_t config =
+ * {
+ *   kGPIO_DigitalInput,
+ *   0,
+ * }
+ * Define a digital output pin configuration,
+ * gpio_pin_config_t config =
+ * {
+ *   kGPIO_DigitalOutput,
+ *   0,
+ * }
+ * endcode
+ *
+ * param base   GPIO peripheral base pointer (GPIOA, GPIOB, GPIOC, and so on.)
+ * param pin    GPIO port pin number
+ * param config GPIO pin configuration pointer
  */
-void GPIO_PinSetInterruptConfig(GPIO_Type *base, uint32_t pin, gpio_interrupt_mode_t pinInterruptMode)
+void GPIO_PinInit(GPIO_Type *base, uint32_t pin, const gpio_pin_config_t *config)
 {
-    volatile uint32_t *icr;
-    uint32_t icrShift;
+    assert(NULL != config);
 
-    icrShift = pin;
+    GPIO_PortClockEnable(base, true);
 
-    /* Register reset to default value */
-    base->EDGE_SEL &= ~(1UL << pin);
+#if defined(GPIO_RESETS_ARRAY)
+    RESET_ReleasePeripheralReset(s_gpioResets[GPIO_GetInstance(base)]);
+#endif
 
-    if (pin < 16U)
+    if (config->pinDirection == kGPIO_DigitalInput)
     {
-        icr = &(base->ICR1);
+        base->PDDR &= GPIO_FIT_REG(~(1UL << pin));
     }
     else
     {
-        icr = &(base->ICR2);
-        icrShift -= 16U;
-    }
-    switch (pinInterruptMode)
-    {
-        case (kGPIO_IntLowLevel):
-            *icr &= ~(3UL << (2UL * icrShift));
-            break;
-        case (kGPIO_IntHighLevel):
-            *icr = (*icr & (~(3UL << (2UL * icrShift)))) | (1UL << (2UL * icrShift));
-            break;
-        case (kGPIO_IntRisingEdge):
-            *icr = (*icr & (~(3UL << (2UL * icrShift)))) | (2UL << (2UL * icrShift));
-            break;
-        case (kGPIO_IntFallingEdge):
-            *icr |= (3UL << (2UL * icrShift));
-            break;
-        case (kGPIO_IntRisingOrFallingEdge):
-            base->EDGE_SEL |= (1UL << pin);
-            break;
-        default:; /* Intentional empty default */
-            break;
+        GPIO_PinWrite(base, pin, config->outputLogic);
+        base->PDDR |= GPIO_FIT_REG((1UL << pin));
     }
 }
+
+#if defined(FSL_FEATURE_GPIO_HAS_VERSION_INFO_REGISTER) && FSL_FEATURE_GPIO_HAS_VERSION_INFO_REGISTER
+void GPIO_GetVersionInfo(GPIO_Type *base, gpio_version_info_t *info)
+{
+    uint32_t verid = base->VERID;
+    info->feature  = (uint16_t)((verid & GPIO_VERID_FEATURE_MASK) >> GPIO_VERID_FEATURE_SHIFT);
+    info->minor    = (uint8_t)((verid & GPIO_VERID_MINOR_MASK) >> GPIO_VERID_MINOR_SHIFT);
+    info->major    = (uint8_t)((verid & GPIO_VERID_MAJOR_MASK) >> GPIO_VERID_MAJOR_SHIFT);
+}
+#endif /* FSL_FEATURE_GPIO_HAS_VERSION_INFO_REGISTER */
+
+#if !(defined(FSL_FEATURE_PORT_HAS_NO_INTERRUPT) && FSL_FEATURE_PORT_HAS_NO_INTERRUPT) && \
+    defined(FSL_FEATURE_SOC_PORT_COUNT)
+/*!
+ * brief Reads the GPIO port interrupt status flag.
+ *
+ * If a pin is configured to generate the DMA request, the corresponding flag
+ * is cleared automatically at the completion of the requested DMA transfer.
+ * Otherwise, the flag remains set until a logic one is written to that flag.
+ * If configured for a level sensitive interrupt that remains asserted, the flag
+ * is set again immediately.
+ *
+ * param base GPIO peripheral base pointer (GPIOA, GPIOB, GPIOC, and so on.)
+ * retval The current GPIO port interrupt status flag, for example, 0x00010001 means the
+ *         pin 0 and 17 have the interrupt.
+ */
+uint32_t GPIO_PortGetInterruptFlags(GPIO_Type *base)
+{
+    uint8_t instance;
+    PORT_Type *portBase;
+    instance = (uint8_t)GPIO_GetInstance(base);
+    portBase = s_portBases[instance];
+    return portBase->ISFR;
+}
+#else
+/*!
+ * brief Read the GPIO interrupt status flags.
+ *
+ * param base GPIO peripheral base pointer. (GPIOA, GPIOB, GPIOC, and so on.)
+ * return The current GPIO's interrupt status flag.
+ *         '1' means the related pin's flag is set, '0' means the related pin's flag not set.
+ *          For example, the return value 0x00010001 means the pin 0 and 17 have the interrupt pending.
+ */
+uint32_t GPIO_GpioGetInterruptFlags(GPIO_Type *base)
+{
+    return base->ISFR[0];
+}
+#if (defined(FSL_FEATURE_GPIO_HAS_INTERRUPT_CHANNEL_SELECT) && FSL_FEATURE_GPIO_HAS_INTERRUPT_CHANNEL_SELECT)
+/*!
+ * brief Read the GPIO interrupt status flags based on selected interrupt channel(IRQS).
+ * param base GPIO peripheral base pointer. (GPIOA, GPIOB, GPIOC, and so on.)
+ * param channel '0' means selete interrupt channel 0, '1' means selete interrupt channel 1.
+ *
+ * return The current GPIO's interrupt status flag based on the selected interrupt channel.
+ *         '1' means the related pin's flag is set, '0' means the related pin's flag not set.
+ *          For example, the return value 0x00010001 means the pin 0 and 17 have the interrupt pending.
+ */
+uint32_t GPIO_GpioGetInterruptChannelFlags(GPIO_Type *base, uint32_t channel)
+{
+    assert(channel < 2U);
+    return base->ISFR[channel];
+}
+#endif /* FSL_FEATURE_GPIO_HAS_INTERRUPT_CHANNEL_SELECT */
+/*!
+ * brief Read individual pin's interrupt status flag.
+ *
+ * param base GPIO peripheral base pointer. (GPIOA, GPIOB, GPIOC, and so on)
+ * param pin GPIO specific pin number.
+ * return The current selected pin's interrupt status flag.
+ */
+uint8_t GPIO_PinGetInterruptFlag(GPIO_Type *base, uint32_t pin)
+{
+    return (uint8_t)((base->ICR[pin] & GPIO_ICR_ISF_MASK) >> GPIO_ICR_ISF_SHIFT);
+}
+#endif /* FSL_FEATURE_PORT_HAS_NO_INTERRUPT */
+
+#if !(defined(FSL_FEATURE_PORT_HAS_NO_INTERRUPT) && FSL_FEATURE_PORT_HAS_NO_INTERRUPT) && \
+    defined(FSL_FEATURE_SOC_PORT_COUNT)
+/*!
+ * brief Clears multiple GPIO pin interrupt status flags.
+ *
+ * param base GPIO peripheral base pointer (GPIOA, GPIOB, GPIOC, and so on.)
+ * param mask GPIO pin number macro
+ */
+void GPIO_PortClearInterruptFlags(GPIO_Type *base, uint32_t mask)
+{
+    uint8_t instance;
+    PORT_Type *portBase;
+    instance       = (uint8_t)GPIO_GetInstance(base);
+    portBase       = s_portBases[instance];
+    portBase->ISFR = mask;
+}
+#else
+/*!
+ * brief Clears GPIO pin interrupt status flags.
+ *
+ * param base GPIO peripheral base pointer (GPIOA, GPIOB, GPIOC, and so on.)
+ * param mask GPIO pin number macro
+ */
+void GPIO_GpioClearInterruptFlags(GPIO_Type *base, uint32_t mask)
+{
+    base->ISFR[0] = GPIO_FIT_REG(mask);
+}
+#if (defined(FSL_FEATURE_GPIO_HAS_INTERRUPT_CHANNEL_SELECT) && FSL_FEATURE_GPIO_HAS_INTERRUPT_CHANNEL_SELECT)
+/*!
+ * brief Clears GPIO pin interrupt status flags based on selected interrupt channel(IRQS).
+ *
+ * param base GPIO peripheral base pointer (GPIOA, GPIOB, GPIOC, and so on.)
+ * param mask GPIO pin number macro
+ * param channel '0' means selete interrupt channel 0, '1' means selete interrupt channel 1.
+ */
+void GPIO_GpioClearInterruptChannelFlags(GPIO_Type *base, uint32_t mask, uint32_t channel)
+{
+    assert(channel < 2U);
+    base->ISFR[channel] = GPIO_FIT_REG(mask);
+}
+#endif /* FSL_FEATURE_GPIO_HAS_INTERRUPT_CHANNEL_SELECT */
+/*!
+ * brief Clear GPIO individual pin's interrupt status flag.
+ *
+ * param base GPIO peripheral base pointer (GPIOA, GPIOB, GPIOC, and so on).
+ * param pin GPIO specific pin number.
+ */
+void GPIO_PinClearInterruptFlag(GPIO_Type *base, uint32_t pin)
+{
+    base->ICR[pin] |= GPIO_FIT_REG(GPIO_ICR_ISF(1U));
+}
+#endif /* FSL_FEATURE_PORT_HAS_NO_INTERRUPT */
+
+#if defined(FSL_FEATURE_GPIO_HAS_ATTRIBUTE_CHECKER) && FSL_FEATURE_GPIO_HAS_ATTRIBUTE_CHECKER
+/*!
+ * brief The GPIO module supports a device-specific number of data ports, organized as 32-bit
+ * words/8-bit Bytes. Each 32-bit/8-bit data port includes a GACR register, which defines the byte-level
+ * attributes required for a successful access to the GPIO programming model. If the GPIO module's GACR register
+ * organized as 32-bit words, the attribute controls for the 4 data bytes in the GACR follow a standard little
+ * endian data convention.
+ *
+ * param base      GPIO peripheral base pointer (GPIOA, GPIOB, GPIOC, and so on.)
+ * param attribute GPIO checker attribute
+ */
+void GPIO_CheckAttributeBytes(GPIO_Type *base, gpio_checker_attribute_t attribute)
+{
+#if defined(FSL_FEATURE_GPIO_REGISTERS_WIDTH) && (FSL_FEATURE_GPIO_REGISTERS_WIDTH == 8U)
+    base->GACR = ((uint8_t)attribute << GPIO_GACR_ACB_SHIFT);
+#else
+    base->GACR = ((uint32_t)attribute << GPIO_GACR_ACB0_SHIFT) | ((uint32_t)attribute << GPIO_GACR_ACB1_SHIFT) |
+                 ((uint32_t)attribute << GPIO_GACR_ACB2_SHIFT) | ((uint32_t)attribute << GPIO_GACR_ACB3_SHIFT);
+#endif /* FSL_FEATURE_GPIO_REGISTERS_WIDTH */
+}
+#endif
+
+#if defined(FSL_FEATURE_SOC_FGPIO_COUNT) && FSL_FEATURE_SOC_FGPIO_COUNT
+
+/*******************************************************************************
+ * Variables
+ ******************************************************************************/
+#if !(defined(FSL_FEATURE_PORT_HAS_NO_INTERRUPT) && FSL_FEATURE_PORT_HAS_NO_INTERRUPT) && \
+    defined(FSL_FEATURE_SOC_PORT_COUNT)
+static FGPIO_Type *const s_fgpioBases[] = FGPIO_BASE_PTRS;
+#endif
+/*******************************************************************************
+ * Prototypes
+ ******************************************************************************/
+#if !(defined(FSL_FEATURE_PORT_HAS_NO_INTERRUPT) && FSL_FEATURE_PORT_HAS_NO_INTERRUPT) && \
+    defined(FSL_FEATURE_SOC_PORT_COUNT)
+/*!
+ * @brief Gets the FGPIO instance according to the GPIO base
+ *
+ * @param base    FGPIO peripheral base pointer(PTA, PTB, PTC, etc.)
+ * @retval FGPIO instance
+ */
+static uint32_t FGPIO_GetInstance(FGPIO_Type *base);
+#endif
+/*******************************************************************************
+ * Code
+ ******************************************************************************/
+#if !(defined(FSL_FEATURE_PORT_HAS_NO_INTERRUPT) && FSL_FEATURE_PORT_HAS_NO_INTERRUPT) && \
+    defined(FSL_FEATURE_SOC_PORT_COUNT)
+static uint32_t FGPIO_GetInstance(FGPIO_Type *base)
+{
+    uint32_t instance;
+
+    /* Find the instance index from base address mappings. */
+    for (instance = 0; instance < ARRAY_SIZE(s_fgpioBases); instance++)
+    {
+        if (MSDK_REG_SECURE_ADDR(s_fgpioBases[instance]) == MSDK_REG_SECURE_ADDR(base))
+        {
+            break;
+        }
+    }
+
+    assert(instance < ARRAY_SIZE(s_fgpioBases));
+
+    return instance;
+}
+#endif
+#if defined(FSL_FEATURE_PCC_HAS_FGPIO_CLOCK_GATE_CONTROL) && FSL_FEATURE_PCC_HAS_FGPIO_CLOCK_GATE_CONTROL
+/*!
+ * brief Initializes the FGPIO peripheral.
+ *
+ * This function ungates the FGPIO clock.
+ *
+ * param base   FGPIO peripheral base pointer (FGPIOA, FGPIOB, FGPIOC, and so on.)
+ */
+void FGPIO_PortInit(FGPIO_Type *base)
+{
+#if !(defined(FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL) && FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL)
+    /* Ungate FGPIO periphral clock */
+    CLOCK_EnableClock(s_fgpioClockName[FGPIO_GetInstance(base)]);
+#endif /* FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL */
+}
+#endif /* FSL_FEATURE_PCC_HAS_FGPIO_CLOCK_GATE_CONTROL */
+
+/*!
+ * brief Initializes a FGPIO pin used by the board.
+ *
+ * To initialize the FGPIO driver, define a pin configuration, as either input or output, in the user file.
+ * Then, call the FGPIO_PinInit() function.
+ *
+ * This is an example to define an input pin or an output pin configuration:
+ * code
+ * Define a digital input pin configuration,
+ * gpio_pin_config_t config =
+ * {
+ *   kGPIO_DigitalInput,
+ *   0,
+ * }
+ * Define a digital output pin configuration,
+ * gpio_pin_config_t config =
+ * {
+ *   kGPIO_DigitalOutput,
+ *   0,
+ * }
+ * endcode
+ *
+ * param base   FGPIO peripheral base pointer (FGPIOA, FGPIOB, FGPIOC, and so on.)
+ * param pin    FGPIO port pin number
+ * param config FGPIO pin configuration pointer
+ */
+void FGPIO_PinInit(FGPIO_Type *base, uint32_t pin, const gpio_pin_config_t *config)
+{
+    assert(NULL != config);
+
+    if (config->pinDirection == kGPIO_DigitalInput)
+    {
+        base->PDDR &= ~(1UL << pin);
+    }
+    else
+    {
+        FGPIO_PinWrite(base, pin, config->outputLogic);
+        base->PDDR |= (1UL << pin);
+    }
+}
+#if !(defined(FSL_FEATURE_PORT_HAS_NO_INTERRUPT) && FSL_FEATURE_PORT_HAS_NO_INTERRUPT) && \
+    defined(FSL_FEATURE_SOC_PORT_COUNT)
+/*!
+ * brief Reads the FGPIO port interrupt status flag.
+ *
+ * If a pin is configured to generate the DMA request, the corresponding flag
+ * is cleared automatically at the completion of the requested DMA transfer.
+ * Otherwise, the flag remains set until a logic one is written to that flag.
+ * If configured for a level-sensitive interrupt that remains asserted, the flag
+ * is set again immediately.
+ *
+ * param base FGPIO peripheral base pointer (FGPIOA, FGPIOB, FGPIOC, and so on.)
+ * retval The current FGPIO port interrupt status flags, for example, 0x00010001 means the
+ *         pin 0 and 17 have the interrupt.
+ */
+uint32_t FGPIO_PortGetInterruptFlags(FGPIO_Type *base)
+{
+    uint8_t instance;
+    instance = (uint8_t)FGPIO_GetInstance(base);
+    PORT_Type *portBase;
+    portBase = s_portBases[instance];
+    return portBase->ISFR;
+}
+
+/*!
+ * brief Clears the multiple FGPIO pin interrupt status flag.
+ *
+ * param base FGPIO peripheral base pointer (FGPIOA, FGPIOB, FGPIOC, and so on.)
+ * param mask FGPIO pin number macro
+ */
+void FGPIO_PortClearInterruptFlags(FGPIO_Type *base, uint32_t mask)
+{
+    uint8_t instance;
+    instance = (uint8_t)FGPIO_GetInstance(base);
+    PORT_Type *portBase;
+    portBase       = s_portBases[instance];
+    portBase->ISFR = mask;
+}
+#endif
+#if defined(FSL_FEATURE_FGPIO_HAS_ATTRIBUTE_CHECKER) && FSL_FEATURE_FGPIO_HAS_ATTRIBUTE_CHECKER
+/*!
+ * brief The FGPIO module supports a device-specific number of data ports, organized as 32-bit
+ * words. Each 32-bit data port includes a GACR register, which defines the byte-level
+ * attributes required for a successful access to the GPIO programming model. The attribute controls for the 4 data
+ * bytes in the GACR follow a standard little endian
+ * data convention.
+ *
+ * param base      FGPIO peripheral base pointer (FGPIOA, FGPIOB, FGPIOC, and so on.)
+ * param attribute FGPIO checker attribute
+ */
+void FGPIO_CheckAttributeBytes(FGPIO_Type *base, gpio_checker_attribute_t attribute)
+{
+    base->GACR = ((uint32_t)attribute << FGPIO_GACR_ACB0_SHIFT) | ((uint32_t)attribute << FGPIO_GACR_ACB1_SHIFT) |
+                 ((uint32_t)attribute << FGPIO_GACR_ACB2_SHIFT) | ((uint32_t)attribute << FGPIO_GACR_ACB3_SHIFT);
+}
+#endif
+
+#endif /* FSL_FEATURE_SOC_FGPIO_COUNT */

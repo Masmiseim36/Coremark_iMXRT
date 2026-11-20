@@ -197,14 +197,42 @@ extern "C"
 		SystemCoreClockUpdate ();
 
 		#if defined LPUART_BASE_PTRS
-			#if (defined(MIMXRT1011_SERIES) || defined(MIMXRT1015_SERIES) || defined(MIMXRT1021_SERIES) || defined(MIMXRT1024_SERIES) || \
+			#if (defined(MIMXRT735S_cm33_core0_SERIES) || defined(MIMXRT735S_cm33_core1_SERIES) || \
+				 defined(MIMXRT758S_cm33_core0_SERIES) || defined(MIMXRT758S_cm33_core1_SERIES) || \
+				 defined(MIMXRT798S_cm33_core0_SERIES) || defined(MIMXRT798S_cm33_core1_SERIES))
+				// Functional clock of the LP_FLEXCOMM
+				#if (defined(MIMXRT735S_cm33_core0_SERIES) || defined(MIMXRT758S_cm33_core0_SERIES) || defined(MIMXRT798S_cm33_core0_SERIES))
+					// Compute domain: LP_FLEXCOMM0 (debug console) is clocked via FCCLK0
+					CLOCK_AttachClk (kOSC_CLK_to_FCCLK0);
+					CLOCK_SetClkDiv (kCLOCK_DivFcclk0Clk, 1U);
+					CLOCK_AttachClk (kFCCLK0_to_FLEXCOMM0);
+				#else
+					// Sense domain: LP_FLEXCOMM19 (debug console)
+					CLOCK_AttachClk (kSENSE_BASE_to_FLEXCOMM19);
+					CLOCK_SetClkDiv (kCLOCK_DivLPFlexComm19Clk, 1U);
+				#endif
+
+				// The LPUART is only one of the functions of a LP_FLEXCOMM (LPUART/LPSPI/LPI2C). The generic fsl_lpuart-driver
+				// does not know about this, so we have to do what LP_FLEXCOMM_Init() does before accessing the LPUART registers:
+				// enable the clock, release the reset and select the LPUART function in PSELID.
+				// Without this the LPUART registers are not accessible (STAT[TDRE] never gets set -> endless loop in the transmit routine)
+				static constexpr clock_ip_name_t FlexcommClocks [] = LP_FLEXCOMM_CLOCKS;
+				static constexpr reset_ip_name_t FlexcommResets [] = LP_FLEXCOMM_RSTS;
+				static LP_FLEXCOMM_Type * const  FlexcommBases  [] = LP_FLEXCOMM_BASE_PTRS;
+
+				CLOCK_EnableClock (FlexcommClocks[BOARD_DEBUG_UART_INSTANCE]);
+				RESET_ClearPeripheralReset (FlexcommResets[BOARD_DEBUG_UART_INSTANCE]);
+				FlexcommBases[BOARD_DEBUG_UART_INSTANCE]->PSELID = LP_FLEXCOMM_PSELID_PERSEL(1U);	// 1 = LPUART
+
+				const uint32_t clockFrequency = CLOCK_GetLPFlexCommClkFreq (BOARD_DEBUG_UART_INSTANCE);
+			#elif (defined(MIMXRT1011_SERIES) || defined(MIMXRT1015_SERIES) || defined(MIMXRT1021_SERIES) || defined(MIMXRT1024_SERIES) || \
 				 defined(MIMXRT1041_SERIES) || defined(MIMXRT1042_SERIES) || defined(MIMXRT1051_SERIES) || defined(MIMXRT1052_SERIES) || \
 				 defined(MIMXRT1061_SERIES) || defined(MIMXRT1062_SERIES) || defined(MIMXRT1064_SERIES))
-				uint32_t ClockFrequency = 0;
+				uint32_t clockFrequency = 0;
 				if (CLOCK_GetMux (kCLOCK_UartMux) == 0) // --> PLL3 div6 80M
-					ClockFrequency = (CLOCK_GetPllFreq (kCLOCK_PllUsb1) / 6U) / (CLOCK_GetDiv(kCLOCK_UartDiv) + 1U);
+					clockFrequency = (CLOCK_GetPllFreq (kCLOCK_PllUsb1) / 6U) / (CLOCK_GetDiv(kCLOCK_UartDiv) + 1U);
 				else
-					ClockFrequency = CLOCK_GetOscFreq() / (CLOCK_GetDiv(kCLOCK_UartDiv) + 1U);
+					clockFrequency = CLOCK_GetOscFreq() / (CLOCK_GetDiv(kCLOCK_UartDiv) + 1U);
 			#elif (defined(MIMXRT1165_cm7_SERIES) || defined(MIMXRT1166_cm7_SERIES) || defined(MIMXRT1165_cm4_SERIES) || defined(MIMXRT1166_cm4_SERIES) || \
 				   defined(MIMXRT1171_SERIES)     || defined(MIMXRT1172_SERIES)     || \
 				   defined(MIMXRT1173_cm7_SERIES) || defined(MIMXRT1175_cm7_SERIES) || defined(MIMXRT1176_cm7_SERIES) || \
@@ -219,7 +247,7 @@ extern "C"
 				CLOCK_SetRootClock (RootClocks[BOARD_DEBUG_UART_INSTANCE], &rootCfg);
 				CLOCK_ControlGate  (clocks[BOARD_DEBUG_UART_INSTANCE], kCLOCK_On);
 
-				uint32_t ClockFrequency = CLOCK_GetRootClockFreq (RootClocks[BOARD_DEBUG_UART_INSTANCE]);
+				const uint32_t clockFrequency = CLOCK_GetRootClockFreq (RootClocks[BOARD_DEBUG_UART_INSTANCE]);
 			#elif (defined(MIMXRT1181_SERIES)      || defined(MIMXRT1182_SERIES)     || defined(MIMXRT118C_cm33_SERIES) || defined(MIMXRT118C_cm7_SERIES) || \
 				   defined(MIMXRT1185_cm33_SERIES) || defined(MIMXRT1185_cm7_SERIES) || defined(MIMXRT1186_cm33_SERIES) || defined(MIMXRT1186_cm7_SERIES) || \
 				   defined(MIMXRT1187_cm33_SERIES) || defined(MIMXRT1187_cm7_SERIES) || defined(MIMXRT1189_cm33_SERIES) || defined(MIMXRT1189_cm7_SERIES))
@@ -238,7 +266,7 @@ extern "C"
 				CLOCK_SetRootClock (RootClocks[BOARD_DEBUG_UART_INSTANCE], &rootCfg);
 				CLOCK_ControlGate  (clocks[BOARD_DEBUG_UART_INSTANCE], kCLOCK_On);
 
-				uint32_t ClockFrequency = CLOCK_GetRootClockFreq (RootClocks[BOARD_DEBUG_UART_INSTANCE]);
+				const uint32_t clockFrequency = CLOCK_GetRootClockFreq (RootClocks[BOARD_DEBUG_UART_INSTANCE]);
 			#else
 				#error "unknon controller family"
 			#endif
@@ -248,7 +276,7 @@ extern "C"
 			config.baudRate_Bps = 115200U;
 			config.enableTx     = true;
 			config.enableRx     = true;
-			[[maybe_unused]] status_t status = LPUART_Init (uart[BOARD_DEBUG_UART_INSTANCE], &config, ClockFrequency);
+			[[maybe_unused]] status_t status = LPUART_Init (uart[BOARD_DEBUG_UART_INSTANCE], &config, clockFrequency);
 		#elif defined USART_BASE_PTRS
 			const clock_frg_clk_config_t clockConfig
 			{
